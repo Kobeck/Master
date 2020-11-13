@@ -1,0 +1,22 @@
+#!/bin/bash
+# Name of the job
+#$ -N cubesim
+# Number of parallel cores 
+#$ -pe mpi 16
+
+#$ -q scc 
+##$ -l ex
+##$ -l ib 
+
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+
+
+echo "Got $NSLOTS Processors" 
+echo "Running on:" 
+cat $TMPDIR/machines
+
+module load openmpi
+
+mpirun -np $NSLOTS --bind-to none ./lmp_mpi < ./in2.cubes >> out
+
