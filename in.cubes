@@ -85,7 +85,7 @@ dump 	      id all atom ${shot} dump.cubes
 dump 	      1	 all custom ${shot} dump_quat.*.ascii c_quat[1] c_quat[2] c_quat[3] c_quat[4] 
 dump_modify  1 pad 8
 
-dump         movie all movie 100 movie.avi type type &
+#dump         movie all movie 100 movie.avi type type &
              zoom 2.0 adiam 10.0 body type 0 0 view 0 0 &
              axes no 1.0 0.01 box yes 0.01 size 1920 1080
 
