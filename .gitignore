@@ -1,0 +1,17 @@
+*~
+*.o*
+*.e*
+*.po*
+*.pe*
+*.xyz
+*.dat
+movie.avi
+lmp_mpi
+dump*
+image*
+log*
+out*
+lammps*
+oldinput
+*#
+*/
