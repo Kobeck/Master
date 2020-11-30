@@ -1,18 +1,13 @@
 #!/bin/bash
 # Name of the job
 #$ -N matanalyse
-
 #$ -q scc 
-##$ -l ex
-##$ -l ib 
-
 #$ -m eba
+#$ -pe smp 16
 #$ -M konstantin.beck@uni.kn
 
 module load matlab
 
-matlab 
-
-main
+matlab -batch main
 
 

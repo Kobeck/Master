@@ -90,7 +90,7 @@ dump_modify  1 pad 8
              axes no 1.0 0.01 box yes 0.01 size 1920 1080
 
 
-dump         pos all local ${shot} dump_pos.*.ascii index c_pos[1] c_pos[2] c_pos[3] c_pos[4]
+#dump         pos all local ${shot} dump_pos.*.ascii index c_pos[1] c_pos[2] c_pos[3] c_pos[4]
 
 
 #dump         image1 all image ${shot} image1.*.png type type &

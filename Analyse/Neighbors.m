@@ -13,18 +13,18 @@ function [A, dist] = Neighbors(N,dump, natoms)
 %dump is of format [c x y z]
 A=zeros(natoms,N); %Neighborslist
 dist= zeros(natoms, natoms);
-dis=@distance;
+distFunction=@distance;
 for k=1:natoms %parfor
-    for j=k+1:natoms
         x=dump(k,2);
         y=dump(k,3);
         z=dump(k,4);
+    for j=k+1:natoms
         a=dump(j,2);
         b=dump(j,3);
         c=dump(j,4);
-        dist(k,j)= dis(x,y,z,a,b,c);
+        dist(k,j)= distFunction(x,y,z,a,b,c);
         %matrixoperation
-        %dist(j,k)=dist(k,j);
+        dist(j,k)=dist(k,j);
     end
     dist_t = [1:natoms;dist(k,:)];
     dist_t= sortrows(dist_t',2); %sorted list of index and distance to k 

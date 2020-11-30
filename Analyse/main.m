@@ -22,39 +22,55 @@
 % give o(t)
 
 clear all; close all; clc;
-%% Initialize
+cd /data/scc/kobeck/Master/28112020_121020
+addpath('/data/scc/kobeck/Master/Analyse/')
+%% Initialize 
 tStart=0;           %starttime
 tStep=10000;        %timesstep
-steps=101;            %number of steps
+steps=1001;            %number of steps
 nNeighbors=10;
-filename='../dump.xyz';
+filename='dump.xyz';
 
 read=@xyzread;
 neighbors=@Neighbors;
 ord=@order;
 [natoms, c, x, y, z] = read(filename,steps);
-listing=dir('../dump_quat.*');
-quat=[];
-quat={listing.name}
-for t=1:steps
-  
-        t
-        quat{t}
+listing=dir('dump_quat.*');
+quat={listing.name};
+o=zeros(natoms,1);
+ordnung=zeros(steps,1);
+
+
+%% Calculate
+
+parfor t=1:100:1001%steps
         dump=[c(:,t) x(:,t) y(:,t) z(:,t)];
         [Neigh, dist]=neighbors(nNeighbors,dump,natoms);
-        
+        disp('Zeitschritt:');
+        disp(t);
+        file=quat{t};
+        %vecotrization
+%         i=[1:natoms];
+%         o=ord(i,Neigh(i,:),nNeighbors,file,dist(i,:));
+%         
         for i=1:natoms
-            i
-            % Matrix containing indices and coordinates of the neighboring particles
-            o(i)=ord(i,Neigh(i,:), nNeighbors, quat{t}, dist);
+            if (mod(i,1000)==0)
+                disp(i)
+            end
+            o(i)=ord(i,Neigh(i,:), nNeighbors, file, dist(i,:));
         end
 
         ordnung(t)=mean(o);
 
-
-%       plot(ordnung,0:tstep:tMax)
-
 end
+
+save('ordnung.ascii','ordnung');
+
+
+% %% Plot
+% plot(ordnung)
+% xlabel('Zeitschritte')
+% ylabel('Unordnung')
 
 
 

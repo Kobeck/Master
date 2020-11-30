@@ -1,8 +1,8 @@
 #!/bin/bash
 # Name of the job
-#$ -N cubesim
+#$ -N cubesim3d
 # Number of parallel cores 
-#$ -pe mpi 64
+#$ -pe mpi 32
 
 #$ -q scc 
 ##$ -l ex
@@ -18,5 +18,5 @@ cat $TMPDIR/machines
 
 module load openmpi
 
-mpirun -np $NSLOTS --bind-to none ./lmp_mpi < ./in.cubes >> out
+mpirun -np $NSLOTS --bind-to none ./lmp_mpi < ./in3d.cubes >> out
 
