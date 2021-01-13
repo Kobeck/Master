@@ -1,0 +1,23 @@
+#!/bin/bash
+# Name of the job
+#$ -N carr_high_1215
+# Number of parallel cores 
+#$ -t 5
+#$ -pe mpi 5
+#$ -q scc 
+##$ -l ex
+##$ -l ib 
+
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+echo "creating dir $SGE_TASK_ID"
+mkdir n$SGE_TASK_ID
+cp *.cubes ./5$SGE_TASK_ID/.
+cp lmp_mpi ./5$SGE_TASK_ID/.
+cd 5$SGE_TASK_ID
+echo "Got $NSLOTS Processors" 
+echo "Running on:"
+cat $TMPDIR/machines
+
+module load openmpi
+mpirun -np $NSLOTS --bind-to none ./lmp_mpi -var r $SGE_TASK_ID -in ./in3d.cubes >> out
