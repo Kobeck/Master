@@ -8,6 +8,10 @@
     % dist - 2nd output of function Neighbors, gives distance matrix
 %output: 
     % local order of particle index
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 function [o] = order(index,Neighbors, N, quatfile, dist)
 
 euler=@Euler_calc;
@@ -38,7 +42,7 @@ for i=1:N
     dist(i)=dist(index2);
 end
 Delta=mean(Delta);
-neighborOrder=Delta(i)*1./dist(i);
+neighborOrder=Delta(i)%*1./dist(i);
 Delta_avg=mean(neighborOrder);
 o=abs(Delta_avg);
 end 

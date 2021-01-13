@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -f cubesim.*
+rm -f cube*
 rm -f image*
 rm -f dump*
 rm -f out

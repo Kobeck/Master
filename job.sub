@@ -2,7 +2,7 @@
 # Name of the job
 #$ -N cubesim3d
 # Number of parallel cores 
-#$ -pe mpi 32
+#$ -pe mpi 
 
 #$ -q scc 
 ##$ -l ex

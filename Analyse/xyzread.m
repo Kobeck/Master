@@ -25,7 +25,7 @@ function [natoms,c,x,y,z] = xyzread(filename,steps)
 % 
 %% Author Info 
 % This script was written by Chad A. Greene of the University of Texas 
-% at Austin's Institute for Geophysics (UTIG), April 2016. 
+% at Austins Institute for Geophysics (UTIG), April 2016. 
 % http://www.chadagreene.com 
 % 
 % See also xyz2grid and textscan. 
@@ -43,7 +43,7 @@ fid = fopen(filename);
 N = textscan(fid,'%f',1,'delimiter','\n');
 natoms=N{1,1};
 frewind(fid);
-%% separate block for t=1, don't know why needed
+%% separate block for t=1, dont know why needed
 t=1;
 counter=t;
     counter = textscan(fid,'%f %f %f %f',N{1,1}, 'headerlines', 2);  %varargin{:},'headerlines',2); 

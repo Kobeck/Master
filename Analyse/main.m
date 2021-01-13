@@ -1,5 +1,4 @@
 %main program
-%Was soll das Programm machen?
 %Output: Zeitliche Entwicklung des Ordnungparameters 
 %       -> o(t) 
 %       -> Heatmap(t)
@@ -20,57 +19,46 @@
 %       give o(t) 
 % end loop t
 % give o(t)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all; close all; clc;
-cd /data/scc/kobeck/Master/28112020_121020
-addpath('/data/scc/kobeck/Master/Analyse/')
-%% Initialize 
+
+function main(filePath,savePath,size,Neighbors)
+
+%disp(filePath);
+cd(filePath);
+addpath('/data/scc/kobeck/Master/Analyse/');
+
 tStart=0;           %starttime
 tStep=10000;        %timesstep
-steps=1001;            %number of steps
-nNeighbors=10;
+nNeighbors=Neighbors;
 filename='dump.xyz';
 
 read=@xyzread;
 neighbors=@Neighbors;
 ord=@order;
-[natoms, c, x, y, z] = read(filename,steps);
+
 listing=dir('dump_quat.*');
 quat={listing.name};
-o=zeros(natoms,1);
-ordnung=zeros(steps,1);
-
+steps=length(quat);
+[natoms, c, x, y, z] = read(filename,steps);
+o=zeros(natoms,steps);
 
 %% Calculate
 
-parfor t=1:100:1001%steps
+parfor t=1:steps
         dump=[c(:,t) x(:,t) y(:,t) z(:,t)];
         [Neigh, dist]=neighbors(nNeighbors,dump,natoms);
-        disp('Zeitschritt:');
-        disp(t);
         file=quat{t};
-        %vecotrization
-%         i=[1:natoms];
-%         o=ord(i,Neigh(i,:),nNeighbors,file,dist(i,:));
-%         
         for i=1:natoms
-            if (mod(i,1000)==0)
-                disp(i)
-            end
-            o(i)=ord(i,Neigh(i,:), nNeighbors, file, dist(i,:));
+		o(i,t)=ord(i,Neigh(i,:), nNeighbors, file, dist(i,:));
         end
-
-        ordnung(t)=mean(o);
-
 end
 
-save('ordnung.ascii','ordnung');
+ordnung=mean(o);
+save(fullfile(savePath,strcat('ordavgt',num2str(size),num2str(nNeighbors),'.txt')),'ordnung','-ASCII');
+%save('ordmatrix.txt','o','-ASCII');
+end
 
-
-% %% Plot
-% plot(ordnung)
-% xlabel('Zeitschritte')
-% ylabel('Unordnung')
 
 
 
