@@ -5,18 +5,18 @@ variable    steps index 100000
 variable    shot  index 1000
 
 
-units       nano
+units       lj
 dimension   3
 newton 	    on
 boundary    p p f
 atom_style  body rounded/polyhedron 1 10
 
-read_data   data.cubes_cp group cubes
+read_data   data.cubes group cubes
 
 replicate   $r $r 1
 
 
-#create_atoms 1 random 1000 847857 NULL
+create_atoms 1 random 1000 847857 NULL
 velocity    all create 300 156154 dist gaussian mom yes rot yes
 
 
@@ -69,7 +69,7 @@ fix          1 cubes nve/body
 #fix 	     grav all gravity 10.0 vector 0 0 -1
 
 #fix	     walls1 all wall/body/polyhedron ${wallk_n} ${wallc_n} ${wallc_t} zplane 0 NULL 
-#fix 	     walls2 all wall/reflect zlo EDGE zhi EDGE
+fix 	     walls2 all wall/reflect zlo EDGE zhi EDGE
 
 
 

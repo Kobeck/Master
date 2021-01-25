@@ -1,0 +1,9 @@
+# lj particles data file
+
+100 atoms
+1 atom types
+100 bodies
+-10 10 xlo xhi
+-10 10 ylo yhi
+-10 10 zlo zhi
+

@@ -1,0 +1,48 @@
+units		nano
+dimension 	3
+newton		on
+boundary 	p p p
+atom_style 	body  rounded/polyhedron 1 10
+read_data 	data.cubes_cp group cubes
+
+replicate 	3 3 1
+create_atoms	2 random 100 48134 NULL
+velocity 	all create 300 156164 dist gaussian mom yes rot yes
+
+variable cut_inner  equal 0.1
+variable k_n        equal 1
+variable k_na       equal -1
+variable c_n        equal 1
+variable c_t        equal 1
+variable mu         equal 1
+variable A_ua       equal 1.0
+
+
+#pair_style         body/rounded/polyhedron ${c_n} ${c_t} ${mu} ${A_ua} ${cut_inner}
+#pair_coeff 	   * *  ${k_n} ${k_na}
+#pair_style 	   lj/cut 2.5
+#pair_coeff	   * * 1 1
+pair_style 	    hybrid body/rounded/polyhedron ${c_n} ${c_t} ${mu} ${A_ua} ${cut_inner} lj/cut 2.5
+pair_coeff 	    1 1 body/rounded/polyhedron ${k_n} ${k_na}
+pair_coeff 	    2 2 lj/cut 1 1
+pair_coeff 	    1 2 lj/cut 0 0
+
+
+comm_modify    vel yes
+
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+timestep       0.0005
+
+fix 	       1 cubes nve/body
+
+dump         image all image 100 image.*.png type type &
+             zoom 1.0 body type 0 0 adiam 1.0 &
+	     view 60 15 size 1920 1080 box yes 0.01
+thermo_style   custom step
+
+thermo	       100
+run 	       1000
+
+

@@ -1,0 +1,6 @@
+# 3d body lj sphere simulation
+units lj
+lattice		fcc 
+region		box bl0ock 0 10 0 10 0 10 
+create_box 	box 1
+atom_style 	body nparticle 1 10
