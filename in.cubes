@@ -1,4 +1,4 @@
-# 3d rounded cubes
+e in# 3d rounded cubes
 
 variable    r     index 3
 variable    steps index 100000
@@ -21,8 +21,8 @@ velocity    all create 300 156154 dist gaussian mom yes rot yes
 
 
 variable cut_inner  equal 0.7
-variable k_n        equal 100 #20.0
-variable k_na       equal -5 #-10.0
+variable k_n        equal 10 
+variable k_na       equal 5 
 variable c_n        equal 10.0
 variable c_t        equal 10.0
 variable mu         equal 10.0
