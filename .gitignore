@@ -1,4 +1,5 @@
 *~
+<<<<<<< HEAD
 *.o*
 *.e*
 *.po*
@@ -14,6 +15,5 @@ out*
 lammps*
 oldinput
 *#
-
 
 
