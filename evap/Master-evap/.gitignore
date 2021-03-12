@@ -1,0 +1,7 @@
+*~
+*.avi
+log.*
+dump*
+image*
+out
+lmp_mpi

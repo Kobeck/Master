@@ -1,5 +1,6 @@
 # 3d rounded cubes
 
+<<<<<<< HEAD
 variable    r     index 100
 variable    steps index 10000000
 variable    shot  index 10000
@@ -9,10 +10,22 @@ units       nano
 dimension   2
 newton 	    on
 boundary    p p p
+=======
+variable    r     index 5
+variable    steps index 100000
+variable    shot  index 1000
+
+
+units       nano
+dimension   3
+newton 	    on
+boundary    p p f
+>>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
 atom_style  body rounded/polyhedron 1 10
 
 read_data   data.cubes
 
+<<<<<<< HEAD
 replicate   $r $r 1
 
 
@@ -39,6 +52,34 @@ variable gammaR     equal 1
 #variable wallk_na   equal 0.0 
 
 
+=======
+replicate   $r $r 2
+
+
+velocity    all create 300 156154 dist gaussian mom yes rot yes
+
+
+variable cut_inner  equal 0.7
+variable k_n        equal 100 #20.0
+variable k_na       equal -5 #-10.0
+variable c_n        equal 10.0
+variable c_t        equal 10.0
+variable mu         equal 10.0
+variable A_ua       equal 1.0
+#variable epsilon    equal 0.5
+variable sigma      equal 3
+#variable cut_mie     equal 150.0
+#variable scale      equal 1.01
+#variable gammaA     equal 10
+#variable gammaR     equal 1
+
+variable wallc_n    equal 0.0
+variable wallc_t    equal 0.0
+variable wallk_n    equal 10.0 
+variable wallk_na   equal 0.0
+
+change_box all z final -150*${sigma} 70*${sigma}
+>>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
 #pair_style hybrid/overlay body/rounded/polyhedron ${c_n} ${c_t} ${mu} ${A_ua} ${cut_inner} &
                           mie/cut ${cut_mie}
 
@@ -58,15 +99,24 @@ comm_modify vel yes     #communication
 neighbor     0.5 bin	
 neigh_modify every 1 delay 0 check yes
 
+<<<<<<< HEAD
 timestep     0.001
 
 #fix          1 all nve/body
 #fix          1 all nvt/body temp 300.0 300.0 0.1
 fix	      1 all npt/body temp 300 300 0.1 iso 0.0001 0.01 1.0
+=======
+timestep     0.0005
+
+fix          1 all nve/body
+#fix          1 all nvt/body temp 300.0 300.0 0.1
+#fix	      1 all npt/body temp 300 100 0.1 iso 0.001 0.5 1.0
+>>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
 #fix	        2 all adapt 2000 pair mie/cut epsilon 1 1 v_scale scale yes reset no
 #fix 	     grav all gravity 10.0 vector 0 0 -1
 
 #fix	     walls1 all wall/body/polyhedron ${wallk_n} ${wallc_n} ${wallc_t} zplane 0 NULL 
+<<<<<<< HEAD
 #fix 	     walls2 all wall/reflect zlo 0 zhi 12
 fix 	     2D all enforce2d
 
@@ -75,22 +125,42 @@ compute      quat all property/atom quatw quati quatj quatk
 compute      com all com 
 compute       t	 all temp 
 compute       p	 all pressure 1_temp
+=======
+fix 	     walls2 all wall/reflect zlo EDGE zhi EDGE
+
+
+
+#compute      quat all property/atom quatw quati quatj quatk
+compute      com all com 
+compute       t	 all temp 
+#compute       p	 all pressure 1_temp
+>>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
 compute      pos all body/local id 1 2 3
 #compute      p2 all pressure 1_temp
 
 
 
 
+<<<<<<< HEAD
 dump 	      id all atom ${shot} dump.cubes
 dump 	      1	 all custom ${shot} dump_quat.*.ascii c_quat[1] c_quat[2] c_quat[3] c_quat[4] 
 dump_modify  1 pad 8
 
 #dump         movie all movie 100 movie.avi type type &
              zoom 2.0 adiam 10.0 body type 0 0 view 0 0 &
+=======
+#dump 	      id all atom ${shot} dump.cubes
+#dump 	      1	 all custom ${shot} dump_quat.*.ascii c_quat[1] c_quat[2] c_quat[3] c_quat[4] 
+#dump_modify  1 pad 6
+
+#dump         movie all movie 5000 movie.avi type type &
+             zoom 1.0 adiam 10.0 body type 0 0 view 60 15 &
+>>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
              axes no 1.0 0.01 box yes 0.01 size 1920 1080
 
 
 #dump         pos all local ${shot} dump_pos.*.ascii index c_pos[1] c_pos[2] c_pos[3] c_pos[4]
+<<<<<<< HEAD
 
 
 #dump         image1 all image ${shot} image1.*.png type type &
@@ -128,6 +198,15 @@ dump 	     pos2 all xyz ${shot} dump.xyz
 
 
 thermo_style custom step ke pe etotal c_p c_t #c_p2 c_1_temp
+=======
+dump         image all image ${shot} image.*.png type type &
+             zoom 1.0 body type 0 0 adiam 1.0 &
+             view 60 15 size 1920 1080 box yes 0.01 
+#dump 	     pos2 all xyz ${shot} dump.xyz 
+
+
+thermo_style custom step ke pe etotal #c_p c_t #c_p2 c_1_temp
+>>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
 
 
 thermo       ${shot}
