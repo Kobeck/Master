@@ -1,0 +1,5 @@
+#modelling the evaporation of lj particles
+
+units 		nano 
+atom_style 	body 
+region 		liquid 		
