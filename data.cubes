@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 LAMMPS data file for polygons: cubes, moment of inertia I = m edge^2/ 6
 1 atoms
 1 bodies
@@ -15,11 +16,19 @@ lLAMMPS data file for polygons: cubes, moment of inertia I = m edge^2/ 6
 -10 10 ylo yhi
 -5 5 zlo zhi
 >>>>>>> ecd00f1d52af84f2c48783a4b57c89661c541c89
+=======
+#LAMMPS data file for polygons: cubes, moment of inertia I = m edge^2/ 6
+1 atoms
+1 bodies
+2 atom types
+0 20 xlo xhi
+0 20 ylo yhi
+0 20 zlo zhi
+>>>>>>> 595a29cff173724a79115595c6fa80b6536e48f5
 
 Atoms
 
-1 1 1 5.401 0 0 0
-#2 1 1 1 4.0 4.0 4.0
+1 2 1 5.401 10 10 20
 
 Bodies
 
@@ -64,6 +73,7 @@ Bodies
 2 3 7 6
 3 0 4 7
 <<<<<<< HEAD
+<<<<<<< HEAD
 10
 =======
 4.0
@@ -99,3 +109,6 @@ Bodies
 #3 0 4 7
 #0.1
 
+=======
+0.5
+>>>>>>> 595a29cff173724a79115595c6fa80b6536e48f5
