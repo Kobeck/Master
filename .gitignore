@@ -6,6 +6,7 @@
 *.pe*
 *.xyz
 *.dat
+*.png
 movie.avi
 lmp_mpi
 dump*

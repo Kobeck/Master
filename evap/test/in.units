@@ -9,7 +9,7 @@ atom_style     body	rounded/polyhedron 1 20
 ###### Variables ######
 #######################
 
-variable	steps      equal		1000000
+variable	steps      equal	10000000
 
 variable       	epsilon    equal 	1
 
@@ -19,6 +19,7 @@ variable       	cutoff     equal 	3.5
 
 variable       	evapRate   equal		1000
 
+variable 	temp	   equal	0.75
 ##### initialization ######
 ###########################
 
@@ -26,7 +27,7 @@ region		simBox	block	0 13.84	0 15.99 0 22.0 units box
 #create_box	2  simBox 
 read_data   	data.sphere 	group	lj#	add append
 
-replicate      	10 10 20
+replicate      	20 20 40
 
 #region 	       surface block 0 10 0 10 9 10
 
@@ -57,7 +58,7 @@ timestep       0.005
 ######## fixes ###########
 ##########################
 
-fix	1 all nvt/body temp 1.0 0.1 1.0
+fix	1 all nvt/body temp 1.0 ${temp} 1.0
 
 
 variable   epsilonWall equal 2*${epsilon}
