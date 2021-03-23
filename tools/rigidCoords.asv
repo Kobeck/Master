@@ -1,0 +1,12 @@
+clear all; close all;
+% build the data file for rigid colloids simulation 
+size = 10;
+
+for x=1:1:size 
+    for y=1:1:size 
+        for z=1:1:size 
+            if (abs([
+
+
+plot3(coords(:,5), coords(:,6), coords(:,7),'o')
+writematrix(coords, 'coords.txt', "Delimiter", "\t");

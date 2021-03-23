@@ -1,0 +1,26 @@
+#!/bin/bash
+# Name of the job
+#$ -N mix
+#$ -pe mpi 64
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=4G
+
+rm -f image.*
+rm -f *.avi
+rm -f log.lammps
+rm -f out
+
+date=$(date +%d_%m-%H%M)                                                                                                                 \
+
+
+mkdir $date
+cp in.mini $date/.
+cp data.* $date/.
+cd $date
+
+module purge
+module load lammps
+
+mpirun -n $NSLOTS lmp -in in.mini >>out

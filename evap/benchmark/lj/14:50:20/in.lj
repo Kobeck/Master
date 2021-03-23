@@ -1,0 +1,112 @@
+####### Lammps input script for evaporating lj fluid ########
+
+units 	       lj
+dimension      3
+newton 	       on
+boundary        p p f
+atom_style     body	rounded/polyhedron 1 20
+
+###### Variables ######
+#######################
+
+variable	steps      equal	1000000
+
+variable	shot 	   equal	10000
+
+variable       	epsilon    equal 	1
+
+variable       	sigma      equal 	1
+
+variable       	cutoff     equal 	3.5
+
+variable       	evapRate   equal		1000
+
+variable 	temp	   equal	0.75
+
+##### initialization ######
+###########################
+
+region		simBox	block	0 13.84	0 15.99 0 22.0 units box  
+
+read_data   	data.sphere 	group	lj#	add append
+
+replicate      	20 20 40
+
+#region 	       surface block 0 10 0 10 9 10
+
+
+##### potential parameters ######
+#################################
+
+pair_style     lj/cut ${cutoff}
+
+pair_modify    shift yes
+
+pair_coeff     * * ${epsilon} ${sigma}
+
+
+##### simulation settings #########
+###################################
+
+
+comm_modify    vel yes
+
+neighbor       0.5	bin
+
+neigh_modify   every 1 delay 0 check yes
+
+timestep       0.005
+
+
+######## fixes ###########
+##########################
+
+fix	1 all nvt/body temp 1.0 ${temp} 1.0
+
+
+variable   epsilonWall equal 2*${epsilon}
+
+variable   cutoffTop   equal   0.7147*${sigma}
+variable   cutoffLow   equal   3*${sigma}
+
+fix 	topWall all wall/lj93 zhi EDGE ${epsilonWall} ${sigma} ${cutoffTop} &
+		    	      	       units box
+				       
+fix 	lowWall all wall/lj93 zlo EDGE ${epsilonWall} ${sigma} ${cutoffLow} &
+		    	      	       units box
+
+#fix 	3 all evaporate ${evapRate} 1 surface 516153
+
+
+######## dumps ###########
+##########################
+
+
+dump         image all image ${shot} image.*.png type type &
+             zoom 1.0 body type 0 0 &
+             view 60 15 size 1920 1080 box yes 0.01
+
+dump         movie all movie 5000 movie.avi type type &
+             zoom 1.0 adiam 10.0 body type 0 0 view 60 15 &
+             axes no 1.0 0.01 box yes 0.01 size 1920 1080
+
+
+####### final setup #######
+###########################
+
+
+velocity      	    all create 1.0 78994
+
+thermo_style  	    custom step temp etotal pe ke press vol density
+
+thermo 	      	    1000
+
+run_style	    verlet
+
+timer 		    normal
+
+run 		    ${steps}
+
+
+
+
