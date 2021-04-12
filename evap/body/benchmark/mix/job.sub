@@ -1,0 +1,18 @@
+#!/bin/bash
+# Name of the job
+#$ -N ljSim
+#$ -pe mpi 4
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+
+date=$(date +%d_%m-%H%M)                                                                                                                                            
+
+mkdir $date
+cp in.cubes $date/.
+cp data.sphere $date/.
+cp data.cubes $date/.
+cd $date
+
+module load openmpi
+mpirun -np $NSLOTS --bind-to none ../lmp_mpi -in in.cubes >>out

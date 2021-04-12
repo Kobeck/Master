@@ -1,0 +1,25 @@
+#!/bin/bash
+# Name of the job
+#$ -N mix16_8c
+#$ -pe mpi 16
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
+#rm -f image.*
+#rm -f *.avi
+#rm -f log.lammps
+#rm -f out
+
+date=$(date +%d_%m-%H%M)                                                                                                                 \
+
+
+mkdir $date
+cp in.8cubes $date/.
+cp data.* $date/.
+cd $date
+
+module load lammps
+
+mpirun -n $NSLOTS lmp -echo screen -in in.8cubes >>out
