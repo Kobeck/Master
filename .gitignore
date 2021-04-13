@@ -5,7 +5,7 @@
 *.po*
 *.pe*
 *.xyz
-*.dat
+*.dat*
 *.png
 movie.avi
 lmp_mpi
@@ -16,7 +16,7 @@ out*
 lammps*
 oldinput
 *#
-
+*.lammpstrj
 =======
 *.avi
 log.*

@@ -35,4 +35,5 @@ sqrt(x.^2+y.^2+z.^2)
 plot3(coords(:,5),coords(:,6),coords(:,7),'.', 'MarkerSize', radius)
 axis([0 50 0 50 0 50 ]);
 Mat=[coords(:,3), coords(:,5:7)];
-writematrix(Mat, 'coords.txt', "Delimiter", "\t");
+writematrix(Mat, 'coordsxyz.txt', "Delimiter", "\t");
+writematrix(coords, 'truncated.txt', "Delimiter", "\t");
