@@ -1,0 +1,83 @@
+# Simple rigid body system
+
+
+units		lj
+atom_style	full/kk
+dimension 	3
+boundary	p p f
+pair_style	lj/cut 4.4
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 40 0 40 0 40
+create_box 	1 box 
+lattice 	sc 1.0 
+
+create_atoms 	1 region box
+
+mass		1 1.0
+group		solvent type 1
+velocity 	solvent create 1.0 563435 loop geom
+
+replicate 	2 2 2
+read_data	data.vac add append
+
+neighbor 	0.4 bin
+pair_coeff	1 1 1.0 1.0
+pair_modify 	shift yes
+
+balance 	1.05 shift z 10 1.05
+
+####################### WALLS ###########################
+
+region	       low block  EDGE EDGE EDGE EDGE 0 1	 		
+
+region 	       top block  EDGE EDGE EDGE EDGE 159 160 
+
+delete_atoms   region low 
+
+variable       epsilonWall equal 2*${epsilon}
+
+variable       cutoffTop   equal   0.7147*${sigma}
+
+variable       cutoffLow   equal   3*${sigma}
+
+fix            topWall all wall/lj93 zhi EDGE &
+               ${epsilonWall} ${sigma} ${cutoffTop} units box
+
+fix            lowWall all wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${cutoffLow} units box
+
+
+
+######################	FIXES ############################
+
+#fix		1 cube rigid/nvt/small molecule temp 1.0 1.0 0.25
+
+fix 		2 solvent nvt temp 1.0 0.87 0.25# iso 0 0.0 2.5
+
+fix 		bal all balance 1000 1.05 shift z 10 1.05 
+
+
+
+#compute 	com cube	  rigid/local	1 mol x y z
+#compute 	quat cube	  rigid/local	1 mol quatw quati quatj quatk
+
+thermo 		1000
+thermo_style 	custom step temp epair evdwl etotal press pe ke vol
+
+dump		1 all custom 100000 dump.lammpstrj id mol type x y z 
+dump 		2 all image 10000 image.*.png type type  
+#dump 		3 all movie 100 movie.avi type type
+#dump 		com cube local 1000 dump.*.xyz c_com[*]
+#dump		quat cube      local 1000 dump.*.quat c_quat[*]
+
+
+restart 	100000 restart.dat
+timestep 	0.0025
+timer 		full
+
+
+run		1000000

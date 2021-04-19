@@ -1,7 +1,8 @@
 #!/bin/bash
 # Name of the job
-#$ -N rigidSm16
-#$ -pe mpi 16
+#$ -N ljGPU
+##$ -pe mpi 1
+#$ -l gpu=1
 #$ -q scc 
 #$ -m eba
 #$ -M konstantin.beck@uni.kn
@@ -14,7 +15,7 @@
 
 date=$(date +%d_%m-%H%M)                                                                                                                 \
 
-dir=16_$date
+dir=gpu_$date
 mkdir $dir
 cp in.rigid $dir/.
 cp data.* $dir/.
@@ -23,4 +24,4 @@ cd $dir
 
 module load lammps
 
-mpirun -n $NSLOTS lmp -echo screen -in in.rigid >>out
+lmp -sf gpu -echo screen -in in.rigid >>out

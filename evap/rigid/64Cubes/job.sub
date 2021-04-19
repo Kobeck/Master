@@ -1,7 +1,7 @@
 #!/bin/bash
 # Name of the job
-#$ -N rigidSm16
-#$ -pe mpi 16
+#$ -N rigidBig32
+#$ -pe mpi 32
 #$ -q scc 
 #$ -m eba
 #$ -M konstantin.beck@uni.kn
@@ -14,7 +14,7 @@
 
 date=$(date +%d_%m-%H%M)                                                                                                                 \
 
-dir=16_$date
+dir=32_$date
 mkdir $dir
 cp in.rigid $dir/.
 cp data.* $dir/.
