@@ -2,6 +2,7 @@ clear all; close all;
 % build the data file for rigid colloids simulation 
 size = 10;
 step = 0.10;
+shift = 10;
 coords = zeros(895,7);
 center = 2.5;
 replicatex =0;
@@ -42,18 +43,18 @@ coords(:,5:7)=coords(:,5:7)+20;
 
 for i=1:replicatex
     
-    coords_new= [coords ; [coords(1:counter,1)+counter, coords(:,2), coords(:,3)+20*i, coords(:,4), coords(:,5)]];
+    coords_new= [coords ; [coords(1:counter,1)+counter, coords(:,2), coords(:,3)+shift*i, coords(:,4), coords(:,5)]];
     counter = counter*(i+1);
     coords=coords_new;
 end
 for j=1:replicatey
     
-    coords_new= [coords ; [coords(1:counter,1)+counter, coords(:,2), coords(:,3), coords(:,4)+20*j, coords(:,5)]];
+    coords_new= [coords ; [coords(1:counter,1)+counter, coords(:,2), coords(:,3), coords(:,4)+shift*j, coords(:,5)]];
     coords=coords_new;
     counter=counter*(j+1);
 end
 for k=1:replicatez
-    coords_new= [coords ; [coords(1:counter,1)+counter, coords(:,2), coords(:,3), coords(:,4), coords(:,5)+20*k]];
+    coords_new= [coords ; [coords(1:counter,1)+counter, coords(:,2), coords(:,3), coords(:,4), coords(:,5)+shift*k]];
     coords=coords_new;
     counter=counter*(k+1);
 end

@@ -10,7 +10,7 @@ pair_style	lj/cut 4.4
 variable 	sigma		equal 1.0
 variable 	epsilon 	equal 1.0
 
-read_restart	restart.dat.1000000
+read_restart	restart.dat.1500000
 
 mass		1 1.0
 group		solvent type 1

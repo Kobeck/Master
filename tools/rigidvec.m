@@ -1,6 +1,7 @@
 clear all; close all;
 size = 10;
 radius = 5;
+shift= 10;
 step = (radius*2)/size;
 
 len = length(-size/2:step:size/2);
@@ -22,15 +23,15 @@ for i=1:len^3
     else
         dist = sqrt(x^2+y^2+z^2);
         if (abs(x)==5 || abs(y) == 5 || abs(z)==5 || dist>6)
-            coords(i,3)= 1;     % atom type
+            coords(i,3)= 2;     % atom type
         else
-            coords(i,3)= 2;     % ''
+            coords(i,3)= 3;     % ''
         end
     end
 end
 coords( ~any(coords,2), : ) = []; % removes all rows with all zero
 
-coords(:,5:7) = coords(:,5:7) +20;
+coords(:,5:7) = coords(:,5:7) +shift;
 sqrt(x.^2+y.^2+z.^2)
 plot3(coords(:,5),coords(:,6),coords(:,7),'.', 'MarkerSize', radius)
 axis([0 50 0 50 0 50 ]);

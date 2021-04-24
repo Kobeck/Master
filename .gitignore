@@ -17,11 +17,11 @@ lammps*
 oldinput
 *#
 *.lammpstrj
-=======
+
 *.avi
 log.*
 dump*
 image*
 out
 lmp_mpi
->>>>>>> 595a29cff173724a79115595c6fa80b6536e48f5
+
