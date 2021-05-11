@@ -1,0 +1,23 @@
+#!/bin/bash
+# Name of the job
+#$ -N big256
+#$ -pe mpi 256
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=3G
+#$ -l ib
+
+
+date=$(date +%d_%m-%H%M)                                                                                                                 \
+
+dir=256_$date
+mkdir $dir
+cp in.rigid $dir/.
+cp data.* $dir/.
+cp job.sub $dir/.
+cd $dir
+
+module load lammps
+
+mpirun -n $NSLOTS lmp -echo screen -in in.rigid >>out

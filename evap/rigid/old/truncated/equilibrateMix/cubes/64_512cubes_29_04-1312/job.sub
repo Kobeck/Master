@@ -1,0 +1,24 @@
+#!/bin/bash
+# Name of the job
+#$ -N random16_512
+#$ -pe mpi 16
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
+#rm -f image.*
+#rm -f *.avi
+#rm -f log.lammps
+#rm -f out
+
+date=$(date +%d_%m-%H%M)                                                                                                    
+
+dir=16_512cubes_$date
+mkdir $dir
+cp in.cubes data.rigid job.sub $dir/.
+cd $dir
+
+module load lammps
+
+mpirun -n $NSLOTS lmp -echo screen -in in.cubes >>out

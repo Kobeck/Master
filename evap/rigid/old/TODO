@@ -1,0 +1,30 @@
+LJ Fluid phase
+
+Grosse Würfel
+
+Würfel nur mit Hülle vgl
+
+Thermostat
+	Berendsen
+	Nose Hoover
+	Langevin
+
+Equilibrierung
+
+lange laufzeit
+
+Gpu
+
+Quaternionen testen
+
+Dichte der Teilchen
+
+Solubility
+
+granular flow simulations
+
+Schmidt Number of LJ fluid
+
+Diffusion coeffficient in Simulation with Correction (Ladd)
+
+Volume Fraction

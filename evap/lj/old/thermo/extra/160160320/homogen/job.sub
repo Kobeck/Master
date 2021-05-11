@@ -1,0 +1,22 @@
+#!/bin/bash
+# Name of the job
+#$ -N homogen32
+#$ -pe mpi 32
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=3G
+#$ -l ib
+
+
+date=$(date +%d_%m-%H%M)                                                                                               
+
+dir=32_$date
+mkdir $dir
+cp in.rigid data.vac job.sub $dir/.
+
+cd $dir
+
+module load lammps
+
+mpirun -n $NSLOTS lmp -echo screen -in in.rigid >>out
