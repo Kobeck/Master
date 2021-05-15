@@ -1,6 +1,6 @@
 #!/bin/bash
 # Name of the job
-#$ -N thermo_arr
+#$ -N dens_arr
 #$ -pe mpi 32
 #$ -q scc
 #$ -t 1-6
@@ -24,4 +24,4 @@ cp data.* $dir/.
 cp job.sub $dir/.
 cd $dir
 
-mpirun -n $NSLOTS lmp -v startTemp ${startTemp} -v density ${density} -v temp ${temp} -in in.rigid >>out
+mpirun -n ${NSLOTS} lmp -v startTemp ${startTemp} -v density ${density} -v temp ${temp} -in in.rigid >>out

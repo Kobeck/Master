@@ -25,7 +25,7 @@ mass		3 1.0
 group		solvent type 1
 
 
-velocity 	solvent create 1.0 563435 loop geom
+velocity 	solvent create ${temp} 563435 loop geom
 
 read_data	data.vac add append
 
@@ -91,7 +91,7 @@ region		regthermo block EDGE EDGE EDGE EDGE 0 20
 
 group 		thermo dynamic solvent region regthermo every 1000
 
-fix 		3 thermo langevin ${temp} ${temp} 10 156453
+fix 		3 thermo langevin ${startTemp} ${temp} 10 156453
 
 
 
