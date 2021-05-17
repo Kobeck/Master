@@ -1,28 +1,28 @@
-#!/bin/bash -x
-#SBATCH --account="tncscg"
-#SBATCH --nodes=1
-#SBATCH --ntasks=48
-#SBATCH --ntasks-per-node=48
-#SBATCH --time=10:00:00
-#SBATCH --partition=batch
-#SBATCH --array=1-5
-# *** start of job script ***
-# Note: The current working directory at this point is
-# the directory where sbatch was executed.
+#!/bin/bash
+# Name of the job
+#$ -N random512
+#$ -pe mpi 64
+#$ -t 1-10
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
 
+
+module load lammps 
 date=$(date +%d_%m-%H%M)
-#temp=$(bc <<< "$startTemp+0.1*${SLURM_ARRAY_TASK_ID}")
-#tempstr=$(bc <<< ${temp}*10/1)
-#printf -v j "%02d" $tempstr
 seed=$RANDOM
 temp=10.0
 printf -v j "%02d" ${temp}
-dir=${SLURM_JOB_NUM_NODES}_seed${seed}_temp${j}_${date}
+dir=${NSLOTS}_temp${j}_seed${SGE_TASK_ID}_${date}
 
 mkdir $dir
-cp in.rigid $dir/.
+cp in.cubes $dir/.
 cp data.* $dir/.
 cp job.sub $dir/.
 cd $dir
 
 srun -n ${SLURM_JOB_NUM_TASKS} lmp -v temp ${temp} -v seed ${seed} -in in.rigid
+
+mpirun -n $NSLOTS lmp -echo screen -v temp ${temp} -v seed ${seed} -in in.cubes >>out

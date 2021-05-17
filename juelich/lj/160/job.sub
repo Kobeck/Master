@@ -1,26 +1,29 @@
-#!/bin/bash -x
-#SBATCH --account="tncscg"
-#SBATCH --nodes=128
-#SBATCH --ntasks=128
-#SBATCH --ntasks-per-node=1
-#SBATCH --time=10:00:00
-#SBATCH --partition=batch
-#SBATCH --array=0-5
-# *** start of job script ***
-# Note: The current working directory at this point is
-# the directory where sbatch was executed.
+#!/bin/bash
+# Name of the job
+#$ -N ljEqui160
+#$ -pe mpi 128
+#$ -t 1-5
+#$ -q scc 
+##$ -m eba
+##$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
+
+
+module load lammps 
 
 date=$(date +%d_%m-%H%M)
 startTemp=0.5
-temp=$(bc <<< "$startTemp+0.1*${SLURM_ARRAY_TASK_ID}")
+temp=$(bc <<< "$startTemp+0.1*${SGE_TASK_ID}")
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" $tempstr
-dir=128_temp05_$j-${date}
+
+dir=${NSLOTS}_temp${startTemp}-${j}_${date}
 
 mkdir $dir
-cp in.rigid $dir/.
+cp in.lj $dir/.
 cp data.* $dir/.
 cp job.sub $dir/.
 cd $dir
 
-srun -n ${SLURM_JOB_NUM_NODES} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.rigid
+mpirun -n ${NSLOTS} lmp -echo screen -v startTemp ${startTemp} -v temp ${temp} -in in.lj >>out
