@@ -1,0 +1,75 @@
+# Simple rigid body system
+# needed variables: startTemp, temp
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f
+pair_style	lj/cut/opt 2.5
+
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 80 0 80 0 160
+create_box 	3 box 
+
+create_atoms 	1 random 142000 2564156 box
+
+mass		1 1.0
+mass		2 1.0
+mass		3 1.0
+
+
+group		solvent type 1
+
+neighbor 	0.4 bin
+
+pair_coeff	1 1 1.0 1.0
+pair_coeff	2 2 0.0 0.0
+pair_coeff	3 3 0.0 0.0
+pair_coeff	2 3 0.0 0.0
+pair_coeff	1 2*3 0.0 0.0
+
+pair_modify 	shift yes
+
+
+balance 	1.05 shift z 10 1.05
+
+
+####################### WALLS ###########################
+
+
+region	       low block  EDGE EDGE EDGE EDGE 0 2	 		
+
+region 	       top block  EDGE EDGE EDGE EDGE 159 160 
+
+
+delete_atoms   region low
+
+delete_atoms   region top
+
+
+variable       epsilonWall equal 2*${epsilon}
+
+variable       cutoffTop   equal   0.7147*${sigma}
+
+variable       cutoffLow   equal   3*${sigma}
+
+
+fix            topWall all wall/lj93 zhi EDGE &
+               ${epsilonWall} ${sigma} ${cutoffTop} units box
+
+fix            lowWall all wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${cutoffLow} units box
+
+###################### remove overlaps ##################
+
+fix 	       overlap solvent nve/limit 0.1
+thermo          100
+thermo_style    custom step temp epair evdwl etotal press pe ke vol
+timestep	0.01
+run		10000
+write_data	data.lj
+

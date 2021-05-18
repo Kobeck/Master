@@ -1,0 +1,47 @@
+units           lj
+atom_style      full
+dimension       3
+boundary        p p p
+pair_style      lj/cut/opt 2.5
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+region          box block 0 80 0 80 0 160
+create_box      3 box
+read_data	data.lj add append
+mass            1 1.0
+mass            2 1.0
+mass            3 1.0
+group           solvent type 1
+#read_data      data.vac add append
+neighbor        0.4 bin
+
+
+pair_coeff      1 1 1.0 1.0
+pair_coeff      2 2 0.0 0.0
+pair_coeff      3 3 0.0 0.0
+pair_coeff      2 3 0.0 0.0
+pair_coeff      1 2*3 0.0 0.0
+
+pair_modify     shift yes
+
+
+balance         1.05 shift z 10 1.05
+
+# WALLS
+
+variable       epsilonWall equal 2*${epsilon}
+variable       cutoffTop   equal   0.7147*${sigma}
+variable       cutoffLow   equal   3*${sigma}
+#fix            lowWall all wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${cutoffLow} units box
+
+##################### Equilibrate    ####################
+
+xcfix 	       1 all box/relax iso 0.0 
+
+fix 	       2 all nve
+thermo          100
+thermo_style    custom step temp epair evdwl etotal press pe ke vol
+
+timestep       0.01
+run	       10000

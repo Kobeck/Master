@@ -6,7 +6,7 @@ atom_style	full
 dimension 	3
 boundary	p p f
 pair_style	lj/cut/smooth 2.5 3.0
-pair_write      1 1 1000 r 1.0 3.1 pair.txt LJ
+
 
 
 variable 	sigma		equal 1.0
@@ -39,9 +39,9 @@ pair_coeff	3 3 0.0 0.0
 pair_coeff	2 3 0.0 0.0
 pair_coeff	1 2*3 0.0 0.0
 
-pair_modify 	shift yes
+#pair_modify 	shift yes
 
-
+pair_write      1 1 1000 r 1.0 3.1 pair.txt LJ
 balance 	1.05 shift z 10 1.05
 
 
