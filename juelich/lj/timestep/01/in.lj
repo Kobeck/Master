@@ -83,6 +83,9 @@ compute        bin1 solvent chunk/atom bin/1d z upper 1.0
 fix 		peclet solvent ave/chunk 1000 1 1000 bin1 density/number norm &
 		 none ave one file density.profile
 
+fix 		 temp solvent  ave/chunk 1000 1 1000 bin1 temp norm &
+		 none ave one file temp.profile
+
 fix 		2 solvent nve
 
 ## Thermostat

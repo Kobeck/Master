@@ -1,11 +1,12 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
-#SBATCH --nodes=128
-#SBATCH --ntasks=128
-#SBATCH --ntasks-per-node=1
+#SBATCH --nodes=3
+#SBATCH --ntasks=144
+#SBATCH --ntasks-per-node=48
 #SBATCH --time=10:00:00
 #SBATCH --partition=batch
 #SBATCH --array=0-5
+#SBATCH --job-name=01timest
 # *** start of job script ***
 # Note: The current working directory at this point is
 # the directory where sbatch was executed.
@@ -15,12 +16,10 @@ startTemp=0.5
 temp=$(bc <<< "$startTemp+0.1*${SLURM_ARRAY_TASK_ID}")
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" $tempstr
-dir=128_temp05_$j-${date}
+dir=${SLURM_NTASKS}_temp05_$j-${date}
 
 mkdir $dir
-cp in.rigid $dir/.
-cp data.* $dir/.
-cp job.sub $dir/.
+cp in.lj data.vac job_juwels.sub $dir/.
 cd $dir
 
-srun -n ${SLURM_JOB_NUM_NODES} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.rigid
+srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj

@@ -86,9 +86,6 @@ fix            lowWall all wall/lj93 zlo EDGE &
 
 velocity	all create ${temp} ${seed} loop geom
 
-dump 		2 all movie 100 movie_cubes.avi type type
-
-
 
 ############### Diagnostics and computes ###################
 compute        com cubes          rigid/local   1 mol x y z

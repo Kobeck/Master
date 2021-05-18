@@ -1,8 +1,8 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
-#SBATCH --nodes=128
-#SBATCH --ntasks=128
-#SBATCH --ntasks-per-node=1
+#SBATCH --nodes=3
+#SBATCH --ntasks=144
+#SBATCH --ntasks-per-node=48
 #SBATCH --time=10:00:00
 #SBATCH --partition=batch
 #SBATCH --array=0-5
