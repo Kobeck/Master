@@ -84,11 +84,11 @@ fix             bal all balance 1000 1.05 shift z 10 1.05
 
 ############### Diagnostics and computes ###################
 
-compute        com cube          rigid/local   1 mol x y z
-compute        quat cube         rigid/local   1 mol quatw quati quatj quatk
-compute 	cc2 cube chunk/atom molecule
+compute        com cubes          rigid/local   1 mol x y z
+compute        quat cubes         rigid/local   1 mol quatw quati quatj quatk
+compute 	cc2 cubes chunk/atom molecule
 
-compute 	msd cube msd/chunk cc2
+compute 	msd cubes msd/chunk cc2
 
 thermo          1000
 thermo_style    custom step temp epair evdwl etotal press pe ke vol
@@ -104,12 +104,12 @@ dump		image cubes image 10000 image.*.png type type
 dump_modify	2 pad 8
 
 dump            3 all movie 5000 movie.avi type type
-dump           com cube local 1000 dump.*.xyz c_com[*]
-dump           quat cube      local 1000 dump.*.quat c_quat[*]
+dump           com cubes local 1000 dump.*.xyz c_com[*]
+dump           quat cubes      local 1000 dump.*.quat c_quat[*]
 
 
 restart         500000 restart.dat
 timestep        0.0025
 timer           full
 
-run            1000
+run            1000000

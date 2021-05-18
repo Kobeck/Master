@@ -1,8 +1,8 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
 #SBATCH --job-name=equilibrate
-#SBATCH --nodes=1
-#SBATCH --ntasks=48
+#SBATCH --nodes=5
+#SBATCH --ntasks=240
 #SBATCH --ntasks-per-node=48
 #SBATCH --time=24:00:00
 #SBATCH --partition=batch
@@ -19,7 +19,7 @@ printf -v j "%02d" $tempstr
 dir=${SLURM_NTASKS}_temp05_$j-${date}
 
 mkdir $dir
-cp in.solvent data.vac data.cubes job* $dir/.
+cp restart.dat* data.512seed1 in.solvent data.vac data.cubes job* $dir/.
 cd $dir
 
-srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.rigid
+srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.solvent
