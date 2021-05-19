@@ -1,0 +1,53 @@
+# Simple rigid body system
+# needed variables: startTemp, temp
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p p
+pair_style	lj/cut/opt 2.5
+
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 160 0 160 0 320
+create_box 	3 box 
+
+create_atoms 	1 random 1000000 156465 box 
+
+mass		1 1.0
+mass		2 1.0
+mass		3 1.0
+
+group		solvent type 1
+
+velocity 	solvent create ${startTemp} 563435 loop geom
+
+neighbor 	0.4 bin
+
+pair_coeff	1 1 1.0 1.0
+pair_coeff	2 2 0.0 0.0
+pair_coeff	3 3 0.0 0.0
+pair_coeff	2 3 0.0 0.0
+pair_coeff	1 2*3 0.0 0.0
+
+pair_modify 	shift yes
+
+fix 		2 solvent nve/limit 0.1
+
+thermo 		1000
+thermo_style 	custom step temp epair evdwl etotal press pe ke vol
+
+dump 		2 all image 10000 image.*.png type type  
+dump 		3 all movie 1000 movie.avi type type
+
+timestep 	0.0025
+timer 		full
+
+
+run		10000
+
+write_data	data.write
+
