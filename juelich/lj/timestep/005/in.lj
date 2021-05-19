@@ -116,9 +116,12 @@ dump 		3 all movie 1000 movie.avi type type
 #dump		quat cube      local 1000 dump.*.quat c_quat[*]
 
 
-restart 	500000 restart.dat
+#restart 	500000 restart.dat
 timestep 	0.005
 timer 		full
 
 
 run		1000000
+
+write_restart	restart.005
+write_data 	data.lj

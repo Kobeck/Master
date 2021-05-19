@@ -9,7 +9,7 @@ pair_style      lj/cut/opt 2.5
 
 variable        sigma           equal 1.0
 variable        epsilon         equal 1.0
-read_restart	restart.dat.1000000
+read_data	data.lj_eqil
 
 group		solvent type 1
 

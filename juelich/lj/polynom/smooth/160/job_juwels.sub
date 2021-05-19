@@ -1,7 +1,8 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
-#SBATCH --nodes=2
-#SBATCH --ntasks=96
+#SBATCH --job-name=160polynom
+#SBATCH --nodes=4
+#SBATCH --ntasks=192
 #SBATCH --ntasks-per-node=48
 #SBATCH --time=10:00:00
 #SBATCH --partition=batch
@@ -18,9 +19,9 @@ printf -v j "%02d" $tempstr
 dir=${SLURM_NTASKS}_temp05_$j-${date}
 
 mkdir $dir
-cp in.rigid $dir/.
+cp in.lj $dir/.
 cp data.* $dir/.
 cp job.sub $dir/.
 cd $dir
 
-srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.rigid
+srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj
