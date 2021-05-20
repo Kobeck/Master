@@ -19,7 +19,7 @@ printf -v j "%02d" $tempstr
 dir=juelich_${SLURM_NTASKS}_temp05_$j-${date}
 
 mkdir $dir
-cp in.lj data* job_juwels.sub $dir/.
+cp in.rigid data* job_juwels.sub $dir/.
 cd $dir
 
-srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj
+srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.rigid
