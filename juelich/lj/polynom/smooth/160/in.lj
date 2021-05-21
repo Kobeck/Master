@@ -8,16 +8,17 @@ boundary	p p f
 pair_style	lj/smooth 2.5 3.0
 
 
-
 variable 	sigma		equal 1.0
 variable 	epsilon 	equal 1.0
 
 
 region		box block 0 160 0 160 0 160
 create_box 	3 box 
-lattice 	sc 1.0 
+lattice 	sc 1.5 
 
-create_atoms 	1 region box
+region		safe block 0 160 0 160 1 160
+
+create_atoms 	1 region safe
 
 mass		1 1.0
 mass		2 1.0
@@ -41,14 +42,14 @@ pair_coeff	1 2*3 0.0 0.0
 
 pair_modify 	shift yes
 
-pair_write      1 1 1000 r 1.0 3.1 pair.txt LJ
+
 balance 	1.05 shift z 10 1.05
 
 
 ####################### WALLS ###########################
 
 
-region	       low block  EDGE EDGE EDGE EDGE 0 2	 		
+region	       low block  EDGE EDGE EDGE EDGE EDGE 2	 		
 
 region 	       top block  EDGE EDGE EDGE EDGE 159 160 
 
@@ -83,10 +84,9 @@ compute        bin1 solvent chunk/atom bin/1d z upper 1.0
 
 fix 		peclet solvent ave/chunk 1000 1 1000 bin1 density/number norm &
 		 none ave one file density.profile
-
-fix 		 temp solvent ave/chunk 1000 1 1000 bin1 temp norm none ave one &
-		 file temp.profile
 		 
+#fix 		 temp solvent ave/chunk 1000 1 1000 bin1 temp norm none ave one file temp.profile
+
 fix 		2 solvent nve
 
 ## Thermostat
@@ -126,3 +126,6 @@ timer 		full
 
 
 run		1000000
+write_restart   restart_write.dat
+write_data	data.write
+
