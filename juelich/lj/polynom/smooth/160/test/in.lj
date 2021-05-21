@@ -1,0 +1,131 @@
+# Simple rigid body system
+# needed variables: startTemp, temp
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f
+pair_style	lj/smooth 2.5 3.0
+
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 80 0 80 0 80
+create_box 	3 box 
+lattice 	sc 1.0 
+
+region		safe block 0 80 0 80 2 80
+
+create_atoms 	1 region safe
+
+mass		1 1.0
+mass		2 1.0
+mass		3 1.0
+
+
+group		solvent type 1
+
+
+velocity 	solvent create ${startTemp} 563435 loop geom
+
+read_data	data.vac add append
+
+neighbor 	0.4 bin
+
+pair_coeff	1 1 1.0 1.0
+pair_coeff	2 2 0.0 0.0
+pair_coeff	3 3 0.0 0.0
+pair_coeff	2 3 0.0 0.0
+pair_coeff	1 2*3 0.0 0.0
+
+pair_modify 	shift yes
+
+
+balance 	1.05 shift z 10 1.05
+
+
+####################### WALLS ###########################
+
+
+region	       low block  EDGE EDGE EDGE EDGE EDGE 2	 		
+
+region 	       top block  EDGE EDGE EDGE EDGE 159 160 
+
+
+delete_atoms   region low
+
+delete_atoms   region top
+
+
+variable       epsilonWall equal 2*${epsilon}
+
+variable       cutoffTop   equal   0.7147*${sigma}
+
+variable       cutoffLow   equal   3*${sigma}
+
+
+fix            topWall all wall/lj93 zhi EDGE &
+               ${epsilonWall} ${sigma} ${cutoffTop} units box
+
+fix            lowWall all wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${cutoffLow} units box
+
+
+###################### COMPUTES ##########################
+
+compute        bin1 solvent chunk/atom bin/1d z upper 1.0
+
+
+
+######################	FIXES ############################
+
+
+fix 		peclet solvent ave/chunk 1000 1 1000 bin1 density/number norm &
+		 none ave one file density.profile
+		 
+#fix 		 temp solvent ave/chunk 1000 1 1000 bin1 temp norm none ave one file temp.profile
+
+fix 		2 solvent nve
+
+## Thermostat
+
+
+region		regthermo block EDGE EDGE EDGE EDGE 0 20
+
+group 		thermo dynamic solvent region regthermo every 1000
+
+fix 		3 thermo langevin ${startTemp} ${temp} 10 156453
+
+
+
+#### Load balancing
+
+
+fix 		bal all balance 1000 1.05 shift z 10 1.05 
+
+
+############### Diagnostics and computes ###################
+#compute 	com cube	  rigid/local	1 mol x y z
+#compute 	quat cube	  rigid/local	1 mol quatw quati quatj quatk
+
+thermo 		1000
+thermo_style 	custom step temp epair evdwl etotal press pe ke vol
+
+dump		1 all custom 100000 dump.lammpstrj id mol type x y z 
+dump 		2 all image 10000 image.*.png type type  
+dump 		3 all movie 1000 movie.avi type type
+#dump 		com cube local 1000 dump.*.xyz c_com[*]
+#dump		quat cube      local 1000 dump.*.quat c_quat[*]
+
+
+restart 	500000 restart.dat
+timestep 	0.0025
+timer 		full
+
+
+run		1000000
+write_restart   restart_write.dat
+write_data	data.write
+

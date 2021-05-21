@@ -1,0 +1,6 @@
+0;10;1c#LAMMPS data file for empty space
+0 atoms
+0 atom types
+0 80 xlo xhi
+0 80 ylo yhi
+0 160 zlo zhi
