@@ -1,0 +1,27 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=evapfast
+#SBATCH --nodes=5
+#SBATCH --ntasks=240
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=24:00:00
+#SBATCH --partition=batch
+#SBATCH --array=1-4
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+date=$(date +%d_%m-%H%M)
+evap=$(bc <<< "5*${SLURM_ARRAY_TASK_ID}")
+printf -v e "%02d" ${evap}
+startTemp=0.8
+temp=0.8
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" $tempstr
+dir=${SLURM_NTASKS}_evap${e}_temp$j-${date}_${SLURM_ARRAY_TASK_ID}
+
+mkdir $dir
+cp restart.dat* data.* in.mix job* $dir/.
+cd $dir
+
+srun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -v Nevap ${evap} -in in.mix
