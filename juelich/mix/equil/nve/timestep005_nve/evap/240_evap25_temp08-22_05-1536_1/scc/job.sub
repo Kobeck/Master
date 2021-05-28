@@ -1,0 +1,14 @@
+#!/bin/bash
+#$ -N evaptest
+#$ -pe mpi 256
+#$ -l ib
+#$ -l h_vmem=3G 
+#$ -q scc
+start="0.8"
+temp="0.8"
+evap="25"
+restart="restart.dat.3000000"
+
+module load lammps
+echo $start $temp $evap $restart
+mpirun -np ${NSLOTS} lmp -v Nevap ${evap} -v restart ${restart} -v startTemp ${start} -v temp ${temp} -in in.mix
