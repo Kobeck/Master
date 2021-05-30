@@ -13,7 +13,7 @@
 module load lammps 
 date=$(date +%d_%m-%H%M)
 seed=$RANDOM
-temp=100.0
+temp=50.0
 printf -v j "%02d" ${temp}
 
 dir=${NSLOTS}_temp${j}_seed${SGE_TASK_ID}_${date}
