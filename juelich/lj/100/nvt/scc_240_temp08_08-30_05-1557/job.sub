@@ -1,0 +1,23 @@
+#!/bin/bash
+#$ -N lj100
+#$ -pe mpi 240
+#$ -l h_vmem=2G
+#$ -q scc
+#$ -l ib
+#$ -t 1-5
+
+module load lammps
+
+date=$(date +%d_%m-%H%M)
+startTemp=0.8
+temp=$(bc <<< "0.5+0.1*${SGE_TASK_ID}")
+echo temp = ${temp}
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" ${tempstr}
+dir=scc_${NSLOTS}_temp08_$j-${date}
+
+mkdir $dir
+cp in.lj job.sub $dir/.
+cd $dir
+
+mpirun -np ${NSLOTS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj >> out

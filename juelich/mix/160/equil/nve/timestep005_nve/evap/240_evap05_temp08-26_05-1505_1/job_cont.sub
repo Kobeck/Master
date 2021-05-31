@@ -1,0 +1,20 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=25cont
+#SBATCH --nodes=5
+#SBATCH --ntasks=240
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=24:00:00
+#SBATCH --partition=batch
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+evap=25
+startTemp=0.8
+temp=0.8
+restart=restart.dat.3000000
+mkdir cont
+cp in.mix restart job_cont cont/
+cd cont
+
+srun -n ${SLURM_NTASKS} lmp -v restart ${restart} -v startTemp ${startTemp} -v temp ${temp} -v Nevap ${evap} -in in.mix
