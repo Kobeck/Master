@@ -1,6 +1,6 @@
 clear all; close all;
-size = 10;  % kantenlaenge
-radius = 0.5; % half diameter of lj balls
+size = 10;
+radius = 5; % half diameter of lj balls
 
 % Box size:
 % for 252 cubes a 6x6x7: x & y = 13.3, z = 15.14
@@ -12,7 +12,7 @@ shiftz= 7.57;
 % shifty= 7.14285;
 % shiftz= 6.5;
 
-step = radius*2; %balls touch 
+step = (radius*2)/size;
 
 len = length(-size/2:step:size/2);
 coords = zeros(len.^3,7);
@@ -46,8 +46,8 @@ coords(:,6) = coords(:,6) +shifty;
 coords(:,7) = coords(:,7) +shiftz;
 
 sqrt(x.^2+y.^2+z.^2)
-plot3(coords(:,5),coords(:,6),coords(:,7),'.', 'MarkerSize', 5)
-axis([0 13.3 0 13.3 0 15.14 ]);
+plot3(coords(:,5),coords(:,6),coords(:,7),'.', 'MarkerSize', radius)
+axis([0 14.2857 0 14.2857 0 13 ]);
 Mat=[coords(:,3), coords(:,5:7)];
 writematrix(Mat, 'coordsxyz.txt', "Delimiter", "\t");
 writematrix(coords, 'truncated.txt', "Delimiter", "\t");
