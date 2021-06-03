@@ -1,9 +1,9 @@
 clear all; close all;
 size = 10;
 radius = 5;
-shiftx= 7.14285;
-shifty= 7.14285;
-shiftz= 6.5;
+shiftx= 6.65;
+shifty= 6.65;
+shiftz= 7.57;
 step = (radius*2)/size;
 
 len = length(-size/2:step:size/2);
