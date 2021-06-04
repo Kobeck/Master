@@ -27,9 +27,9 @@ opts.LeadingDelimitersRule = "ignore";
 opts = setvaropts(opts, "Var5", "WhitespaceRule", "preserve");
 opts = setvaropts(opts, "Var5", "EmptyFieldRule", "auto");
 
-for iteration=0
+for iteration=8
     % Import the data
-    wd=strcat("32_temp05-1",num2str(iteration),"-15_05-1045");
+    wd="./";strcat("scc_240_temp08_0",num2str(iteration),"-30_05-0624");
     F=fullfile(wd,"density.profile");
     density = readtable(F, opts);
     disp(strcat("currently on file", wd,". iteration index", num2str(iteration)))
