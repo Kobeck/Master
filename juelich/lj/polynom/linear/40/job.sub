@@ -1,6 +1,6 @@
 #!/bin/bash
 # Name of the job
-#$ -N ljEqui1Smooth160
+#$ -N ljEqui1Smooth40
 #$ -pe mpi 16
 #$ -t 1-5
 #$ -q scc
@@ -12,7 +12,7 @@
 module load lammps
 
 date=$(date +%d_%m-%H%M)
-startTemp=1.0
+startTemp=0.5
 temp=$(bc <<< "0.5+0.1*${SGE_TASK_ID}") 
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" ${tempstr}

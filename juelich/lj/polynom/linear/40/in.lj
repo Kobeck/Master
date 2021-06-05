@@ -14,11 +14,7 @@ variable 	epsilon 	equal 1.0
 
 region		box block 0 40 0 40 0 80
 create_box 	3 box 
-lattice 	sc 1.0 
-
-region		create block EDGE EDGE EDGE EDGE 2 42
-
-create_atoms 	1 region create
+create_atoms 	1 random 60000 156453 box
 
 mass		1 1.0
 mass		2 1.0
@@ -121,7 +117,7 @@ dump 		3 all movie 1000 movie.avi type type
 
 
 restart 	500000 restart.dat
-timestep 	0.005
+timestep 	0.0025
 timer 		full
 
 
