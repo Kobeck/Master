@@ -80,7 +80,7 @@ fix            topWall all wall/lj93 zhi EDGE &
                ${epsilonWall} ${sigma} ${cutoffTop} units box
 
 fix            lowWall all wall/lj93 zlo EDGE &
-               ${epsilonWall} ${sigma} ${cutoffLow} units box
+               ${epsilonWall} ${sigma} ${cutoffTop} units box
 
 
 velocity	all create ${temp} ${seed} loop geom
@@ -112,6 +112,6 @@ restart         250000 restart.dat
 timestep        0.005
 timer           full
 
-run 		1000000
+run 		500000
 
 write_data      data.cubes

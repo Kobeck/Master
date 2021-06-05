@@ -26,6 +26,9 @@ out
 lmp_mpi
 data.lj*
 data.write
+juelich/copy
+Master/evap/*
+Master/old/*
 
 evap/rigid/old/truncated/equilibrateMix/cubes/64_512cubes_29_04-1312/data.cubes
 juelich/mix/data.lj_eqil

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Name of the job
-#$ -N ljEqui160
+#$ -N gcmcTest
 #$ -pe mpi 128
 #$ -t 1-10
 #$ -q scc 

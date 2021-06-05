@@ -13,11 +13,8 @@
 module load lammps 
 date=$(date +%d_%m-%H%M)
 seed=$RANDOM
-<<<<<<< HEAD
-temp=50.0
-=======
-temp=100.0
->>>>>>> af001b6... Rechnungen auf scc warten noch. Kontingent auf juelich komplett aufgebraucht. Aktueller Plan: kleineres System auf juelich rechnen fuer 30 mio schritte.
+temp=10.0
+
 printf -v j "%02d" ${temp}
 
 dir=${NSLOTS}_temp${j}_seed${SGE_TASK_ID}_${date}
