@@ -12,8 +12,7 @@ variable        epsilon         equal 1.0
 read_restart	restart.dat.3000000
 
 group		solvent type 1
-
-read_data	data490_seed1.cubes group cubes add append
+read_data	data490_500.cubes group cubes add append
 
 neighbor      0.4 bin
 neigh_modify  exclude molecule/intra cubes
@@ -22,7 +21,7 @@ neigh_modify  exclude molecule/intra cubes
 pair_modify   shift yes
 
 pair_coeff    1 1 1.0 1.0 #solvent
-pair_coeff    2 2 0.6 1.0 #np
+pair_coeff    2 2 0.6 1.0 0.7147 #np
 pair_coeff    3 3 0.0 0.0 0.0 #dummy
 pair_coeff    2 3 0.0 0.0 0.0 #np dummy
 pair_coeff    1 2 0.8 1.0 #np solvent
@@ -44,19 +43,21 @@ balance 	1.05 shift z 10 1.05
 
 variable       epsilonWall equal 2*${epsilon}
 
-variable       cutoffTop   equal   0.7147*${sigma}
+variable       repulsive   equal   0.7147*${sigma}
 
-variable       cutoffLow   equal   3*${sigma}
+variable       full	   equal   3*${sigma}
 
 region         lowWall block EDGE EDGE EDGE EDGE EDGE 2
 
 
 fix            topWall all wall/lj93 zhi EDGE &
-	       ${epsilonWall} ${sigma} ${cutoffTop} units box
+	       ${epsilonWall} ${sigma} ${repulsive} units box
 
-fix            lowWall all wall/lj93 zlo EDGE &
-               ${epsilonWall} ${sigma} ${cutoffLow} units box
+fix            lowSol solvent wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${full} units box
 
+fix 	       lowCub cubes wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${repulsive} units box
 
 
 
@@ -74,19 +75,18 @@ fix             peclet solvent ave/chunk 1000 1 1000 bin1 density/number norm &
 fix              temp solvent ave/chunk 1000 1 1000 bin1 temp norm &
                  none ave one file temp.profile
 
-fix             1 cubes rigid/nve/small molecule #temp 1.0 1.0 0.25
+fix             1 cubes rigid/nve/small molecule #temp ${temp} ${temp} 10
 
 fix             2 solvent nve
 
 
 ## Thermostat
 
-region          regthermo block EDGE EDGE EDGE EDGE 0 20
+region          regthermo block EDGE EDGE EDGE EDGE 0 10
 
 group           thermo dynamic solvent region regthermo every 1000
 
-fix             3 thermo langevin ${startTemp} ${temp} 0.1 156453
-
+fix             3 thermo langevin ${startTemp} ${temp} 10 156453
 
 
 
@@ -116,8 +116,8 @@ dump		image cubes image 10000 image_cubes.*.png type type
 dump_modify	image pad 8
 
 dump            3 all movie 5000 movie.avi type type
-dump           com cubes local 1000 dump.*.xyz c_com[*]
-dump           quat cubes      local 1000 dump.*.quat c_quat[*]
+dump           com cubes local 10000 dump.*.xyz c_com[*]
+dump           quat cubes      local 10000 dump.*.quat c_quat[*]
 
 
 restart         500000 restart.dat
