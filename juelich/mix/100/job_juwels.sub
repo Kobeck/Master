@@ -1,6 +1,6 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
-#SBATCH --job-name=equil100
+#SBATCH --job-name=commTest
 #SBATCH --nodes=5
 #SBATCH --ntasks=240
 #SBATCH --ntasks-per-node=48

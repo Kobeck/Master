@@ -15,7 +15,7 @@ group		solvent type 1
 read_data	data490_500.cubes group cubes add append
 
 neighbor      0.4 bin
-neigh_modify  exclude molecule/intra cubes
+neigh_modify  exclude molecule/intra cubes delay 0 every 1 check yes
 
 
 pair_modify   shift yes
@@ -24,13 +24,19 @@ pair_coeff    1 1 1.0 1.0 #solvent
 pair_coeff    2 2 0.6 1.0 0.7147 #np
 pair_coeff    3 3 0.0 0.0 0.0 #dummy
 pair_coeff    2 3 0.0 0.0 0.0 #np dummy
-pair_coeff    1 2 0.8 1.0 #np solvent
-pair_coeff    1 3 0.0 0.0 0.0 #dummy solvent
+pair_coeff    1 2 1.0 1.0 #np solvent
+pair_coeff    1 3 0.0 0.0 2.5 #dummy solvent
 
 
 # delete solvent where the cubes are 
 delete_atoms  overlap 1.0 solvent cubes
 
+pair_coeff    1 1 1.0 1.0 #solvent
+pair_coeff    2 2 0.6 1.0 0.7147 #np
+pair_coeff    3 3 0.0 0.0 0.0 #dummy
+pair_coeff    2 3 0.0 0.0 0.0 #np dummy
+pair_coeff    1 2 1.0 1.0 #np solvent
+pair_coeff    1 3 0.0 0.0 0.0 #dummy solvent
 
 
 comm_modify   mode multi cutoff/multi 1 2.5 cutoff/multi 2 2.5 cutoff/multi 3 6.95
@@ -42,20 +48,13 @@ balance 	1.05 shift z 10 1.05
 ####################### WALLS ###########################
 
 variable       epsilonWall equal 2*${epsilon}
-
 variable       repulsive   equal   0.7147*${sigma}
-
 variable       full	   equal   3*${sigma}
-
-region         lowWall block EDGE EDGE EDGE EDGE EDGE 2
-
 
 fix            topWall all wall/lj93 zhi EDGE &
 	       ${epsilonWall} ${sigma} ${repulsive} units box
-
 fix            lowSol solvent wall/lj93 zlo EDGE &
                ${epsilonWall} ${sigma} ${full} units box
-
 fix 	       lowCub cubes wall/lj93 zlo EDGE &
                ${epsilonWall} ${sigma} ${repulsive} units box
 
@@ -64,6 +63,10 @@ fix 	       lowCub cubes wall/lj93 zlo EDGE &
 ###################### COMPUTES ##########################
 
 compute        bin1 solvent chunk/atom bin/1d z upper 1.0
+compute        com cubes          rigid/local   1 mol x y z
+compute        quat cubes         rigid/local   1 mol quatw quati quatj quatk
+compute        cc2 cubes chunk/atom molecule
+compute        msd cubes msd/chunk cc2
 
 
 ######################  FIXES ############################
@@ -79,7 +82,6 @@ fix             1 cubes rigid/nve/small molecule #temp ${temp} ${temp} 10
 
 fix             2 solvent nve
 
-
 ## Thermostat
 
 region          regthermo block EDGE EDGE EDGE EDGE 0 10
@@ -88,19 +90,14 @@ group           thermo dynamic solvent region regthermo every 1000
 
 fix             3 thermo langevin ${startTemp} ${temp} 10 156453
 
-
-
 #### Load balancing
 
 fix             bal all balance 1000 1.05 shift z 10 1.05
 
-############### Diagnostics and computes ###################
+############### Diagnostics  ###################
 
-compute        com cubes          rigid/local   1 mol x y z
-compute        quat cubes         rigid/local   1 mol quatw quati quatj quatk
-compute 	cc2 cubes chunk/atom molecule
-
-compute 	msd cubes msd/chunk cc2
+fix 		msd cubes ave/time 1000 1 1000 c_msd[*] file dump.msd ave one
+fix 		msd2 cubes ave/time 10 100 1000 c_msd[*] file dump.msd2 ave one
 
 thermo          1000
 thermo_style    custom step temp epair evdwl etotal press pe ke atoms
