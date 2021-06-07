@@ -6,7 +6,7 @@ bin=A(index,2);
 nsteps=length(A)/(bin+1);
 data=zeros(nsteps,bin);
 
-for i=1:100:nsteps-1
+for i=1:10:nsteps-1
     data(i,:)=A( (i-1)*(bin+1)+2 :i*(bin+1),3);
     I=imread(strcat('image.',num2str((i-1)*100),'.png'));
     subplot(121), P=plot(data(i,:));

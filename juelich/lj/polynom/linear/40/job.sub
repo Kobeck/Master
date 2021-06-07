@@ -1,8 +1,8 @@
 #!/bin/bash
 # Name of the job
-#$ -N ljEqui1Smooth40
+#$ -N linear40
 #$ -pe mpi 16
-#$ -t 1-5
+#$ -t 1-2
 #$ -q scc
 ##$ -m eba
 ##$ -M konstantin.beck@uni.kn
@@ -16,10 +16,10 @@ startTemp=0.5
 temp=$(bc <<< "0.5+0.1*${SGE_TASK_ID}") 
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" ${tempstr}
-dir=juelich_${SLURM_NTASKS}_temp10_$j-${date}
+dir=scc_${NSLOTS}_temp10_$j-${date}
 
 mkdir $dir
 cp in.lj job_juwels.sub $dir/.
 cd $dir
 
-mpirun -n ${SLURM_NTASKS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj >> out
+mpirun -n ${NSLOTS} lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj >> out

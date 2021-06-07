@@ -118,7 +118,7 @@ dump_modify     2 pad 8
 dump		image cubes image 10000 image_cubes.*.png type type
 dump_modify	image pad 8
 dump            3 all movie 5000 movie.avi type type
-
+dump		4 cubes movie 5000 movie_cubes.avi type type
 
 
 thermo          1000
