@@ -79,17 +79,7 @@ fix              temp solvent ave/chunk 10000 1 10000 bin1 temp norm &
 
 fix             1 cubes rigid/nve/small molecule #temp ${temp} ${temp} 10
 
-fix             2 solvent nve
-
-
-## Thermostat
-
-region          regthermo block EDGE EDGE EDGE EDGE 0 10
-
-group           thermo dynamic solvent region regthermo every 1000
-
-fix             3 thermo langevin ${startTemp} ${temp} 10 156453
-
+fix             2 solvent nvt temp ${temp} ${temp} 10
 
 #### Load balancing
 
@@ -128,4 +118,17 @@ restart         1000000 restart.dat
 timestep        0.005
 timer           full
 
-run            10000000
+#equilibration run with nvt on
+run            2000000
+
+#real run at target temp with nve+langevin
+unfix 	       2
+fix 	       2 solvent nve 
+
+## Thermostat
+region          regthermo block EDGE EDGE EDGE EDGE 0 10
+group           thermo dynamic solvent region regthermo every 1000
+fix             3 thermo langevin ${temp} ${temp} 10 156453
+
+run 		2000000
+
