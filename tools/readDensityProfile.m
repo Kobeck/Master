@@ -29,7 +29,7 @@ opts = setvaropts(opts, "Var5", "EmptyFieldRule", "auto");
 
 for iteration=8
     % Import the data
-    wd="./";strcat("scc_240_temp08_0",num2str(iteration),"-30_05-0624");
+    wd="./"; %strcat("scc_240_temp08_0",num2str(iteration),"-30_05-0624");
     F=fullfile(wd,"temp.profile");
     density = readtable(F, opts);
     disp(strcat("currently on file", wd,". iteration index", num2str(iteration)))
@@ -44,7 +44,7 @@ for iteration=8
     nsteps=length(A)/(bin+1);
     data=zeros(nsteps,bin);
 
-    for i=1:1:nsteps-1
+    for i=1:nsteps-1
         data(i,:)=A( (i-1)*(bin+1)+2 :i*(bin+1),3);
         %I=imread(strcat('image.',num2str((i-1)*100),'.png'));
         plot(data(i,:));
