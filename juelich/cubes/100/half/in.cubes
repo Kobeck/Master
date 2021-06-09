@@ -11,7 +11,7 @@ region 		box block 0 100 0 100 0 133
 
 read_data       data.rigid
 
-replicate       5 5 10			# 490 cubes
+replicate       5 5 10			# 250 cubes
 
 group           cubes type 2 3
 
