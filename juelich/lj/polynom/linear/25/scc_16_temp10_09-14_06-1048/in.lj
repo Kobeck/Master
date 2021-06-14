@@ -1,5 +1,5 @@
 # Simple rigid body system
-0;115;0c# needed variables: startTemp, temp
+# needed variables: startTemp, temp
 
 units		lj
 atom_style	full
@@ -21,6 +21,7 @@ create_atoms 	1 region fluid
 
 lattice 	sc 0.045
 region 		gas block EDGE EDGE EDGE EDGE 41 79
+create_atoms    1 region gas
 
 mass		1 1.0
 mass		2 1.0
