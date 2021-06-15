@@ -1,6 +1,8 @@
 # Simple rigid body system
 # needed variables:
 
+#variable	startTemp equal 0.5
+#variable 	temp 	  equal 0.8
 
 units		lj
 atom_style	full
@@ -16,21 +18,22 @@ region		box block 0 100 0 100 0 200
 create_box 	3 box
 
 
-lattice 	sc 0.66   # fluid phase 
-region		fluid block EDGE EDGE EDGE EDGE 2 82
+
+lattice 	sc 0.66 
+region		fluid block EDGE EDGE EDGE EDGE 2 130 units box
 create_atoms 	1 region fluid
 
-lattice 	sc 0.045    # gas phase
-region		gas   block EDGE EDGE EDGE EDGE 83 158
-create_atoms	1 region gas
+lattice 	sc 0.045
+region		gas block EDGE EDGE EDGE EDGE 131 198 units box
+create_atoms    1 region gas
 
+group		solvent type 1
 
 mass		1 1.0
 mass		2 1.0
 mass		3 1.0
 
-group		solvent type 1
-velocity 	solvent create ${startTemp} 563435 loop geom
+
 
 neighbor 	0.4 bin
 
@@ -42,6 +45,9 @@ pair_coeff	1 2*3 0.0 0.0
 
 pair_modify 	shift yes
 
+delete_atoms	overlap 0.5 solvent solvent
+
+velocity 	solvent create ${startTemp} 563435 loop geom
 
 balance 	1.05 shift z 10 1.05
 

@@ -1,16 +1,16 @@
 #!/bin/bash
 #$ -N lj100
-#$ -pe mpi 240
+#$ -pe mpi 48
 #$ -l h_vmem=2G
 #$ -q scc
 #$ -l ib
-##$ -t 1-5
+#$ -t 1-5
 
 module load lammps
 
 date=$(date +%d_%m-%H%M)
 startTemp=1.0
-temp=1.0 #$(bc <<< "0.5+0.1*${SGE_TASK_ID}")
+temp=$(bc <<< "0.5+0.1*${SGE_TASK_ID}")
 echo temp = ${temp}
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" ${tempstr}
