@@ -1,0 +1,10 @@
+MODULEPATH = /software/modules-15.1/bio:/software/modules-15.1/chem:/software/modules-15.1/cluster:/software/modules-15.1/compiler:/software/modules-15.1/devel:/software/modules-15.1/lib:/software/modules-15.1/numlib:/software/modules-15.1/math:/software/modules-15.1/phys:/software/modules-15.1/sge:/software/modules-15.1/sys:/software/modules-15.1/vis
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+# Simple rigid body system
+# needed variables: startTemp, temp
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f

@@ -1,0 +1,36 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (50.000000 50.000000 50.000000)
+  4 by 4 by 1 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.025 seconds
+Replicating atoms ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (9950.0000 9950.0000 50.000000)
+  4 by 4 by 1 MPI processor grid
+  10000 atoms
+  replicate CPU = 0.008 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 230 230 3
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/2d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.0005
+Per MPI rank memory allocation (min/avg/max) = 10.89 | 10.89 | 10.89 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0     41415.37            0     41415.37 0.0004141537          300 
+  100000    46488.433    21330.774    67819.207  -0.15881952    336.74768 
+ERROR: Non-numeric pressure - simulation unstable (src/fix_nh.cpp:1062)
+Last command: run          ${steps}

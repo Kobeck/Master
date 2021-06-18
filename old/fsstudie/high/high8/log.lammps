@@ -1,0 +1,182 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+# 3d rounded cubes
+
+#variable    r     index 10
+variable    steps index 10000000
+variable    shot  index 100000
+
+
+units       nano
+dimension   3
+newton 	    on
+boundary    p p p
+atom_style  body rounded/polyhedron 1 10
+
+read_data   data.cubes
+Reading data file ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (100.00000 100.00000 100.00000)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.003 seconds
+
+replicate   $r $r $r
+replicate   8 $r $r
+replicate   8 8 $r
+replicate   8 8 8
+Replicating atoms ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (1500.0000 1500.0000 1500.0000)
+  1 by 1 by 2 MPI processor grid
+  512 atoms
+  replicate CPU = 0.001 seconds
+
+
+velocity    all create 300 156154 dist gaussian mom yes rot yes
+
+
+variable cut_inner  equal 2.6
+variable k_n        equal 100
+variable k_na       equal -20
+variable c_n        equal 1.0
+variable c_t        equal 1.0
+variable mu         equal 1.0
+variable A_ua       equal 1.0
+
+variable epsilon    equal 0.5
+variable sigma      equal 3
+variable cut_mie     equal 150.0
+variable scale      equal 1.01
+variable gammaA     equal 10
+variable gammaR     equal 1
+
+
+#pair_style hybrid/overlay body/rounded/polyhedron ${c_n} ${c_t} ${mu} ${A_ua} ${cut_inner}                           mie/cut ${cut_mie}
+#pair_coeff 1 1 body/rounded/polyhedron ${k_n} ${k_na}
+	    #pair_coeff 1 1 mie/cut ${epsilon} ${sigma} ${gammaR} ${gammaA}
+pair_style body/rounded/polyhedron ${c_n} ${c_t} ${mu} ${A_ua} ${cut_inner}
+pair_style body/rounded/polyhedron 1 ${c_t} ${mu} ${A_ua} ${cut_inner}
+pair_style body/rounded/polyhedron 1 1 ${mu} ${A_ua} ${cut_inner}
+pair_style body/rounded/polyhedron 1 1 1 ${A_ua} ${cut_inner}
+pair_style body/rounded/polyhedron 1 1 1 1 ${cut_inner}
+pair_style body/rounded/polyhedron 1 1 1 1 2.6
+	   pair_coeff * * ${k_n} ${k_na}
+	   pair_coeff * * 100 ${k_na}
+	   pair_coeff * * 100 -20
+
+
+comm_modify vel yes     #communication
+
+neighbor     0.5 bin
+neigh_modify every 1 delay 0 check yes
+
+timestep     0.001
+
+
+
+
+#fix          1 all nve/body
+#fix          1 all nvt/body temp 300.0 300.0 0.1
+fix	      1 all npt/body temp 300 300 0.1 iso 0.0001 0.1 1.0
+#fix	        2 all adapt 2000 pair mie/cut epsilon 1 1 v_scale scale yes reset no
+
+
+
+compute      quat all property/atom quatw quati quatj quatk
+compute      com all com
+compute       t	 all temp
+compute       p	 all pressure 1_temp
+compute      pos all body/local id 1 2 3
+
+
+
+
+
+dump 	      quaternions all custom ${shot} dump_quat.*.ascii c_quat[1] c_quat[2] c_quat[3] c_quat[4]
+dump 	      quaternions all custom 100000 dump_quat.*.ascii c_quat[1] c_quat[2] c_quat[3] c_quat[4]
+dump_modify  quaternions pad 8
+#dump         movie all movie 100 movie.avi type type              zoom 2.0 adiam 10.0 body type 0 0 view 0 0              axes no 1.0 0.01 box yes 0.01 size 1920 1080
+#dump         image1 all image ${shot} image1.*.png type type              zoom 2.0 body type 0 0 adiam 1.0              view 60 15 size 1920 1080 box no 1.0
+#dump_modify image1 backcolor white
+dump         image2 all image ${shot} image2.*.png type type              zoom 3.0 body type 0 0 adiam 1.0              view 60 15 size 1920 1080 box no 1.0
+dump         image2 all image 100000 image2.*.png type type              zoom 3.0 body type 0 0 adiam 1.0              view 60 15 size 1920 1080 box no 1.0
+dump_modify  image2 backcolor white
+dump 	     pos2 all xyz ${shot} dump.xyz
+dump 	     pos2 all xyz 100000 dump.xyz
+
+
+thermo_style custom step ke pe etotal c_p c_t
+
+
+thermo       ${shot}
+thermo       100000
+run          ${steps}
+run          10000000
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 37 37 37
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 9.525 | 9.525 | 9.525 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0    3174.8056            0    3174.8056 5.1673268e-07          300 
+  100000   0.12434303   -95236.792   -95236.668  0.001107489  0.011749668 
+  200000    266.66327   -49743.724   -49477.061 0.0032621256    25.198072 
+  300000    239.28822   -2042.3418   -1803.0536 0.00051034412    22.611295 
+  400000    196.16786   -60383.062   -60186.894 0.0030460054    18.536681 
+  500000    15.181728   -129770.99   -129755.81 0.0046848614    1.4345818 
+  600000    14.332206   -155410.55   -155396.22 0.0052266072    1.3543071 
+  700000    24.818241   -195402.32    -195377.5 0.0092834252    2.3451743 
+  800000    11.513175   -211882.54   -211871.02 0.0079832706    1.0879256 
+  900000    166.94986    -179545.7   -179378.75 0.0079999653    15.775755 
+ 1000000    48.934981   -236542.17   -236493.24  0.010623949    4.6240608 
+ 1100000    352.06295   -54558.757   -54206.694 0.0060177544    33.267827 
+ 1200000    22.885106   -225143.93   -225121.04  0.012391174    2.1625047 
+ 1300000     2760.209   -189018.72   -186258.51  0.010177755    260.82312 
+ 1400000    1633.9376   -175516.94      -173883 0.0068304237    154.39726 
+ 1500000    61.149478   -292595.99   -292534.85  0.017411269    5.7782572 
+ 1600000    92.471485   -321818.15   -321725.68  0.017284519    8.7379982 
+ 1700000    25.839448   -309667.09   -309641.25   0.01681721    2.4416721 
+ 1800000    22.163244    -314966.4   -314944.23  0.017818256     2.094293 
+ 1900000    263.74375   -208930.11   -208666.37  0.013497711    24.922195 
+ 2000000    3.9107188   -335658.14   -335654.23  0.019958525   0.36953937 
+ 2100000     63.34425   -330862.43   -330799.09  0.019498258      5.98565 
+ 2200000    267.70999   -192922.22   -192654.51  0.012519162    25.296981 
+ 2300000      79.2969   -228973.78   -228894.48  0.015335347    7.4930793 
+ 2400000    30.952992   -343028.76    -342997.8  0.022314135    2.9248712 
+ 2500000    99.269515    -346246.1   -346146.83  0.022855712    9.3803711 
+ 2600000    201.79781   -354775.66   -354573.86  0.036116927    19.068677 
+ 2700000    112.80345   -355935.96   -355823.16  0.023326745    10.659246 
+ 2800000    157.50636   -353267.01    -353109.5  0.026619483    14.883402 
+ 2900000    61.875967    -366529.2   -366467.32   0.03110201     5.846906 
+ 3000000    11.953646   -370172.82   -370160.87  0.029195443    1.1295475 
+ 3100000    22.607319   -378064.58   -378041.98   0.03089635    2.1362554 
+ 3200000    190.41561   -342132.56   -341942.15  0.026246039    17.993128 
+ 3300000    10.588799   -374758.58   -374747.99  0.030349654    1.0005777 
+ 3400000    805.85459   -349195.16    -348389.3  0.026717404    76.148404 
+ 3500000    14.519901   -280396.68   -280382.16  0.021512011    1.3720431 
+ 3600000    20.862813    -380053.3   -380032.44  0.033520962    1.9714101 
+ 3700000     20.04863   -383823.48   -383803.43  0.036141684    1.8944748 
+ 3800000    21.870114   -350687.05   -350665.18  0.028183533     2.066594 
+ 3900000    25.362374   -365652.42   -365627.06  0.030081732    2.3965915 
+ 4000000    235.33897   -291815.89   -291580.55  0.022024487    22.238114 
+ 4100000    517.24786   -372874.09   -372356.84  0.034308228    48.876806 
+ 4200000    3.9987833   -380704.67   -380700.67  0.036612511   0.37786092 
+ 4300000    839.50823   -389428.62   -388589.11  0.084069413     79.32847 
+ 4400000    3.0235449   -382340.71   -382337.69  0.040779918   0.28570678 
+ 4500000    84.378588   -352044.17   -351959.79  0.030250801    7.9732682 
+ 4600000    197.21814   -371886.14   -371688.92  0.055283577    18.635926 
+ 4700000    18.674119   -388810.62   -388791.94  0.048822784    1.7645918 
+ 4800000    19.872219   -375651.87      -375632  0.040031955     1.877805 
+ 4900000    1318.5501   -329365.37   -328046.82  0.031017037    124.59504 
+ 5000000    3180.4285   -233383.92   -230203.49  0.020781459    300.53133 
+ 5100000    1342.1265   -339378.94   -338036.82  0.057596255    126.82287 
+ 5200000     1157.883   -192333.79  

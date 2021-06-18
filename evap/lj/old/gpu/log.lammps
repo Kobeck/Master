@@ -1,0 +1,4 @@
+LAMMPS (3 Mar 2020)
+KOKKOS mode is enabled (src/KOKKOS/kokkos.cpp:85)
+ERROR: GPUs are requested but Kokkos has not been compiled for CUDA (src/KOKKOS/kokkos.cpp:104)
+Last command: (unknown)

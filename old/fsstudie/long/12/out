@@ -1,0 +1,40 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (100.00000 100.00000 100.00000)
+  2 by 4 by 4 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 75.838 seconds
+Replicating atoms ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (2300.0000 2300.0000 2300.0000)
+  2 by 4 by 4 MPI processor grid
+  1728 atoms
+  replicate CPU = 0.509 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 56 56 56
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 9.270 | 9.273 | 9.276 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0    10729.725            0    10729.725 5.1744428e-07          300 
+ 1000000    8262.9852    227852.11    236115.09 0.0014255901    231.03068 
+ 2000000    1920.2509    317965.39    319885.64   0.00946421    53.689661 
+ 3000000    4403.3821    489942.27    494345.65 -0.0060204077    123.11729 
+ 4000000    2925.6373    618603.08    621528.72 0.0013562043    81.799973 
+ 5000000    2659.9084    712175.57    714835.48  0.004982223    74.370271 
+ 6000000      4980.93    807477.66    812458.59 -0.00033244622    139.26536 
+ 7000000    8902.9504    829855.19    838758.14  0.036774313    248.92392 

@@ -1,0 +1,13 @@
+LAMMPS (3 Mar 2020)
+  using 1 OpenMP thread(s) per MPI task
+# Simple rigid body system
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p p
+pair_style	lj/cut 4.4
+
+region		box block 0 40 0 40 0 40
+create_box 	3 box
+Created orthogonal box = (0 0 0) to (40 40 40)

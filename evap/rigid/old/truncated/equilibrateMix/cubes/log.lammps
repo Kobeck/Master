@@ -1,0 +1,116 @@
+LAMMPS (3 Mar 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+units           lj
+atom_style      full
+atom_modify     map array first cubes
+dimension       3
+boundary        p p f
+
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+
+read_data       data.rigid
+  orthogonal box = (0 0 0) to (20 20 20)
+  2 by 2 by 2 MPI processor grid
+  reading atoms ...
+  1143 atoms
+  0 = max # of 1-2 neighbors
+  0 = max # of 1-3 neighbors
+  0 = max # of 1-4 neighbors
+  1 = max # of special neighbors
+  special bonds CPU = 0.000597089 secs
+  read_data CPU = 0.00682065 secs
+replicate       4 4 4
+WARNING: Replicating in a non-periodic dimension (src/replicate.cpp:72)
+  orthogonal box = (0 0 0) to (80 80 80)
+  2 by 2 by 2 MPI processor grid
+  73152 atoms
+  0 = max # of 1-2 neighbors
+  0 = max # of 1-3 neighbors
+  0 = max # of 1-4 neighbors
+  1 = max # of special neighbors
+  special bonds CPU = 0.00239569 secs
+  replicate CPU = 0.00827483 secs
+group           cubes type 2 3
+73152 atoms in group cubes
+
+velocity        cubes create 1.0 45345 loop geom
+
+pair_style      soft 1.12
+pair_coeff      1 1 0.0 0.0
+pair_coeff      2 2 0.0
+pair_coeff      3 3 0.0
+pair_coeff      1 3 0.0 0.0
+pair_coeff      2 3 0.0
+pair_coeff      1 2 0.0 0.0
+
+variable        prefactor equal ramp(0,60)
+fix             soft all adapt 1 pair soft a * * v_prefactor
+
+neighbor        0.3 bin
+neigh_modify    delay 0 every 1 check yes
+
+
+#fix             1     cubes rigid molecule
+
+dump 		1 all movie 100 movie.avi type type
+
+compute         tbig all temp
+thermo_modify   temp tbig
+
+thermo          100
+run             1000
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.42
+  ghost atom cutoff = 1.42
+  binsize = 0.71, bins = 113 113 113
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair soft, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 7.597 | 7.597 | 7.597 Mbytes
+Step Temp E_pair E_mol TotEng Press 
+       0            1            0            0    1.4999795   0.14287305 
+     100            1   0.90670399            0    2.4066835    0.8557614 
+     200            1     1.813408            0    3.3133875    1.5686497 
+     300            1     2.720112            0    4.2200915    2.2815381 
+     400            1    3.6268159            0    5.1267954    2.9944264 
+     500            1    4.5335199            0    6.0334994    3.7073148 
+     600            1    5.4402239            0    6.9402034    4.4202031 
+     700            1    6.3469279            0    7.8469074    5.1330915 
+     800            1    7.2536319            0    8.7536114    5.8459798 
+     900            1    8.1603359            0    9.6603154    6.5588682 
+    1000            1    9.0670399            0    10.567019    7.2717565 
+Loop time of 2.05506 on 8 procs for 1000 steps with 73152 atoms
+
+Performance: 210212.601 tau/day, 486.603 timesteps/s
+98.7% CPU use with 8 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.99755    | 1.3981     | 1.5676     |  13.4 | 68.03
+Bond    | 0.00011573 | 0.0001561  | 0.00018253 |   0.0 |  0.01
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00047627 | 0.0007251  | 0.00087426 |   0.0 |  0.04
+Output  | 0.3427     | 0.34586    | 0.35214    |   0.4 | 16.83
+Modify  | 0.003015   | 0.0037808  | 0.0050472  |   0.9 |  0.18
+Other   |            | 0.3065     |            |       | 14.91
+
+Nlocal:    9144 ave 9144 max 9144 min
+Histogram: 8 0 0 0 0 0 0 0 0 0
+Nghost:    0 ave 0 max 0 min
+Histogram: 8 0 0 0 0 0 0 0 0 0
+Neighs:    70416 ave 70416 max 70416 min
+Histogram: 8 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 563328
+Ave neighs/atom = 7.70079
+Ave special neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0

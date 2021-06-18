@@ -1,0 +1,20 @@
+LAMMPS (3 Mar 2020)
+  using 1 OpenMP thread(s) per MPI task
+  orthogonal box = (0 0 0) to (2 2 2)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.0438593 secs
+WARNING: Replicating in a non-periodic dimension (src/replicate.cpp:72)
+  orthogonal box = (0 0 0) to (40 40 40)
+  1 by 1 by 2 MPI processor grid
+  8000 atoms
+  replicate CPU = 0.00551674 secs
+Deleted 1000 atoms, new total = 7000
+  orthogonal box = (0 0 0) to (40 40 40)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  1 atoms
+ERROR: Inconsistent 'bodies' header value and number of atoms with enabled body flags (src/atom.cpp:776)
+Last command: read_data   	data.cubes 	group	cubes	add append

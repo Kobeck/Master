@@ -1,0 +1,56 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (50.000000 50.000000 50.000000)
+  4 by 4 by 1 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.044 seconds
+Replicating atoms ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (9950.0000 9950.0000 50.000000)
+  4 by 4 by 1 MPI processor grid
+  10000 atoms
+  replicate CPU = 0.008 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 230 230 3
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/2d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.0005
+Per MPI rank memory allocation (min/avg/max) = 12.23 | 12.23 | 12.23 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0     41415.37            0     41415.37 0.0004141537          300 
+   10000    61743.395            0    61743.395 0.00059846456    447.24986 
+   20000    71332.155    256.45268    71588.608 0.00074368942    516.70784 
+   30000    29341.833    1079.8643    30421.698 0.00070643348    212.54307 
+   40000    27897.222    359.72526    28256.947 0.00091417251    202.07876 
+   50000    68228.571     1698.683    69927.254 0.00044318928    494.22645 
+   60000    42912.954    2920.5905    45833.544 0.0022768014    310.84803 
+   70000    24123.128    305.11951    24428.248 0.00092214556     174.7404 
+   80000    3463.8035    1985.6346    5449.4381 0.0013819371     25.09071 
+   90000    12016.973    2560.3822    14577.355 0.0021004195    87.047196 
+  100000    20119.548    3493.8731    23613.421 0.0042504959    145.73972 
+  110000    18494.835    4502.3804    22997.216 -0.00031305766    133.97081 
+  120000    18899.654    1947.9791    20847.634  -0.13346435    136.90319 
+  130000    22522.939    2326.3852    24849.324  0.026950997    163.14913 
+  140000    433318.58    8561.9517    441880.53  0.013452418    3138.8244 
+  150000    313271.41    41349.228    354620.64 -0.024362822    2269.2402 
+  160000    7697.8502     11540.68     19238.53  -0.06326718    55.760821 
+  170000    313476.98    12147.586    325624.57 -0.0032930492    2270.7293 
+  180000    879.33172    13827.234    14706.566 0.0068670344    6.3696042 
+  190000    411149.58    9825.2863    420974.87  0.027594946    2978.2391 
+  200000    353252.13    11563.495    364815.62 -0.049302272     2558.848 
+  210000    66741.348    13664.328    80405.676 0.00090827041    483.45347 
+ERROR: Non-numeric pressure - simulation unstable (src/fix_nh.cpp:1062)
+Last command: run          ${steps}

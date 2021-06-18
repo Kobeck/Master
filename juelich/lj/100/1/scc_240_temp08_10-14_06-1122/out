@@ -1,0 +1,42 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (100.00000 100.00000 200.00000)
+  4 by 5 by 12 MPI processor grid
+Lattice spacing in x,y,z = 1.1485556 1.1485556 1.1485556
+Created 627264 atoms
+  create_atoms CPU = 0.476 seconds
+Lattice spacing in x,y,z = 2.8114422 2.8114422 2.8114422
+Created 0 atoms
+  create_atoms CPU = 0.011 seconds
+627264 atoms in group solvent
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 2.9
+  binsize = 1.45, bins = 69 69 138
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+ rebalancing time: 0.595 seconds
+  iteration count = 7
+  initial/final maximal load/proc = 5940.0000 3168.0000
+  initial/final imbalance factor  = 2.2727273 1.2121212
+  x cuts: 0.0000000 0.25 0.5 0.75 1.0000000
+  y cuts: 0.0000000 0.2 0.4 0.6 0.8 1.0000000
+  z cuts: 0.0000000 0.046223958 0.086588542 0.12630208 0.16145833 0.19986979 0.2421875 0.28385417 0.31835938 0.35611979 0.39973958 0.43619792 1.0000000
+dynamic group thermo defined
+New timer settings: style=full  mode=nosync  timeout=off
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 0.005
+Per MPI rank memory allocation (min/avg/max) = 10.80 | 14.40 | 17.81 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Atoms 
+       0            1 2.5826247e+12 2.5826247e+12 2.5826247e+12 3.2399753e+12 2.5826247e+12    1.4999976   627264 
+ERROR: Lost atoms: original 627264 current 599076 (src/thermo.cpp:427)
+Last command: run		3000000

@@ -1,0 +1,151 @@
+LAMMPS (3 Mar 2020)
+  using 1 OpenMP thread(s) per MPI task
+# Simple rigid body system
+
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f
+pair_style	lj/cut/opt 4.4
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 40 0 40 0 40
+create_box 	1 box
+Created orthogonal box = (0 0 0) to (40 40 40)
+  4 by 4 by 4 MPI processor grid
+lattice 	sc 1.0
+Lattice spacing in x,y,z = 1 1 1
+
+create_atoms 	1 region box
+Created 64000 atoms
+  create_atoms CPU = 0.0204875 secs
+
+mass		1 1.0
+group		solvent type 1
+64000 atoms in group solvent
+velocity 	solvent create 1.0 563435 loop geom
+
+replicate 	2 2 2
+Replicating atoms ...
+WARNING: Replicating in a non-periodic dimension (src/replicate.cpp:72)
+  orthogonal box = (0 0 0) to (80 80 80)
+  4 by 4 by 4 MPI processor grid
+  512000 atoms
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:   0          0          0         
+  special bond factors coul: 0          0          0         
+  0 = max # of 1-2 neighbors
+  0 = max # of 1-3 neighbors
+  0 = max # of 1-4 neighbors
+  1 = max # of special neighbors
+  special bonds CPU = 0.329388 secs
+  replicate CPU = 1.57965 secs
+read_data	data.vac add append
+Reading data file ...
+  orthogonal box = (0 0 0) to (80 80 160)
+  2 by 4 by 8 MPI processor grid
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:   0          0          0         
+  special bond factors coul: 0          0          0         
+  0 = max # of 1-2 neighbors
+  0 = max # of 1-3 neighbors
+  0 = max # of 1-4 neighbors
+  1 = max # of special neighbors
+  special bonds CPU = 0.0507668 secs
+  read_data CPU = 0.0809713 secs
+
+neighbor 	0.4 bin
+pair_coeff	1 1 1.0 1.0
+pair_modify 	shift yes
+
+balance 	1.05 shift z 10 1.05
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.8
+  ghost atom cutoff = 4.8
+  binsize = 2.4, bins = 34 34 67
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+  rebalancing time: 0.233967 seconds
+  iteration count = 5
+  initial/final max load/proc = 16000 9600
+  initial/final imbalance factor = 2 1.2
+  x cuts: 0 0.5 1
+  y cuts: 0 0.25 0.5 0.75 1
+  z cuts: 0 0.0625 0.128906 0.1875 0.257812 0.308594 0.386719 0.4375 1
+
+####################### WALLS ###########################
+
+region	       low block  EDGE EDGE EDGE EDGE 0 1
+
+region 	       top block  EDGE EDGE EDGE EDGE 159 160
+
+delete_atoms   region low
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 12800 atoms, new total = 499200
+
+variable       epsilonWall equal 2*${epsilon}
+variable       epsilonWall equal 2*1
+
+variable       cutoffTop   equal   0.7147*${sigma}
+variable       cutoffTop   equal   0.7147*1
+
+variable       cutoffLow   equal   3*${sigma}
+variable       cutoffLow   equal   3*1
+
+fix            topWall all wall/lj93 zhi EDGE                ${epsilonWall} ${sigma} ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 ${sigma} ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 1 ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 1 0.7147 units box
+
+fix            lowWall all wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 ${sigma} ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 1 ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 1 3 units box
+
+
+
+######################	FIXES ############################
+
+#fix		1 cube rigid/nvt/small molecule temp 1.0 1.0 0.25
+
+fix 		2 solvent nvt temp 1.0 0.87 0.25# iso 0 0.0 2.5
+
+fix 		bal all balance 1000 1.05 shift z 10 1.05
+
+
+
+#compute 	com cube	  rigid/local	1 mol x y z
+#compute 	quat cube	  rigid/local	1 mol quatw quati quatj quatk
+
+thermo 		1000
+thermo_style 	custom step temp epair evdwl etotal press pe ke vol
+
+dump		1 all custom 100000 dump.lammpstrj id mol type x y z
+dump 		2 all image 10000 image.*.png type type
+#dump 		3 all movie 100 movie.avi type type
+#dump 		com cube local 1000 dump.*.xyz c_com[*]
+#dump		quat cube      local 1000 dump.*.quat c_quat[*]
+
+
+restart 	100000 restart.dat
+timestep 	0.0025
+timer 		full
+New timer settings: style=full  mode=nosync  timeout=off
+
+
+run		1000000
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 0.0025

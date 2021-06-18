@@ -1,0 +1,47 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (100.00000 100.00000 100.00000)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.011 seconds
+Replicating atoms ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (1100.0000 1100.0000 1100.0000)
+  1 by 1 by 2 MPI processor grid
+  216 atoms
+  replicate CPU = 0.001 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 28 28 28
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 9.340 | 9.340 | 9.340 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0    1335.7793            0    1335.7793 5.1534694e-07          300 
+ 1000000    347.15702   -23242.259   -22895.102 0.0011934543    77.967303 
+ 2000000    216.67147   -35984.374   -35767.702 0.0016000697    48.661814 
+ 3000000    238.84154   -7758.2311   -7519.3895  0.017046272    53.640946 
+ 4000000     117.8571     14072.15    14190.007 0.0092363328    26.469291 
+ 5000000    332.27786    14411.352     14743.63 0.0075748524    74.625623 
+ 6000000     235.8277    13394.547    13630.374 -0.0036110976    52.964072 
+ 7000000    143.10874     17849.22    17992.329 -0.0046490028    32.140506 
+ 8000000    787.76588    33346.938    34134.704  0.036451458    176.92277 
+ 9000000    552.18034    52532.888    53085.069  0.016706791    124.01308 
+10000000    1223.8022    48990.161    50213.963 -0.025155421     274.8513 
+11000000     261.6199    60576.793    60838.413   0.01392577    58.756691 
+12000000    1687.2361    51236.877    52924.113 7.9396707e-06    378.93299 
+13000000    518.50428    64652.041    65170.545 -0.047317238    116.44984 
+14000000    606.60002    58832.422    59439.022 0.0046788494    136.23509 

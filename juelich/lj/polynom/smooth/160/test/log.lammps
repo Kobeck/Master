@@ -1,0 +1,211 @@
+LAMMPS (29 Oct 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+# Simple rigid body system
+# needed variables: startTemp, temp
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f
+pair_style	lj/smooth 2.5 3.0
+
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 80 0 80 0 80
+create_box 	3 box
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (80.000000 80.000000 80.000000)
+  2 by 2 by 2 MPI processor grid
+lattice 	sc 1.5
+Lattice spacing in x,y,z = 0.87358046 0.87358046 0.87358046
+
+region		safe block 0 80 0 80 2 80
+
+create_atoms 	1 region safe
+Created 518319 atoms
+  create_atoms CPU = 0.026 seconds
+
+mass		1 1.0
+mass		2 1.0
+mass		3 1.0
+
+
+group		solvent type 1
+518319 atoms in group solvent
+
+
+velocity 	solvent create ${startTemp} 563435 loop geom
+velocity 	solvent create 0.5 563435 loop geom
+
+read_data	data.vac add append
+Reading data file ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (80.000000 80.000000 160.00000)
+  1 by 2 by 4 MPI processor grid
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0.0      0.0      0.0     
+  special bond factors coul:  0.0      0.0      0.0     
+     0 = max # of 1-2 neighbors
+     0 = max # of 1-3 neighbors
+     0 = max # of 1-4 neighbors
+     1 = max # of special neighbors
+  special bonds CPU = 0.015 seconds
+  read_data CPU = 0.118 seconds
+
+neighbor 	0.4 bin
+
+pair_coeff	1 1 1.0 1.0
+pair_coeff	2 2 0.0 0.0
+pair_coeff	3 3 0.0 0.0
+pair_coeff	2 3 0.0 0.0
+pair_coeff	1 2*3 0.0 0.0
+
+pair_modify 	shift yes
+
+
+balance 	1.05 shift z 10 1.05
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 3.4
+  ghost atom cutoff = 3.4
+  binsize = 1.7, bins = 48 48 95
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/smooth, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+ rebalancing time: 0.176 seconds
+  iteration count = 4
+  initial/final maximal load/proc = 163944.00 81972.000
+  initial/final imbalance factor  = 2.5303954 1.2651977
+  x cuts: 0.0000000 1.0000000
+  y cuts: 0.0000000 0.5 1.0000000
+  z cuts: 0.0000000 0.109375 0.21875 0.34375 1.0000000
+
+
+####################### WALLS ###########################
+
+
+region	       low block  EDGE EDGE EDGE EDGE EDGE 2
+
+region 	       top block  EDGE EDGE EDGE EDGE 159 160
+
+
+delete_atoms   region low
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 6561 atoms, new total = 511758
+
+delete_atoms   region top
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 0 atoms, new total = 511758
+
+
+variable       epsilonWall equal 2*${epsilon}
+variable       epsilonWall equal 2*1
+
+variable       cutoffTop   equal   0.7147*${sigma}
+variable       cutoffTop   equal   0.7147*1
+
+variable       cutoffLow   equal   3*${sigma}
+variable       cutoffLow   equal   3*1
+
+
+fix            topWall all wall/lj93 zhi EDGE                ${epsilonWall} ${sigma} ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 ${sigma} ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 1 ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 1 0.7147 units box
+
+fix            lowWall all wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 ${sigma} ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 1 ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 1 3 units box
+
+
+###################### COMPUTES ##########################
+
+compute        bin1 solvent chunk/atom bin/1d z upper 1.0
+
+
+
+######################	FIXES ############################
+
+
+fix 		peclet solvent ave/chunk 1000 1 1000 bin1 density/number norm 		 none ave one file density.profile
+
+#fix 		 temp solvent ave/chunk 1000 1 1000 bin1 temp norm none ave one file temp.profile
+
+fix 		2 solvent nve
+
+## Thermostat
+
+
+region		regthermo block EDGE EDGE EDGE EDGE 0 20
+
+group 		thermo dynamic solvent region regthermo every 1000
+dynamic group thermo defined
+
+fix 		3 thermo langevin ${startTemp} ${temp} 10 156453
+fix 		3 thermo langevin 0.5 ${temp} 10 156453
+fix 		3 thermo langevin 0.5 0.8 10 156453
+
+
+
+#### Load balancing
+
+
+fix 		bal all balance 1000 1.05 shift z 10 1.05
+
+
+############### Diagnostics and computes ###################
+#compute 	com cube	  rigid/local	1 mol x y z
+#compute 	quat cube	  rigid/local	1 mol quatw quati quatj quatk
+
+thermo 		1000
+thermo_style 	custom step temp epair evdwl etotal press pe ke vol
+
+dump		1 all custom 100000 dump.lammpstrj id mol type x y z
+dump 		2 all image 10000 image.*.png type type
+dump 		3 all movie 1000 movie.avi type type
+#dump 		com cube local 1000 dump.*.xyz c_com[*]
+#dump		quat cube      local 1000 dump.*.quat c_quat[*]
+
+
+restart 	500000 restart.dat
+timestep 	0.0025
+timer 		full
+New timer settings: style=full  mode=nosync  timeout=off
+
+
+run		1000000
+Per MPI rank memory allocation (min/avg/max) = 75.67 | 92.97 | 119.7 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Volume 
+       0   0.49996884    25.963933    25.963933    26.713885    87.594673    25.963933    0.7499518      1024000 
+    1000     14.86761    2.2227431    2.2227431    24.524115    28.441913    2.2227431    22.301372      1024000 
+    2000    16.377597   -1.6274135   -1.6274135    22.938934    16.366875   -1.6274135    24.566347      1024000 
+    3000    16.664052   -2.6343272   -2.6343272    22.361702    10.929615   -2.6343272    24.996029      1024000 
+    4000    16.078376   -1.9605032   -1.9605032    22.157013    10.732954   -1.9605032    24.117517      1024000 
+    5000    15.133505  -0.62345533  -0.62345533    22.076758    13.569716  -0.62345533    22.700213      1024000 
+    6000    14.526877   0.27107259   0.27107259    22.061345    16.134925   0.27107259    21.790272      1024000 
+    7000    14.544887   0.23155315   0.23155315     22.04884    16.376191   0.23155315    21.817287      1024000 
+    8000    14.821474   -0.1959617   -0.1959617    22.036206    15.306139   -0.1959617    22.232167      1024000 
+    9000    15.059763  -0.56876074  -0.56876074     22.02084    14.301449  -0.56876074    22.589601      1024000 
+   10000    15.172368  -0.77090143  -0.77090143    21.987606    13.693871  -0.77090143    22.758507      1024000 
+   11000    14.467001  -0.33411629  -0.33411629    21.366342    14.740617  -0.33411629    21.700458      1024000 
+   12000     13.42252 -0.057203084 -0.057203084    20.076538     15.37454 -0.057203084    20.133741      1024000 
+   13000    12.758727  -0.14977135  -0.14977135    18.988281    15.017385  -0.14977135    19.138052      1024000 
+   14000    12.355063  -0.35633572  -0.35633572    18.176222    14.326892  -0.35633572    18.532558      1024000 
+   15000    12.110859  -0.60162267  -0.60162267     17.56463    13.403181  -0.60162267    18.166253      1024000 
+   16000    11.963929  -0.86648285  -0.86648285    17.079375    12.466563  -0.86648285    17.945858      1024000 
+   17000     11.82997    -1.060652    -1.060652    16.684269    11.652993    -1.060652    17.744921      1024000 
+   18000    11.645231   -1.1111258   -1.1111258    16.356687    11.197494   -1.1111258    17.467813      1024000 
+   19000    11.458749   -1.0890882   -1.0890882    16.099002    11.069228   -1.0890882     17.18809      1024000 
+   20000    11.345038   -1.1275842   -1.1275842     15.88994    10.929434   -1.1275842    17.017524      1024000 
+   21000    11.250829   -1.1570706   -1.1570706     15.71914    10.805539   -1.1570706    16.876211      1024000 
+   22000    11.182171   -1.1957188   -1.1957188    15.577506    10.654041   -1.1957188    16.773224      1024000 
+   23000    11.159266   -1.2795114   -1.2795114    15.459354    10.426815   -1.2795114    16.738866      1024000 
+   24000    11.136784   -1.3467579   -1.3467579    15.358385    10.429739   -1.3467579 

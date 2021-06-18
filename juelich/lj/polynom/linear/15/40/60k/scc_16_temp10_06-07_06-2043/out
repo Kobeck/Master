@@ -1,0 +1,70 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (40.000000 40.000000 80.000000)
+  2 by 2 by 4 MPI processor grid
+Created 60000 atoms
+  create_atoms CPU = 0.014 seconds
+60000 atoms in group solvent
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.9
+  ghost atom cutoff = 1.9
+  binsize = 0.95, bins = 43 43 85
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/smooth/linear, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 1553 atoms, new total = 58447
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 0 atoms, new total = 58447
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 0.005
+Per MPI rank memory allocation (min/avg/max) = 6.541 | 6.559 | 6.571 Mbytes
+Step Temp E_pair E_mol TotEng Press 
+       0   0.49990164 4.8801733e+16            0 4.8801733e+16 8.9134841e+16 
+  100000    25.355255    4.3312554            0    42.363487    22.605183 
+Loop time of 100.116 on 16 procs for 100000 steps with 58447 atoms
+
+Performance: 431497.990 tau/day, 998.838 timesteps/s
+97.4% CPU use with 16 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 44.525     | 47.119     | 49.14      |  21.3 | 47.06
+Bond    | 0.0088119  | 0.0097776  | 0.010826   |   0.5 |  0.01
+Neigh   | 21.845     | 23.365     | 24.832     |  17.0 | 23.34
+Comm    | 19.743     | 22.316     | 26.654     |  49.2 | 22.29
+Output  | 9.1784e-05 | 0.00018245 | 0.00019029 |   0.0 |  0.00
+Modify  | 5.6547     | 5.8928     | 6.4479     |  12.1 |  5.89
+Other   |            | 1.414      |            |       |  1.41
+
+Nlocal:        3652.94 ave        3731 max        3558 min
+Histogram: 2 0 1 2 1 2 2 3 1 2
+Nghost:        2261.25 ave        2552 max        1952 min
+Histogram: 5 3 0 0 0 0 0 0 1 7
+Neighs:        22699.2 ave       23633 max       21196 min
+Histogram: 1 1 2 0 2 0 1 4 2 3
+
+Total # of neighbors = 363187
+Ave neighs/atom = 6.2139545
+Ave special neighs/atom = 0.0000000
+Neighbor list builds = 10000
+Dangerous builds = 10000
+dynamic group thermo defined
+New timer settings: style=full  mode=nosync  timeout=off
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 100000
+  Time step     : 0.005
+Per MPI rank memory allocation (min/avg/max) = 8.611 | 8.622 | 8.630 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Volume 
+  100000    25.355255    4.3312554    4.3312554    42.363487    22.605183    4.3312554    38.032232       128000 
+ERROR on proc 11: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)

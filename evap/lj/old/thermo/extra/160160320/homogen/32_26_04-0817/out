@@ -1,0 +1,148 @@
+LAMMPS (3 Mar 2020)
+  using 1 OpenMP thread(s) per MPI task
+# Simple rigid body system
+
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f
+pair_style	lj/cut/opt 2.5
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+
+region		box block 0 160 0 160 0 320
+create_box 	3 box
+Created orthogonal box = (0 0 0) to (160 160 320)
+  2 by 2 by 8 MPI processor grid
+lattice 	sc 4.0
+Lattice spacing in x,y,z = 0.629961 0.629961 0.629961
+
+create_atoms 	1 region box
+Created 32774128 atoms
+  create_atoms CPU = 0.601602 secs
+
+mass		1 1.0
+mass		2 1.0
+mass		3 1.0
+group		solvent type 1
+32774128 atoms in group solvent
+velocity 	solvent create 1.0 563435 loop geom
+
+#read_data	data.vac add append
+
+neighbor 	0.4 bin
+pair_coeff	3 3 0.0 0.0
+pair_coeff	2 2 0.0 0.0
+pair_coeff	1 2 0.0 0.0
+pair_coeff	1*2 3 0.0 0.0
+pair_coeff	1 1 1.0 1.0 #solvent solvent
+pair_modify 	shift yes
+
+balance 	1.05 shift z 10 1.05
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 2.9
+  binsize = 1.45, bins = 111 111 221
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+
+####################### WALLS ###########################
+
+region	       low block  EDGE EDGE EDGE EDGE EDGE 1
+
+region 	       top block  EDGE EDGE EDGE EDGE 318 EDGE
+
+delete_atoms   region low
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 129032 atoms, new total = 32645096
+delete_atoms   region top
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 12258040 atoms, new total = 20387056
+
+variable       epsilonWall equal 2*${epsilon}
+variable       epsilonWall equal 2*1
+
+variable       cutoffTop   equal   0.7147*${sigma}
+variable       cutoffTop   equal   0.7147*1
+
+variable       cutoffLow   equal   3*${sigma}
+variable       cutoffLow   equal   3*1
+
+fix            topWall all wall/lj93 zhi EDGE                ${epsilonWall} ${sigma} ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 ${sigma} ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 1 ${cutoffTop} units box
+fix            topWall all wall/lj93 zhi EDGE                2 1 0.7147 units box
+
+fix            lowWall all wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 ${sigma} ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 1 ${cutoffLow} units box
+fix            lowWall all wall/lj93 zlo EDGE                2 1 3 units box
+
+
+
+######################	FIXES ############################
+
+#fix		1 cube rigid/nvt/small molecule temp 1.0 1.0 0.25
+
+fix 		2 solvent nve
+
+## Thermostat
+region		regthermo block EDGE EDGE EDGE EDGE 0 20
+
+group 		thermo dynamic solvent region regthermo every 1000
+dynamic group thermo defined
+
+fix 		3 thermo langevin 1.0 1.0 0.1 156453
+
+#### Load balancing
+
+
+fix 		bal all balance 1000 1.05 shift z 10 1.05
+
+
+############### Diagnostics and computes ###################
+#compute 	com cube	  rigid/local	1 mol x y z
+#compute 	quat cube	  rigid/local	1 mol quatw quati quatj quatk
+
+thermo 		1000
+thermo_style 	custom step temp epair evdwl etotal press pe ke vol
+
+dump		1 all custom 100000 dump.lammpstrj id mol type x y z
+dump 		2 all image 10000 image.*.png type type
+#dump 		3 all movie 100 movie.avi type type
+#dump 		com cube local 1000 dump.*.xyz c_com[*]
+#dump		quat cube      local 1000 dump.*.quat c_quat[*]
+
+
+restart 	500000 restart.dat
+timestep 	0.0025
+timer 		full
+New timer settings: style=full  mode=nosync  timeout=off
+
+
+run		1000000
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 0.0025
+Per MPI rank memory allocation (min/avg/max) = 1147 | 1368 | 1550 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Volume 
+       0    1.0000243    2909.4936    2909.4936    2910.9936    30270.747    2909.4936    1.5000364      8192000 
+ERROR on proc 24: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+Last command: run		1000000
+ERROR on proc 0: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+Last command: run		1000000
+ERROR on proc 16: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+Last command: run		1000000
+ERROR on proc 8: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+Last command: run		1000000

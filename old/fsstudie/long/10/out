@@ -1,0 +1,4 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (100.00000 100.00000 100.00000)

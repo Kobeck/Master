@@ -1,0 +1,44 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (100.00000 100.00000 100.00000)
+  2 by 2 by 2 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.020 seconds
+Replicating atoms ...
+  orthogonal box = (-100.00000 -100.00000 -100.00000) to (1500.0000 1500.0000 1500.0000)
+  2 by 2 by 2 MPI processor grid
+  512 atoms
+  replicate CPU = 0.107 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 37 37 37
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 9.278 | 9.278 | 9.278 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0    3174.8056            0    3174.8056 5.1673268e-07          300 
+ 1000000    279.51668    40611.858    40891.375 -7.7914003e-05    26.412642 
+ 2000000    177.79016    57298.238    57476.028 -0.0042844534    16.800099 
+ 3000000    258.37927    109874.49    110132.87 0.0030110785    24.415285 
+ 4000000    643.17722    128436.59    129079.77  0.012059843    60.776372 
+ 5000000    2587.9691    108773.67    111361.63  0.019279462    244.54749 
+ 6000000    1217.0111    131914.33    133131.34  0.014246012    115.00022 
+ 7000000    516.56295    119224.83    119741.39   -0.0188235    48.812086 
+ 8000000    764.77423    118875.79    119640.56  0.028016373    72.266557 
+ 9000000    1993.0952    123730.25    125723.35  0.012249487    188.33549 
+10000000    1877.2586    165775.44     167652.7  0.042637598    177.38963 
+11000000    1792.9642    148133.29    149926.26  0.022502537    169.42431 

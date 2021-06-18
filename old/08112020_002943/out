@@ -1,0 +1,119 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (50.000000 50.000000 50.000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.002 seconds
+Replicating atoms ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (950.00000 950.00000 950.00000)
+  1 by 1 by 1 MPI processor grid
+  1000 atoms
+  replicate CPU = 0.001 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 23 23 23
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.0005
+Per MPI rank memory allocation (min/avg/max) = 141.2 | 141.2 | 141.2 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0    6206.7139            0    6206.7139 4.1378092e-06          300 
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (50.000000 50.000000 50.000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.007 seconds
+Replicating atoms ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (950.00000 950.00000 950.00000)
+  1 by 1 by 1 MPI processor grid
+  1000 atoms
+  replicate CPU = 0.001 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 87.10254
+  ghost atom cutoff = 87.10254
+  binsize = 43.55127, bins = 23 23 23
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair body/rounded/polyhedron, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : nano
+  Current step  : 0
+  Time step     : 0.0005
+Per MPI rank memory allocation (min/avg/max) = 141.8 | 141.8 | 141.8 Mbytes
+Step KinEng PotEng TotEng c_p c_t 
+       0    6206.7139            0    6206.7139 4.1378092e-06          300 
+    1000    365.30051    16585.228    16950.529 0.0098067141    17.656711 
+    2000    146.30187    1975256.9    1975403.2 -0.0023103075    7.0714654 
+    3000   0.51265863    15416.683    15417.196 0.0022490509   0.02477923 
+    4000     259.8131    2279894.1    2280153.9   0.25105285    12.558003 
+    5000    4.6344683      2017944    2017948.6   0.31172399    0.2240059 
+    6000    2.7990275    2159570.1    2159572.9   0.48866706   0.13529031 
+    7000    2.4319968    2361431.2    2361433.7   0.84330539   0.11754997 
+    8000 0.0094575217    2101707.7    2101707.8   0.39298048  0.000457127 
+    9000 7.9032262e-06    982869.12    982869.12 0.0016225685 3.8200051e-07 
+   10000 2.1411685e-08    1396451.3    1396451.3    0.1279146 1.0349286e-09 
+Loop time of 5989.26 on 1 procs for 10000 steps with 1000 atoms
+
+Performance: 72.129 ns/day, 0.333 hours/ns, 1.670 timesteps/s
+100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 5976.8     | 5976.8     | 5976.8     |   0.0 | 99.79
+Neigh   | 4.1894     | 4.1894     | 4.1894     |   0.0 |  0.07
+Comm    | 3.2629     | 3.2629     | 3.2629     |   0.0 |  0.05
+Output  | 0.643      | 0.643      | 0.643      |   0.0 |  0.01
+Modify  | 4.0925     | 4.0925     | 4.0925     |   0.0 |  0.07
+Other   |            | 0.3119     |            |       |  0.01
+
+Nlocal:        1000.00 ave        1000 max        1000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        728.000 ave         728 max         728 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        3070.00 ave        3070 max        3070 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3070
+Ave neighs/atom = 3.0700000
+Neighbor list builds = 9031
+Dangerous builds = 8210
+Total wall time: 1:39:49
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (50.000000 50.000000 50.000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.028 seconds
+Replicating atoms ...
+  orthogonal box = (-50.000000 -50.000000 -50.000000) to (950.00000 950.00000 50.000000)
+  1 by 1 by 1 MPI processor grid
+  100 atoms
+  replicate CPU = 0.001 seconds
+ERROR: Unrecognized fix style 'enforce' (src/modify.cpp:900)
+Last command: fix 	     2D all enforce 2D

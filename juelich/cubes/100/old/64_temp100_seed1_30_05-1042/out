@@ -1,0 +1,7 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+units           lj
+atom_style      full
+atom_modify     map array first cubes
+dimension       3
+boundary        p p f

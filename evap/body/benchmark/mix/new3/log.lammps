@@ -1,0 +1,54 @@
+LAMMPS (3 Mar 2020)
+  using 1 OpenMP thread(s) per MPI task
+  orthogonal box = (0 0 0) to (40 40 40)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  7000 atoms
+  7000 bodies
+  read_data CPU = 0.126617 secs
+  orthogonal box = (0 0 0) to (40 40 40)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  1 atoms
+  1 bodies
+  read_data CPU = 0.00877306 secs
+WARNING: Replicating in a non-periodic dimension (src/replicate.cpp:72)
+  orthogonal box = (0 0 0) to (80 80 80)
+  1 by 1 by 2 MPI processor grid
+  56008 atoms
+  replicate CPU = 0.064417 secs
+  orthogonal box = (0 0 0) to (80 80 160)
+  1 by 1 by 2 MPI processor grid
+  read_data CPU = 0.108286 secs
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 9.16025
+  ghost atom cutoff = 9.16025
+  binsize = 4.58013, bins = 18 18 35
+  3 neighbor lists, perpetual/occasional/extra = 3 0 0
+  (1) pair body/rounded/polyhedron, perpetual, skip from (3)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (2) pair lj/cut, perpetual, skip from (3)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (3) neighbor class addition, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 46.53 | 77.09 | 107.6 Mbytes
+Step Temp TotEng PotEng KinEng Press Volume Density 
+       0          0.5   0.54351533  -0.20647128   0.74998661 0.0021387166      1024000  0.054695313 
+     100   0.67225924    0.5733498  -0.43502106    1.0083709  0.020591407      1024000  0.054695313 
+     200   0.86994355   0.61292181  -0.69197022     1.304892  0.028690918      1024000  0.054695313 
+     300   0.94020532   0.65784288  -0.75243991    1.4102828  0.030376218      1024000  0.054695313 
+     400    0.9872974   0.68820835  -0.79271131    1.4809197  0.032520544      1024000  0.054695313 
+     500    1.0180752   0.71003846  -0.81704708    1.5270855  0.032715888      1024000  0.054695313 
+ERROR: Lost atoms: original 56008 current 56007 (src/thermo.cpp:438)
+Last command: run 		    ${steps}
