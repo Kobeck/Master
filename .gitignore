@@ -10,7 +10,8 @@ density.profile
 *restart*
 movie.avi
 lmp_mpi
-dump*
+*cubes
+*quat
 image*
 lammps*
 oldinput
