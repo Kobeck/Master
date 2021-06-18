@@ -23,15 +23,15 @@ opts.ConsecutiveDelimitersRule = "join";
 opts.LeadingDelimitersRule = "ignore";
 
 % Import the data
-dump = readtable("/data/scc/kobeck/Master/juelich/mix/100/240_temp08_10-07_06-2322/dump.msd", opts);
+dump = readtable("dump.msd", opts);
 
 
 %% Clear temporary variables
 clear opts
 
 %% plot msd 
-Natoms = 490;
-steps = height(dump(:,1))/(Natoms+1);
+Natoms = 112;
+steps = floor(height(dump(:,1))/(Natoms+1));
 data = zeros(steps,Natoms);
 ave = zeros(steps,1);
 
@@ -42,8 +42,11 @@ ave = zeros(steps,1);
  end
 
 
-plot(ave)
-
+% for j =1:10:250 
+%     plot(data(:,j))
+%     hold on
+% end
+legend off;
 
 
 

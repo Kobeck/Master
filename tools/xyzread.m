@@ -54,7 +54,7 @@ counter=t;
     z(:,t) = counter{4}; 
     
 %% read data for every step 
-for t=2:1:steps
+for t=1:1:steps
     counter=t;
     counter = textscan(fid,'%f %f %f %f',N{1,1}, 'headerlines', 3);  %varargin{:},'headerlines',2); 
     % Get scattered data: 

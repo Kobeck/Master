@@ -3,7 +3,7 @@ close all; clear all;
 sigma = 1;
 epsilon = 1;
 A = 4*pi().^2;
-h = 0.1:0.01:0.581;
+h = 0.1:0.01:1;
 a_1 = 5;
 a_2 = 5;
 a= 5;
@@ -34,17 +34,17 @@ U_r =  A/37800 * sigma.^6./r.* (...
    
 U = U_a + U_r;
 
-plot(r-10,U)
-%axis([0.1 1 -500 500])
-
-clear all
-x = 0.1:0.01:0.581 ;
-epsilon = 100.0; 
-sigma = 1.0; 
-%pot93 = 2*epsilon * ( 2/15 * (sigma./x) .^9 - (sigma./x).^3);
-pot126= 4*epsilon * ((sigma./x) .^12 - (sigma./x).^6);
-%plot(x, pot93)
-hold on 
-plot(x, pot126)
-
-legend('hamaker','126')
+plot(r,U)
+axis([10.1 11 -100 100])
+% 
+% clear all
+% x = 0.1:0.01:0.581 ;
+% epsilon = 100.0; 
+% sigma = 1.0; 
+% %pot93 = 2*epsilon * ( 2/15 * (sigma./x) .^9 - (sigma./x).^3);
+% pot126= 4*epsilon * ((sigma./x) .^12 - (sigma./x).^6);
+% %plot(x, pot93)
+% hold on 
+% plot(x, pot126)
+% 
+% legend('hamaker','126')

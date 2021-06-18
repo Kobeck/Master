@@ -1,0 +1,117 @@
+units           lj
+atom_style      full
+atom_modify     map array first cubes
+dimension       3
+boundary        p p f
+
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+
+region 		box block 0 80 0 80 0 106
+
+read_data       data.rigid
+
+replicate       5 5 5	#125 cubes
+
+group           cubes type 2 3
+
+
+## relax the structure
+
+pair_style      soft 1.12
+pair_coeff      1 1 0.0 0.0
+pair_coeff      2 2 0.0 
+pair_coeff      3 3 0.0 
+pair_coeff      1 3 0.0 0.0
+pair_coeff      2 3 0.0 
+pair_coeff      1 2 0.0 0.0
+
+variable        prefactor equal ramp(0,60)
+fix             soft all adapt 1 pair soft a * * v_prefactor
+
+neighbor        0.3 bin
+neigh_modify    delay 0 every 1 check yes
+
+#fix             1     cubes rigid molecule
+
+dump 		1 all movie 100 movie.avi type type
+
+compute         tbig all temp
+thermo_modify   temp tbig
+
+thermo          100
+run             1000
+unfix 		soft
+
+reset_timestep 	0
+
+# Jetzt die eigentliche verteilung
+
+pair_style	lj/cut/opt 1.12
+pair_modify	shift yes
+
+pair_coeff	1 1 0.0 0.0
+
+pair_coeff	2 2 1.0 1.0
+
+pair_coeff	1 2 0.0 0.0
+
+pair_coeff	1 3 0.0 0.0
+
+pair_coeff	2 3 0.0 0.0
+
+pair_coeff	3 3 0.0 0.0
+
+comm_modify	cutoff 6.93
+
+fix 		1 cubes rigid/small molecule
+
+
+####################### WALLS ###########################
+
+variable       epsilonWall equal 2*${epsilon}
+
+variable       cutoffTop   equal   0.7147*${sigma}
+
+variable       cutoffLow   equal   3*${sigma}
+
+
+fix            topWall all wall/lj93 zhi EDGE &
+               ${epsilonWall} ${sigma} ${cutoffTop} units box
+
+fix            lowWall all wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${cutoffTop} units box
+
+
+velocity	all create ${temp} ${seed} loop geom
+
+
+############### Diagnostics and computes ###################
+compute        com cubes          rigid/local   1 mol x y z
+compute        quat cubes         rigid/local   1 mol quatw quati quatj quatk
+
+thermo          1000
+thermo_style    custom step temp epair evdwl etotal press pe ke vol
+
+#dump            1 all custom 100000 dump.lammpstrj id mol type x y z
+dump            2 all image 10000 image.*.png type type
+
+dump_modify     2 pad 8
+
+
+dump            image cubes image 10000 image_cubes.*.png type type
+
+dump_modify     image pad 8
+
+dump            3 all movie 5000 movie.avi type type
+dump           com cubes local 1000 dump.*.xyz c_com[*]
+dump           quat cubes      local 1000 dump.*.quat c_quat[*]
+
+
+restart         250000 restart.dat
+timestep        0.005
+timer           full
+
+run 		500000
+
+write_data      data.cubes
