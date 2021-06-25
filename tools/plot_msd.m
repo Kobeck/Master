@@ -30,7 +30,7 @@ dump = readtable("dump.msd", opts);
 clear opts
 
 %% plot msd 
-Natoms = 112;
+Natoms = 250;
 steps = floor(height(dump(:,1))/(Natoms+1));
 data = zeros(steps,Natoms);
 ave = zeros(steps,1);
@@ -41,7 +41,7 @@ ave = zeros(steps,1);
      ave(i) = mean(data(i,:));
  end
 
-
+plot(ave(:));
 % for j =1:10:250 
 %     plot(data(:,j))
 %     hold on

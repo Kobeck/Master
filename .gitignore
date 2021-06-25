@@ -8,6 +8,7 @@ density.profile
 *.dat*
 *.png
 *restart*
+*.ascii
 movie.avi
 lmp_mpi
 *cubes
