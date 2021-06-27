@@ -75,7 +75,7 @@ group           thermo dynamic solvent region regthermo every 1000
 fix             3 thermo langevin ${temp} ${temp} 10 156453
 
 ## Evaporation
-region		regevap block EDGE EDGE EDGE EDGE 180 200
+region		regevap block EDGE EDGE EDGE EDGE 140 EDGE
 fix		4 solvent evaporate ${evap} 1 regevap 156415
 
 

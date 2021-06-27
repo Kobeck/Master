@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=48
 #SBATCH --time=24:00:00
 #SBATCH --partition=batch
-##SBATCH --array=1-4
+#SBATCH --array=1-5
 # *** start of job script ***
 # Note: The current working directory at this point is
 # the directory where sbatch was executed.
@@ -16,8 +16,10 @@ startTemp=1.0
 temp=1.0 #$(bc <<< "0.8+${SLURM_ARRAY_TASK_ID}*0.1")
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" $tempstr
-dir=juelich_${SLURM_NTASKS}_temp10_$j-${date}
-evap=87
+evap=$(bc <<< "10+25*${SLURM_ARRAY_TASK_ID}")
+
+dir=juelich_${SLURM_NTASKS}_evap${evap}-${date}
+
 
 mkdir $dir
 cp restart.dat* data* in.mix job* $dir/.
