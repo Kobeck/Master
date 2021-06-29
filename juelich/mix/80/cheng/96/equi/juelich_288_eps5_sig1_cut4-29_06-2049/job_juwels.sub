@@ -1,0 +1,61 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=80_96_cheng
+#SBATCH --nodes=6
+#SBATCH --ntasks=288
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=4:00:00
+#SBATCH --partition=batch
+#SBATCH --array=1-5
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+
+date=$(date +%d_%m-%H%M)
+startTemp=1.0
+temp=1.0
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" $tempstr
+printf -v id "%d" ${SLURM_ARRAY_TASK_ID}
+
+if [[ "$id" == "1" ]]
+then
+    dir=juelich_288_eps1_sig1_cut4-${date}
+    mkdir $dir
+    cp restart.dat* data* in.mix job* $dir/.
+    cd $dir
+    srun -n 288 lmp -v eps 1.0 -v sig 1.0 -v temp ${temp} -v nscut 4.0 -in in.mix
+elif [[ "$id" == "2" ]]
+then
+    dir=juelich_288_eps2_sig1_cut4-${date}
+    mkdir $dir
+    cp restart.dat* data* in.mix job* $dir/.
+    cd $dir
+    srun -n 288 lmp -v eps 2.0 -v sig 1.0 -v temp ${temp} -v nscut 4.0 -in in.mix
+elif [[ "$id" == "3" ]]
+then
+    dir=juelich_288_eps2_sig2_cut4-${date}
+    mkdir $dir
+    cp restart.dat* data* in.mix job* $dir/.
+    cd $dir
+    srun -n 288 lmp -v eps 2.0 -v sig 2.0 -v temp ${temp} -v nscut 4.0 -in in.mix
+elif [[ "$id" == "4" ]]
+then
+    dir=juelich_288_eps5_sig2_cut4-${date}
+    mkdir $dir
+    cp restart.dat* data* in.mix job* $dir/.
+    cd $dir
+    srun -n 288 lmp -v eps 5.0 -v sig 1.0 -v temp ${temp} -v nscut 4.0 -in in.mix
+elif [[ "$id" == "5" ]]
+then
+    dir=juelich_288_eps5_sig1_cut4-${date}
+    mkdir $dir
+    cp restart.dat* data* in.mix job* $dir/.
+    cd $dir
+    srun -n 288 lmp -v eps 5.0 -v sig 1.0 -v temp ${temp} -v nscut 4.0 -in in.mix
+fi
+
+
+
+

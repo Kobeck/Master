@@ -1,0 +1,35 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=smooth
+#SBATCH --nodes=2
+#SBATCH --ntasks=96
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=6:00:00
+#SBATCH --partition=batch
+#SBATCH --array=1-5
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+date=$(date +%d_%m-%H%M)
+startTemp=1.0
+temp=1.0
+echo temp = ${temp}
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%03d" ${tempstr}
+cutin=$(bc <<< "1.25+0.25*${SLURM_ARRAY_TASK_ID}")
+cin=$(bc <<< ${cutin}*10/1)
+printf -v i "%03d" ${cin}
+
+cutout=$(bc <<< ${cutin}+1) #"1.5+0.2*${SLURM_ARRAY_TASK_ID}")
+cout=$(bc <<< ${cutin}*10/1)
+printf -v o "%02d" ${cout}
+
+
+dir=juelich_${SLURM_NTASKS}_cut${i}-${o}-${date}
+
+mkdir $dir
+cp in.lj data* job_juwels.sub $dir/.
+cd $dir
+
+srun -n ${SLURM_NTASKS} lmp -v cutout ${cutout} -v cutin ${cutin} -v startTemp ${startTemp} -v temp ${temp} -in in.lj >> out
