@@ -25,11 +25,11 @@ pair_coeff    1 1 1.0 1.0 #solvent
 pair_coeff    2 2 1.0 1.0 1.12 #np
 pair_coeff    3 3 0.0 0.0 0.0 #dummy
 pair_coeff    2 3 0.0 0.0 0.0 #np dummy
-pair_coeff    1 2 ${sol} 1.0 #np solvent
+pair_coeff    1 2 ${eps} ${sig} ${nscut} #np solvent
 pair_coeff    1 3 0.0 0.0 0.0 #dummy solvent
 
 
-comm_modify   mode multi cutoff/multi 1 2.5 cutoff/multi 2 2.5 cutoff/multi 3 6.95
+comm_modify   mode multi cutoff/multi 1 2.5 cutoff/multi 2 ${nscut} cutoff/multi 3 6.95
 
 reset_timestep 	0
 
