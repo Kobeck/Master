@@ -44,7 +44,7 @@ for iteration=8
     nsteps=length(A)/(bin+1);
     data=zeros(nsteps,bin);
 
-    for i=1:50:nsteps-1
+    for i=1:1:nsteps-1
         data(i,:)=A( (i-1)*(bin+1)+2 :i*(bin+1),3);
         %I=imread(strcat('image.',num2str((i-1)*100),'.png'));
         plot(data(i,:));

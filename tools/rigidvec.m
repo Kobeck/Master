@@ -5,12 +5,12 @@ radius = 0.5; % half diameter of lj balls
 % Box size: 100 = 100x100x130   = 13 000 000
 %           80  = 80x80x106     =    678 400
 %           60  = 60x60x120     =    432 000
-% for 252 cubes a 6x6x7 (80): x & y = 13.3, z = 15.14  phi=0.371
+% for 252 cubes a 6x6x7 (80):   x & y = 13.3, z = 15.14  phi=0.371
 % for 490 cubes a 7x7x10 (100): x & y = 14.2857, z = 13 phi=0.377
-% for 200 cubes a 5x5x8 (100): x&y =20, z = 16.25,      phi=0.146
-% for 128 cubes a 5x5x5 (80): x&y16, z=21.2
-% for 96 cubes a 4x4x6 (80): x & y = 20, z = 17.6666    phi=0.13
-% for 63 cubes a 3x3x7 (60): x & y = 20; z = 17.14      phi=0.145 
+% for 200 cubes a 5x5x8 (100):  x & y = 20, z = 16.25,      phi=0.146
+% for 128 cubes a 5x5x5 (80):   x & y = 16, z=21.2
+% for 96 cubes a 4x4x6 (80):    x & y = 20, z = 17.6666    phi=0.13
+% for 63 cubes a 3x3x7 (60):    x & y = 20; z = 17.14      phi=0.145 
 
 boxx=16;
 boxy=16;
@@ -34,7 +34,7 @@ for i=1:len^3
     x= coords(i,5);
     y= coords(i,6);
     z= coords(i,7);
-    if(sqrt(x.^2+y.^2+z.^2)>7)
+    if(sqrt(x.^2+y.^2+z.^2)>10)
         coords(i,:) = zeros(1,7);    % truncation
     else
         dist = sqrt(x^2+y^2+z^2);
