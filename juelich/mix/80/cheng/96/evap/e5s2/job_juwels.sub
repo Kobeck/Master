@@ -1,6 +1,6 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
-#SBATCH --job-name=e1s1
+#SBATCH --job-name=e5s2
 #SBATCH --nodes=6
 #SBATCH --ntasks=288
 #SBATCH --ntasks-per-node=48
@@ -25,4 +25,4 @@ mkdir $dir
 cp restart.dat* data* in.mix job* $dir/.
 cd $dir
 
-srun -n ${SLURM_NTASKS} lmp -v evap ${evap} -v eps 1.0 -v sig 1.0 -v nscut 4.0 -v temp ${temp} -in in.mix
+srun -n ${SLURM_NTASKS} lmp -v evap ${evap} -v eps 5.0 -v sig 2.0 -v nscut 4.0 -v temp ${temp} -in in.mix

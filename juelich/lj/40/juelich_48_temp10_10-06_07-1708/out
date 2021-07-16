@@ -1,0 +1,62 @@
+LAMMPS (24 Dec 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (40.000000 40.000000 80.000000)
+  2 by 3 by 8 MPI processor grid
+Lattice spacing in x,y,z = 1.1485556 1.1485556 1.1485556
+Created 68600 atoms
+  create_atoms CPU = 0.004 seconds
+Lattice spacing in x,y,z = 2.8114422 2.8114422 2.8114422
+Created 1125 atoms
+  create_atoms CPU = 0.001 seconds
+69725 atoms in group solvent
+System init for delete_atoms ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 2.9
+  binsize = 1.45, bins = 28 28 56
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) command delete_atoms, occasional
+      attributes: full, newton on
+      pair build: full/bin
+      stencil: full/bin/3d
+      bin: standard
+  (2) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 0 atoms, new total = 69725
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 2.9
+  binsize = 1.45, bins = 28 28 56
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+ rebalancing time: 0.005 seconds
+  iteration count = 10
+  initial/final maximal load/proc = 1944.0000 1728.0000
+  initial/final imbalance factor  = 1.3382861 1.1895877
+  x cuts: 0.0000000 0.50000000 1.0000000
+  y cuts: 0.0000000 0.33333333 0.66666667 1.0000000
+  z cuts: 0.0000000 0.12927246 0.22961426 0.33020020 0.43078613 0.53112793 0.63171387 0.73217773 1.0000000
+dynamic group thermo defined
+New timer settings: style=full  mode=nosync  timeout=off
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 0.005
+Per MPI rank memory allocation (min/avg/max) = 8.605 | 8.661 | 8.780 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Atoms 
+       0            1   -2.3230486   -2.3230486   -0.8230701    2.6439989   -2.3230486    1.4999785    69725 
+ERROR on proc 23: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
