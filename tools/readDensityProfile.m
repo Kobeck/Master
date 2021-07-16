@@ -27,12 +27,23 @@ opts.LeadingDelimitersRule = "ignore";
 opts = setvaropts(opts, "Var5", "WhitespaceRule", "preserve");
 opts = setvaropts(opts, "Var5", "EmptyFieldRule", "auto");
 
-for iteration=8
+for iter=1:3
     % Import the data
     wd="./"; %strcat("scc_240_temp08_0",num2str(iteration),"-30_05-0624");
-    F=fullfile(wd,"temp.profile");
+    if iter==1
+        readfile='density.profile';
+        savefile='density.avi';
+    
+    elseif iter==2
+        readfile="temp.profile";
+        savefile="temp.avi";
+    elseif iter==3
+        savefile="number.avi";
+    end
+    
+    F=fullfile(wd,readfile);
     density = readtable(F, opts);
-    disp(strcat("currently on file", wd,". iteration index", num2str(iteration)))
+    %disp(strcat("currently on file", wd,". iteration index", num2str(iteration)))
 
     %% Clear temporary variables
     %clear opts
@@ -43,15 +54,28 @@ for iteration=8
     bin=A(index,2);
     nsteps=length(A)/(bin+1);
     data=zeros(nsteps,bin);
-
+    
+    if iter==1
+        col=4;
+        axvec=[0 160 0 1];
+    elseif iter==2
+        col=4; 
+        axvec=[0 160 0.5 1.5];
+    elseif iter==3
+        col=3;
+        axvec=[0 160 0 6000];
+    end
+    
+        
     for i=1:1:nsteps-1
-        data(i,:)=A( (i-1)*(bin+1)+2 :i*(bin+1),3);
+        data(i,:)=A( (i-1)*(bin+1)+2 :i*(bin+1),col);
         %I=imread(strcat('image.',num2str((i-1)*100),'.png'));
         plot(data(i,:));
+        axis(axvec);
         M(i)=getframe;
     end
 
-    writerObj = VideoWriter(fullfile(wd,'temp.avi'));
+    writerObj = VideoWriter(fullfile(wd,'density.avi'));
     writerObj.FrameRate = 30;
     open(writerObj);
 
@@ -63,5 +87,4 @@ for iteration=8
 
     close(writerObj);
 end
-
     
