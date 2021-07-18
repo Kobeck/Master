@@ -116,5 +116,5 @@ restart         1000000 restart1.dat restart2.dat
 timestep        0.005
 timer           full
 
-run 		30000000
+run 		20000000
 
