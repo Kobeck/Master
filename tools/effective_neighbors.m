@@ -12,7 +12,6 @@ for i=1:length(cube(:,1))
     
     if dist < cutoff && coords(1)==2 
         neighbors=[neighbors; coords(2),coords(3),coords(4), dist];
-        disp('1');
     end
     
     

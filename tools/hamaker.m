@@ -1,5 +1,5 @@
 % hamaker 
-close all; clear all;
+clear all;
 sigma = 1;
 epsilon = 1;
 A = 100;
@@ -34,8 +34,23 @@ U_r =  A/37800 * sigma.^6./r.* (...
    
 U = U_a + U_r;
 
-plot(r,U)
+%plot(r,U)
 axis([a_1+a_2+0.1 a_1+a_2+4 -100 100])
+
+
+%% Point and sphere
+eps=1;
+sig=1;
+A_cs = 100*eps;
+a=5;
+r=5.5:0.001:8.5;
+U_cs = (a*A_cs*a.^3*sig.^3)./(9*(a.^2-r.^2).^3).* ...
+    ( 1 - ((5*a.^6+45*a.^4*r.^2+63*a.^2*r.^4+15*r.^6)*sig.^6)./ ...
+       ( 15*(a-r).^6.*(a+r).^6));
+   
+plot(r,U_cs);
+axis([5 5+2.5+1 -30 10])
+title('hamaker')
 % 
 % clear all
 % x = 0.1:0.01:0.581 ;

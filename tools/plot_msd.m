@@ -30,7 +30,7 @@ dump = readtable("dump.msd", opts);
 clear opts
 
 %% plot msd 
-Natoms = 250;
+Natoms = 96;
 steps = floor(height(dump(:,1))/(Natoms+1));
 data = zeros(steps,Natoms);
 ave = zeros(steps,1);
@@ -48,6 +48,8 @@ plot(ave(:));
 % end
 legend off;
 
+savefig("msd.fig")
+saveas(gcf,"msd.png")
 
 
 
