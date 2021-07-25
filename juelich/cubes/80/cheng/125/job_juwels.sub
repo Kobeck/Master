@@ -1,0 +1,26 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=cheng125
+#SBATCH --nodes=1
+#SBATCH --ntasks=48
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=2:00:00
+#SBATCH --partition=batch
+#SBATCH --array=1-4
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+date=$(date +%d_%m-%H%M)
+temp=1.0 #$(bc <<< "0.8+${SLURM_ARRAY_TASK_ID}*0.1")
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" $tempstr
+seed=$RANDOM
+
+dir=juelich_${SLURM_NTASKS}_seed_${SLURM_ARRAY_TASK_ID}-${date}
+
+mkdir $dir
+cp restart.dat* data* in.mix job* $dir/.
+cd $dir
+
+srun -n ${SLURM_NTASKS} lmp -v temp $temp -v seed $seed -in in.cubes 
