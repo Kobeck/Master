@@ -1,0 +1,25 @@
+#!/bin/bash
+# Name of the job
+#$ -N cubes125
+#$ -pe mpi 16
+##$ -t 1-2
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
+
+
+module load lammps 
+date=$(date +%d_%m-%H%M)
+seed=$RANDOM
+temp=5
+printf -v j "%02d" ${temp}
+
+dir=${NSLOTS}_temp${j}_${date}
+
+mkdir $dir
+cp in.cubes data.rigid job.sub $dir/.
+cd $dir
+
+mpirun -n $NSLOTS lmp -echo screen -v temp ${temp} -v seed ${seed} -in in.cubes >>out

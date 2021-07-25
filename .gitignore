@@ -11,7 +11,7 @@
 *.ascii
 movie.avi
 lmp_mpi
-*cubes
+*.cubes
 *quat
 image*
 lammps*
