@@ -1,0 +1,20 @@
+LAMMPS (29 Oct 2020)
+  using 1 OpenMP thread(s) per MPI task
+units           lj
+atom_style      full
+atom_modify     map array first cubes
+dimension       3
+boundary        p p f
+
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+
+region 		box block 0 80 0 80 0 106
+
+read_data       data.rigid
+Reading data file ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (20.000000 20.000000 17.666000)
+  2 by 4 by 2 MPI processor grid
+  reading atoms ...
+ERROR: Incorrect atom format in data file (src/atom.cpp:1037)
+Last command: read_data       data.rigid
