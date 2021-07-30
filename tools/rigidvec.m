@@ -12,9 +12,9 @@ radius = 0.5; % half diameter of lj balls
 % for 96 cubes a 4x4x6 (80):    x & y = 20, z = 17.6666    phi=0.13
 % for 63 cubes a 3x3x7 (60):    x & y = 20; z = 17.14      phi=0.145 
 
-boxx=16;
-boxy=16;
-boxz=21.2;
+boxx=20;
+boxy=20;
+boxz=17.666;
 shiftx= boxx./2;
 shifty= boxy./2;
 shiftz= boxz./2;
