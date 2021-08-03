@@ -13,7 +13,7 @@ read_restart	restart.dat.3000000
 
 group		solvent type 1
 
-read_data	data_64.cubes group cubes add append
+read_data	data_125.cubes group cubes add append
 
 group 		hull  type 2
 group 		dummy type 3

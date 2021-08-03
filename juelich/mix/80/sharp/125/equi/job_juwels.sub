@@ -1,6 +1,6 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
-#SBATCH --job-name=80_64sharp
+#SBATCH --job-name=80_125sharp
 #SBATCH --nodes=6
 #SBATCH --ntasks=288
 #SBATCH --ntasks-per-node=48

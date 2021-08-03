@@ -103,10 +103,10 @@ dump            quat cubes      local 10000 dump.*.quat c_quat[*]
 
 dump            2 all image 10000 image.*.png type type zoom 1.6
 dump_modify     2 pad 8
-dump		image cubes image 10000 image_cubes.*.png type type 1.6
+dump		image cubes image 10000 image_cubes.*.png type type zoom 1.6
 dump_modify	image pad 8
-dump            3 all movie 5000 movie.avi type type 1.6
-dump		4 cubes movie 5000 movie_cubes.avi type type 1.6
+dump            3 all movie 5000 movie.avi type type zoom 1.6
+dump		4 cubes movie 5000 movie_cubes.avi type type zoom 1.6
 
 
 thermo          1000
