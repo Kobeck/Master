@@ -1,0 +1,26 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --nodes=32
+#SBATCH --ntasks=32
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=03:00:00
+#SBATCH --partition=batch
+#SBATCH --array=0-10
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+date=$(date +%d_%m-%H%M)
+startTemp=0.5
+temp=$(bc <<< "0.5+0.1*${SLURM_ARRAY_TASK_ID}")
+
+
+dir=32_temp${startTemp}:${temp}-${date}
+
+mkdir $dir
+cp in.rigid $dir/.
+cp data.* $dir/.
+cp job.sub $dir/.
+cd $dir
+
+srun -n 32 lmp -v startTemp ${startTemp} -v temp ${temp} -in in.rigid
