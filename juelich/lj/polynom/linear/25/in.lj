@@ -121,12 +121,12 @@ restart 	1000000 restart.dat
 timestep 	0.005
 timer 		full
 
-run		3000000
+run		5000000
 write_data	data.lj
 
 
 ## Evaporation
-region          regevap block EDGE EDGE EDGE EDGE 140 EDGE units box
-fix             4 solvent evaporate ${evap} 1 regevap 156415
+#region          regevap block EDGE EDGE EDGE EDGE 140 EDGE units box
+#fix             4 solvent evaporate ${evap} 1 regevap 156415
 
-run 		20000000
+#run 		20000000
