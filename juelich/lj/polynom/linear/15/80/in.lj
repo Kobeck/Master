@@ -86,7 +86,7 @@ fix 		2 solvent nve
 ## Thermostat
 
 
-region		regthermo block EDGE EDGE EDGE EDGE 0 20 units box
+region		regthermo block EDGE EDGE EDGE EDGE EDGE EDGE units box
 
 group 		thermo dynamic solvent region regthermo every 1000
 
