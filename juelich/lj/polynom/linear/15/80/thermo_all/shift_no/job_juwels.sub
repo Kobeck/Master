@@ -12,8 +12,8 @@
 # the directory where sbatch was executed.
 
 date=$(date +%d_%m-%H%M)
-temp=$(bc <<< 0.3-0.05*${SLURM_ARRAY_TASK_ID})
-tempstr=$(bc <<< ${temp}*100/1)
+temp=$(bc <<< 0.2-0.01*${SLURM_ARRAY_TASK_ID})
+tempstr=$(bc <<< ${temp}*1000/1)
 printf -v t "%s" $tempstr
 
 evap=0 #$(bc <<< 15+25*${SLURM_ARRAY_TASK_ID})
