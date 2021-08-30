@@ -1,0 +1,231 @@
+LAMMPS (24 Dec 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+#Read the equilibrated lj fluid and add nanocubes
+
+units           lj
+atom_style      full
+atom_modify     map array first cubes
+dimension       3
+boundary        p p f
+pair_style      lj/cut/opt 2.0
+
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+read_restart	restart.dat.5000000
+Reading restart file ...
+  restart file = 24 Dec 2020, LAMMPS = 24 Dec 2020
+WARNING: Restart file used different # of processors: 192 vs. 288 (src/read_restart.cpp:697)
+  restoring atom style full from restart
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (80.000000 80.000000 160.00000)
+  6 by 4 by 12 MPI processor grid
+  restoring pair style lj/smooth/linear from restart
+  439061 atoms
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0       
+  special bond factors coul:  0        0        0       
+     0 = max # of 1-2 neighbors
+     0 = max # of 1-3 neighbors
+     0 = max # of 1-4 neighbors
+     1 = max # of special neighbors
+  special bonds CPU = 2.328 seconds
+  read_restart CPU = 2.703 seconds
+
+group		solvent type 1
+439061 atoms in group solvent
+
+read_data	data_64.cubes group cubes add append
+Reading data file ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (80.000000 80.000000 160.00000)
+  6 by 4 by 12 MPI processor grid
+WARNING: Pair style in data file differs from currently defined pair style (src/read_data.cpp:588)
+  reading atoms ...
+  85184 atoms
+  reading velocities ...
+  85184 velocities
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0       
+  special bond factors coul:  0        0        0       
+     0 = max # of 1-2 neighbors
+     0 = max # of 1-3 neighbors
+     0 = max # of 1-4 neighbors
+     1 = max # of special neighbors
+  special bonds CPU = 0.037 seconds
+  read_data CPU = 0.357 seconds
+
+group 		hull  type 2
+38528 atoms in group hull
+group 		dummy type 3
+46656 atoms in group dummy
+
+neighbor      0.4 bin
+neigh_modify  exclude molecule/intra cubes
+
+
+pair_modify   shift yes
+
+pair_coeff    1 1 1.0 1.0 #solvent
+pair_coeff    2 2 1.0 1.0 1.12 #np
+pair_coeff    3 3 0.0 0.0 0.0 #dummy
+pair_coeff    2 3 0.0 0.0 0.0 #np dummy
+pair_coeff    1 2 ${eps} ${sig} ${nscut} #np solvent
+pair_coeff    1 2 2.0 ${sig} ${nscut} 
+pair_coeff    1 2 2.0 2.0 ${nscut} 
+pair_coeff    1 2 2.0 2.0 4.0 
+pair_coeff    1 3 0.0 0.0 2.5 #dummy solvent
+
+# delete solvent where the cubes are
+delete_atoms  overlap 2.0 solvent cubes
+System init for delete_atoms ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.4
+  ghost atom cutoff = 4.4
+  binsize = 2.2, bins = 37 37 73
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) command delete_atoms, occasional
+      attributes: full, newton on
+      pair build: full/bin
+      stencil: full/bin/3d
+      bin: standard
+  (2) pair lj/smooth/linear, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+WARNING: Delete_atoms cutoff > minimum neighbor cutoff (src/delete_atoms.cpp:307)
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 99694 atoms, new total = 424551
+
+
+
+pair_coeff    1 1 1.0 1.0 #solvent
+pair_coeff    2 2 1.0 1.0 1.12 #np
+pair_coeff    3 3 0.0 0.0 0.0 #dummy
+pair_coeff    2 3 0.0 0.0 0.0 #np dummy
+pair_coeff    1 2 ${eps} ${sig} ${nscut} #np solvent
+pair_coeff    1 2 2.0 ${sig} ${nscut} 
+pair_coeff    1 2 2.0 2.0 ${nscut} 
+pair_coeff    1 2 2.0 2.0 4.0 
+pair_coeff    1 3 0.0 0.0 0.0 #dummy solvent
+
+
+comm_modify   mode multi cutoff/multi 1 2.0 cutoff/multi 2 2.0 cutoff/multi 3 6.95
+
+reset_timestep 	0
+
+balance 	1.05 shift z 10 1.05
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.4
+  ghost atom cutoff = 6.95
+  binsize = 2.2, bins = 37 37 73
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/smooth/linear, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+ rebalancing time: 0.007 seconds
+  iteration count = 4
+  initial/final maximal load/proc = 2235.0000 2121.0000
+  initial/final imbalance factor  = 1.5161429 1.4388095
+  x cuts: 0.0000000 0.16666667 0.33333333 0.50000000 0.66666667 0.83333333 1.0000000
+  y cuts: 0.0000000 0.25000000 0.50000000 0.75000000 1.0000000
+  z cuts: 0.0000000 0.057291667 0.11979167 0.17187500 0.23958333 0.28125000 0.34375000 0.41145833 0.46354167 0.51562500 0.59895833 0.64583333 1.0000000
+
+####################### WALLS ###########################
+
+variable       epsilonWall equal 2*${epsilon}
+variable       epsilonWall equal 2*1
+variable       repulsive   equal   0.7147*${sigma}
+variable       repulsive   equal   0.7147*1
+variable       full	   equal   3*${sigma}
+variable       full	   equal   3*1
+region         lowWall block EDGE EDGE EDGE EDGE EDGE 2
+
+fix            topWall all wall/lj93 zhi EDGE 	       ${epsilonWall} ${sigma} ${repulsive} units box
+fix            topWall all wall/lj93 zhi EDGE 	       2 ${sigma} ${repulsive} units box
+fix            topWall all wall/lj93 zhi EDGE 	       2 1 ${repulsive} units box
+fix            topWall all wall/lj93 zhi EDGE 	       2 1 0.7147 units box
+fix            lowSol solvent wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${full} units box
+fix            lowSol solvent wall/lj93 zlo EDGE                2 ${sigma} ${full} units box
+fix            lowSol solvent wall/lj93 zlo EDGE                2 1 ${full} units box
+fix            lowSol solvent wall/lj93 zlo EDGE                2 1 3 units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${repulsive} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                2 ${sigma} ${repulsive} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                2 1 ${repulsive} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                2 1 0.7147 units box
+
+
+###################### COMPUTES ##########################
+
+compute        bin1 solvent chunk/atom bin/1d z lower 1.0 units box
+
+
+######################  FIXES ############################
+
+
+fix             peclet solvent ave/chunk 10 10 10000 bin1 density/number norm                  none ave one file density.profile
+
+fix              temp solvent ave/chunk 10 10 10000 bin1 temp norm                  none ave one file temp.profile
+
+fix             1 cubes rigid/nve/small molecule
+  create bodies CPU = 0.032 seconds
+  64 rigid bodies with 85184 atoms
+  8.6602540 = max distance from body owner to body atom
+
+fix             2 solvent nve# temp ${temp} ${temp} 10
+
+
+## Thermostat
+region          regthermo block EDGE EDGE EDGE EDGE 0 15
+group           thermo dynamic solvent region regthermo every 1000
+dynamic group thermo defined
+fix             3 thermo langevin ${temp} ${temp} 10 156453
+fix             3 thermo langevin 0.6 ${temp} 10 156453
+fix             3 thermo langevin 0.6 0.6 10 156453
+
+
+#### Load balancing
+
+fix             bal all balance 1000 1.05 shift z 10 1.05
+
+############### Diagnostics and computes ###################
+
+compute        	com cubes          rigid/local   1 mol x y z
+compute        	quat cubes         rigid/local   1 mol quatw quati quatj quatk
+
+compute 	cc2 cubes 	   chunk/atom 	 molecule
+compute 	msd cubes 	   msd/chunk 	 cc2
+
+fix 		msd all ave/time  1 1 10000 c_msd[*] file dump.msd ave one mode vector
+
+dump            1 all custom 500000 dump.lammpstrj id mol type x y z
+dump		cubetrj hull custom 500000 cubes.lammpstrj id mol type x y z
+dump            com cubes local 10000 dump.*.xyz c_com[*]
+dump	        xyz hull xyz 100000 cubes.xyz
+dump            quat cubes      local 10000 dump.*.quat c_quat[*]
+#dump		mol cubes molfile 10000 mol.xyz xyz
+
+
+dump            2 all image 10000 image.*.png type type zoom 1.5 size 1280 720
+dump_modify     2 pad 8
+dump		image cubes image 10000 image_cubes.*.png type type zoom 1.5 size 1280 720
+dump_modify	image pad 8
+dump            3 all movie 5000 movie.avi type type zoom 1.5 size 1280 720
+dump		4 cubes movie 5000 movie_cubes.avi type type size 1280 720
+
+
+thermo          1000
+thermo_style    custom step temp epair evdwl etotal press pe ke atoms
+
+restart         1000000 restart.dat
+timestep        0.005
+timer           full
+New timer settings: style=full  mode=nosync  timeout=off
+
+run 		5000000
