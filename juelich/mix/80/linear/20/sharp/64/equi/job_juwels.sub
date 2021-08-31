@@ -6,12 +6,12 @@
 #SBATCH --ntasks-per-node=48
 #SBATCH --time=24:00:00
 #SBATCH --partition=batch
-#SBATCH --array=1-3
+##SBATCH --array=1-3
 # *** start of job script ***
 # Note: The current working directory at this point is
 # the directory where sbatch was executed.
 
-
+SLURM_ARRAY_TASK_ID=1
 date=$(date +%d_%m-%H%M)
 startTemp=0.6
 temp=0.6
@@ -21,11 +21,11 @@ printf -v id "%d" ${SLURM_ARRAY_TASK_ID}
 
 if [[ "$id" == "1" ]]
 then
-    dir=juelich_288_eps1_sig2_cut4-${date}
+    dir=juelich_288_eps1_sig1_cut4-${date}
     mkdir $dir
     cp restart.dat* data* in.mix job* $dir/.
     cd $dir
-    srun -n 288 lmp -v eps 1.0 -v sig 2.0 -v temp ${temp} -v nscut 4.0 -in in.mix
+    srun -n 288 lmp -v eps 1.0 -v sig 1.0 -v temp ${temp} -v nscut 4.0 -in in.mix
 elif [[ "$id" == "2" ]]
 then
     dir=juelich_288_eps2_sig1_cut4-${date}
