@@ -1,0 +1,28 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=sharpe2s1
+#SBATCH --nodes=7
+#SBATCH --ntasks=336
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=24:00:00
+#SBATCH --partition=batch
+#SBATCH --array=1-2
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+date=$(date +%d_%m-%H%M)
+startTemp=0.6
+temp=0.6
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" $tempstr
+evap=$(bc <<< "85+100*(${SLURM_ARRAY_TASK_ID}-1)")
+
+dir=juelich_${SLURM_NTASKS}_evap${evap}-${date}
+
+
+mkdir $dir
+cp restart.dat* data* in.mix job* $dir/.
+cd $dir
+
+srun -n ${SLURM_NTASKS} lmp -v evap ${evap} -v eps 2.0 -v sig 1.0 -v nscut 4.0 -v temp ${temp} -in in.mix
