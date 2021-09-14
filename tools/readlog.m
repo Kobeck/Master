@@ -65,7 +65,7 @@ while feof(fid) == 0
         if strcmp(a(1:4),'Loop')
             loop = loop + 1;
             break;
-        elseif id > 16000
+        elseif id > 3197
             loop = loop +1;
                 break;
         else
