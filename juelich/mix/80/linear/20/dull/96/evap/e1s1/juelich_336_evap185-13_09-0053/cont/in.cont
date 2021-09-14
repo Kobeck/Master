@@ -1,0 +1,127 @@
+#Read the equilibrated lj fluid and add nanocubes
+
+units           lj
+atom_style      full
+#atom_modify     map array first cubes
+dimension       3
+boundary        p p f
+pair_style      lj/smooth/linear 2.0
+
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+read_restart	restart.dat.20000000
+
+group		solvent type 1
+group 		hull  type 2
+group 		dummy type 3
+
+neighbor      0.4 bin
+neigh_modify  exclude molecule/intra cubes
+
+
+pair_modify   shift yes
+
+pair_coeff    1 1 1.0 1.0 #solvent
+pair_coeff    2 2 1.0 1.0 1.12 #np
+pair_coeff    3 3 0.0 0.0 0.0 #dummy
+pair_coeff    2 3 0.0 0.0 0.0 #np dummy
+pair_coeff    1 2 ${eps} ${sig} ${nscut} #np solvent
+pair_coeff    1 3 0.0 0.0 0.0 #dummy solvent
+
+
+comm_modify   mode multi cutoff/multi 1 2.0 cutoff/multi 2 2.0 cutoff/multi 3 8.67
+
+balance 	1.05 shift z 10 1.05
+
+####################### WALLS ###########################
+
+variable       epsilonWall equal 2*${epsilon}
+variable       repulsive   equal   0.7147*${sigma}
+variable       full	   equal   3*${sigma}
+#region         lowWall block EDGE EDGE EDGE EDGE EDGE 2
+
+fix            topWall all wall/lj93 zhi EDGE &
+	       ${epsilonWall} ${sigma} ${repulsive} units box
+fix            lowSol solvent wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${full} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE &
+               ${epsilonWall} ${sigma} ${repulsive} units box
+
+
+###################### COMPUTES ##########################
+
+compute        bin1 solvent chunk/atom bin/1d z lower 1.0 units box
+
+
+######################  FIXES ############################
+
+
+fix             peclet solvent ave/chunk 100 1 10000 bin1 density/number norm &
+                 none ave one file density.profile
+
+fix              temp solvent ave/chunk 100 1 10000 bin1 temp norm &
+                 none ave one file temp.profile
+
+fix             1 cubes rigid/nve/small molecule
+
+fix             2 solvent nve
+
+
+## Thermostat
+region          regthermo block EDGE EDGE EDGE EDGE 0 15
+group           thermo dynamic solvent region regthermo every 1000
+fix             3 thermo langevin ${temp} ${temp} 10 156453
+
+## Evaporation
+region		regevap block EDGE EDGE EDGE EDGE 140 EDGE
+fix		4 solvent evaporate ${evap} 1 regevap 156415
+
+
+#### Load balancing
+
+fix             bal all balance 1000 1.05 shift z 10 1.05
+
+############### Diagnostics and computes ###################
+
+compute          cluster all cluster/atom 1.5
+compute          cc1 all chunk/atom c_cluster compress yes
+compute          size all property/chunk cc1 count
+compute          myChunk all temp/chunk cc1 temp
+fix              tempe all ave/time 5000 1 5000 c_myChunk file tmp.out mode scalar
+compute          comChunk all com/chunk cc1
+fix              com all ave/time 10000 1 10000 c_size c_comChunk[*] file com.xyz mode vector
+
+
+compute        	com cubes          rigid/local   1 mol x y z
+compute        	quat cubes         rigid/local   1 mol quatw quati quatj quatk
+
+compute 	cc2 cubes 	   chunk/atom 	 molecule
+compute 	msd cubes 	   msd/chunk 	 cc2
+
+fix 		msd all ave/time  1 1 10000 c_msd[*] file dump.msd ave one mode vector
+
+dump            1 all custom 100000 dump.lammpstrj id mol type x y z c_cluster c_cc1
+dump		hulltrj hull custom 100000 hull.lammpstrj id mol type x y z
+dump		cubestrj cubes custom 100000 cubes.lammpstrj id mol type x y z
+
+dump            com cubes local 100000 dump.*.xyz c_com[*]
+dump	        xyz cubes xyz 100000 cubes.*.xyz
+dump            quat cubes      local 100000 dump.*.quat c_quat[*]
+
+
+dump            2 all image 10000 image.*.png type type zoom 1.5 size 1280 720
+dump_modify     2 pad 8
+dump		image cubes image 10000 image_cubes.*.png type type zoom 1.5 size 1280 720
+dump_modify	image pad 8
+dump            3 all movie 5000 movie.avi type type zoom 1.5 size 1280 720
+dump		4 cubes movie 5000 movie_cubes.avi type type zoom 1.5 size 1280 720
+
+
+thermo          10000
+thermo_style    custom step temp epair evdwl etotal press pe ke atoms
+
+restart         1000000 restart.dat
+timestep        0.005
+timer           full
+
+run 		30000000
