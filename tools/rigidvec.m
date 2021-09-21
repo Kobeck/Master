@@ -34,11 +34,11 @@ for i=1:len^3
     x= coords(i,5);
     y= coords(i,6);
     z= coords(i,7);
-    if(sqrt(x.^2+y.^2+z.^2)>5)
+    if(sqrt(x.^2+y.^2+z.^2)>7)
         coords(i,:) = zeros(1,7);    % truncation
     else
         dist = sqrt(x^2+y^2+z^2);
-        if (dist>=4) %(abs(x)==5 || abs(y) == 5 || abs(z)==5) || dist>4.9)
+        if (abs(x)==5 || abs(y) == 5 || abs(z)==5 || dist>6)
             coords(i,3)= 2;     % atom type
         else
             coords(i,3)= 3;     % ''

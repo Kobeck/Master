@@ -22,15 +22,23 @@ opts.EmptyLineRule = "read";
 opts.ConsecutiveDelimitersRule = "join";
 opts.LeadingDelimitersRule = "ignore";
 
-% Import the data
-dump = readtable("dump.msd", opts);
+% 
+% listing=dir('juelich*');
+% 
+% dirs={listing.name};
+% 
+% for i=1:length(dirs)
+%     
+% % Import the data
+% dump = readtable(fullfile(dirs{i},'dump.msd'), opts);
+% 
 
-
+dump = readtable('dump.msd', opts);
 %% Clear temporary variables
 clear opts
 
 %% plot msd 
-Natoms = 64;
+Natoms = 96;
 steps = floor(height(dump(:,1))/(Natoms+1));
 data = zeros(steps,Natoms);
 ave = zeros(steps,1);
@@ -53,7 +61,11 @@ saveas(gcf,"msd.png")
 
 
 
-
+% hold on
+% 
+% title('MSD_{evap}(time)')
+% 
+% %end
 
 
 

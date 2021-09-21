@@ -65,14 +65,15 @@ while feof(fid) == 0
         if strcmp(a(1:4),'Loop')
             loop = loop + 1;
             break;
-        elseif id > 3197
-            loop = loop +1;
-                break;
+  %      elseif id > 3197
+  %          loop = loop +1;
+  %              break;
         else
             logdata(id,:) = str2num(a);
             id = id+1;
         end
     end
+
     %--------------------------------------------------------
     if feof(fid) == 0
         b = num2str(logdata);
@@ -92,7 +93,7 @@ varargout{1} = out;
 
 thermo=str2num(out.data{1});
 
-plot(thermo(:,9))
+plot(thermo(:,5))
 title('total Energy')
 
 end
