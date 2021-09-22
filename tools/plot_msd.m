@@ -38,7 +38,7 @@ dump = readtable('dump.msd', opts);
 clear opts
 
 %% plot msd 
-Natoms = 96;
+Natoms = 125;
 steps = floor(height(dump(:,1))/(Natoms+1));
 data = zeros(steps,Natoms);
 ave = zeros(steps,1);
