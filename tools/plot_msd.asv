@@ -35,7 +35,7 @@ opts.LeadingDelimitersRule = "ignore";
 dump = readtable(filename,opts);
 
 
-%dump = readtable('dump.msd', opts);
+dump = readtable('juelich_288_sol_05-22_09-2002/dump.msd', opts);
 %% Clear temporary variables
 clear opts
 
@@ -69,6 +69,5 @@ title('MSD_{evap}(time)')
 
 end
 
-disp('done')
 
 

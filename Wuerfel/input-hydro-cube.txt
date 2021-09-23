@@ -1,0 +1,13 @@
+sp3                               Title
+sp3-out                           filename for output files
+cube-10nm.txt             Structural (bead coords) file
+20                                ICASE
+25                                Temperature, centigrade
+0.00891                           Solvent viscosity
+5971222384                        Molecular weight
+0.9460                            Specific volume of macromolecule
+0.997                             Solution density
+0,                                Number of values of H
+0,                                Number of intervals for the distance distribution
+0,                                (ONLY IF ISCA IS NOT ZERO) NTRIALS
+1                                 IDIF=1 (yes) for full diffusion tensors

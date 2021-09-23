@@ -47,9 +47,9 @@ for i=1:len^3
 end
 coords( ~any(coords,2), : ) = []; % removes all rows with all zero
 
-coords(:,5) = coords(:,5) +shiftx;
-coords(:,6) = coords(:,6) +shifty;
-coords(:,7) = coords(:,7) +shiftz;
+% coords(:,5) = coords(:,5) +shiftx;
+% coords(:,6) = coords(:,6) +shifty;
+% coords(:,7) = coords(:,7) +shiftz;
 
 %sqrt(x.^2+y.^2+z.^2);
 plot3(coords(:,5),coords(:,6),coords(:,7),'.', 'MarkerSize', 10)
@@ -66,6 +66,17 @@ plot3(shell(:,1),shell(:,2),shell(:,3),'.', 'MarkerSize', 10)
 title('shell')
 
 
+%% Ausgabe Hydro++
+data=coords(:,5:7);
+out = [data'; radius * ones(1,length(data))];
+fileID = fopen('../Wuerfel/cube-10nm.txt','w');
+fprintf(fileID,'1.E-07,\n');
+fprintf(fileID,'%d,\n',length(data));
+fprintf(fileID,'%11.7f  %11.7f  %11.7f  %9.5f\n', out);
+fclose(fileID);
+
+
+%%
 Mat=[coords(:,3), coords(:,5:7)];
 writematrix(Mat, 'coordsxyz.txt', "Delimiter", "\t");
 writematrix(coords, 'truncated.txt', "Delimiter", "\t");
