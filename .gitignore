@@ -17,6 +17,7 @@ image*
 lammps*
 oldinput
 *#
+*trj
 *.lammpstrj
 *.avi
 lmp_mpi
@@ -32,3 +33,6 @@ juelich/mix/240_temp05_08-19_05-0901/data.lj_eqil
 *jwvis*
 *.fig
 *core*
+dens3*
+temp3*
+pe3*

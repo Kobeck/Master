@@ -66,7 +66,10 @@ fix 	       lowCub cubes wall/lj93 zlo EDGE &
 ###################### COMPUTES ##########################
 
 compute        bin1 solvent chunk/atom bin/1d z lower 1.0 units box 
+compute        bin2 solvent chunk/atom bin/3d x lower 1.0 y lower 1.0 z lower 1.0 units box
 
+compute 	pe solvent 	   pe/atom
+compute 	pe2 all 	   pe/atom
 
 ######################  FIXES ############################
 
@@ -77,6 +80,10 @@ fix             peclet solvent ave/chunk 10 10 10000 bin1 density/number norm &
 fix              temp solvent ave/chunk 10 10 10000 bin1 temp norm &
                  none ave one file temp.profile
 
+fix 		 dens solvent ave/chunk 10 10 10000 bin3 density/number norm &
+		 none ave one file dens3.profile
+
+fix 		pe solvent ave/chunk 1 1 10000 bin3 c_pe norm none ave one file pe3.profile
 fix             1 cubes rigid/nve/small molecule
 
 fix             2 solvent nve# temp ${temp} ${temp} 10
@@ -102,17 +109,19 @@ compute 	msd cubes 	   msd/chunk 	 cc2
 
 fix 		msd all ave/time  1 1 10000 c_msd[*] file dump.msd ave one mode vector
 
-dump            1 all custom 500000 dump.lammpstrj id mol type x y z
-dump		cubetrj hull custom 500000 cubes.lammpstrj id mol type x y z
-dump            com cubes local 10000 dump.*.xyz c_com[*]
+dump            1 all custom 500000 dump.lammpstrj id mol type x y z vx vy vz c_pe2
+dump		sol  solvent custom 500000 dump.soltrj id x y z vx vy vz c_pe
+dump		cubetrj cubes custom 500000 cubes.lammpstrj id mol type x y z vx vy vz
+dump            com cubes local 100000 dump.*.xyz c_com[*]
 dump	        xyz hull xyz 100000 cubes.xyz
-dump            quat cubes      local 10000 dump.*.quat c_quat[*]
+dump            quat cubes      local 100000 dump.*.quat c_quat[*]
+dump		order cubes 	local 100000 dump.*.order c_com[*] c_quat[*]
 #dump		mol cubes molfile 10000 mol.xyz xyz   
 
 
-dump            2 all image 10000 image.*.png type type zoom 1.5 size 1280 720
+dump            2 all image 100000 image.*.png type type zoom 1.5 size 1280 720
 dump_modify     2 pad 8
-dump		image cubes image 10000 image_cubes.*.png type type zoom 1.5 size 1280 720
+dump		image cubes image 100000 image_cubes.*.png type type zoom 1.5 size 1280 720
 dump_modify	image pad 8
 dump            3 all movie 5000 movie.avi type type zoom 1.5 size 1280 720
 dump		4 cubes movie 5000 movie_cubes.avi type type size 1280 720
