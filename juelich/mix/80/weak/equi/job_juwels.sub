@@ -1,12 +1,12 @@
 #!/bin/bash -x
 #SBATCH --account="tncscg"
 #SBATCH --job-name=80_96new
-#SBATCH --nodes=6
-#SBATCH --ntasks=288
+#SBATCH --nodes=8
+#SBATCH --ntasks=384
 #SBATCH --ntasks-per-node=48
-#SBATCH --time=24:00:00
+#SBATCH --time=15:00:00
 #SBATCH --partition=batch
-#SBATCH --array=1-5
+#SBATCH --array=1-2
 # *** start of job script ***
 # Note: The current working directory at this point is
 # the directory where sbatch was executed.
@@ -16,7 +16,7 @@ startTemp=1.0
 temp=1.0 #$(bc <<< "0.8+(${SLURM_ARRAY_TASK_ID}-1)*0.1")
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" $tempstr
-sol=$(bc <<< "0.5+(${SLURM_ARRAY_TASK_ID}-1)*0.05")
+sol=$(bc <<< "0.575+(${SLURM_ARRAY_TASK_ID}-1)*0.05")
 solstr=$(bc <<< $sol*100/1)
 printf -v s "%03d" $solstr
 
