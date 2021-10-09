@@ -1,0 +1,253 @@
+LAMMPS (24 Dec 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (120.00000 120.00000 240.00000)
+  4 by 6 by 12 MPI processor grid
+Lattice spacing in x,y,z = 1.1485556 1.1485556 1.1485556
+Created 1532475 atoms
+  create_atoms CPU = 0.124 seconds
+Lattice spacing in x,y,z = 2.8114422 2.8114422 2.8114422
+Created 49923 atoms
+  create_atoms CPU = 0.002 seconds
+1582398 atoms in group solvent
+System init for delete_atoms ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 2.9
+  binsize = 1.45, bins = 83 83 166
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) command delete_atoms, occasional
+      attributes: full, newton on
+      pair build: full/bin
+      stencil: full/bin/3d
+      bin: standard
+  (2) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+WARNING: Ignoring 'compress yes' for molecular system (src/delete_atoms.cpp:125)
+Deleted 0 atoms, new total = 1582398
+Balancing ...
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 2.9
+  binsize = 1.45, bins = 83 83 166
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+ rebalancing time: 0.015 seconds
+  iteration count = 5
+  initial/final maximal load/proc = 8748.0000 6804.0000
+  initial/final imbalance factor  = 1.5921557 1.2383433
+  x cuts: 0.0000000 0.25000000 0.50000000 0.75000000 1.0000000
+  y cuts: 0.0000000 0.16666667 0.33333333 0.50000000 0.66666667 0.83333333 1.0000000
+  z cuts: 0.0000000 0.059895833 0.11718750 0.17447917 0.23437500 0.28645833 0.34895833 0.40364583 0.45572917 0.52343750 0.57291667 0.63541667 1.0000000
+dynamic group thermo defined
+New timer settings: style=full  mode=nosync  timeout=off
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 0.005
+Per MPI rank memory allocation (min/avg/max) = 10.19 | 12.07 | 17.45 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Atoms 
+       0            1    89.044693    89.044693    90.544692    171.62701    89.044693    1.4999991  1582398 
+ERROR on proc 0: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 15: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 1: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 146: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 3: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 12: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 14: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 231: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 240: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 25: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 72: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 13: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 2: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 24: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 36: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 135: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 37: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 26: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 38: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 39: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 27: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 217: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 241: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 134: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 144: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 63: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 205: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 279: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 133: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 147: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 75: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 219: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 276: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 132: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 145: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 73: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 216: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 252: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 74: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 229: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 264: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 60: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 218: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 277: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 48: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 207: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 278: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 62: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 230: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 253: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 61: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 228: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 265: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 49: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 206: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 242: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 50: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 204: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 254: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 51: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 266: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 243: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 255: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 267: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 4: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 16: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 136: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 28: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 137: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 40: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 138: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 148: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 11: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 143: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 149: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 30: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 142: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 150: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 5: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 139: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 155: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 23: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 140: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 151: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 35: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 141: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 154: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 29: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 152: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 6: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 153: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 18: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 220: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 76: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 17: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 232: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 52: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 41: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 208: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 64: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 42: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 227: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 83: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 47: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 221: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 244: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 78: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 34: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 233: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 280: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 77: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 46: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 239: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 256: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 65: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 7: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 222: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 268: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 53: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 19: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 234: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 245: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 59: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 22: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 209: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 246: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 54: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 10: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 210: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 251: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 66: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 8: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 215: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 257: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 71: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 33: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 226: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 281: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 58: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 43: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 238: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 269: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 70: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 31: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 214: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 263: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 79: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 45: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 223: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 282: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 67: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 21: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 235: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 270: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 82: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 9: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 211: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 258: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 80: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 20: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 213: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 287: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 55: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 32: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 224: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 275: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 69: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 44: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 212: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 286: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 56: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 237: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 57: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 225: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 81: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 236: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 68: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 262: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 283: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 259: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 249: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 274: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 247: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 271: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 250: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 272: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 261: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 273: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 285: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 260: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 248: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
+ERROR on proc 284: Particle on or inside fix wall surface (src/fix_wall_lj93.cpp:94)
