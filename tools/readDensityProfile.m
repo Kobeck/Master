@@ -75,7 +75,7 @@ for iter=1:3
         M(i)=getframe;
     end
 
-    writerObj = VideoWriter(fullfile(wd,'density.avi'));
+    writerObj = VideoWriter(fullfile(wd,savefile));
     writerObj.FrameRate = 30;
     open(writerObj);
 

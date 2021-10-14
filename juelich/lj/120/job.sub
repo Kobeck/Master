@@ -1,0 +1,26 @@
+#!/bin/bash
+# Name of the job
+#$ -N cubes252
+#$ -pe mpi 388
+##$ -t 1-2
+#$ -q scc 
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
+
+
+module load lammps 
+date=$(date +%d_%m-%H%M)
+startTemp=1.0
+temp=1.0
+echo temp = ${temp}
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" ${tempstr}
+dir=juelich_${NSLOTS}_temp10_$j-${date}
+
+mkdir $dir
+cp in.lj data* job_juwels.sub $dir/.
+cd $dir
+
+mpirun -n $NSLOTS lmp -v startTemp ${startTemp} -v temp ${temp} -in in.lj >> out

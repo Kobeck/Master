@@ -34,7 +34,7 @@ for i=1:len^3
     x= coords(i,5);
     y= coords(i,6);
     z= coords(i,7);
-    if(sqrt(x.^2+y.^2+z.^2)>7)
+    if(sqrt(x.^2+y.^2+z.^2)>6.95)
         coords(i,:) = zeros(1,7);    % truncation
     else
         dist = sqrt(x^2+y^2+z^2);
