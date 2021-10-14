@@ -1,0 +1,279 @@
+LAMMPS (24 Dec 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+#Read the equilibrated lj fluid and add nanocubes
+
+units           lj
+atom_style      full
+#atom_modify     map array first cubes
+dimension       3
+boundary        p p f
+pair_style      lj/cut/opt 2.5
+
+variable        sigma           equal 1.0
+variable        epsilon         equal 1.0
+read_restart	restart.dat.10000000
+Reading restart file ...
+  restart file = 24 Dec 2020, LAMMPS = 24 Dec 2020
+WARNING: Restart file used different # of processors: 576 vs. 768 (src/read_restart.cpp:697)
+  restoring atom style full from restart
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (120.00000 120.00000 240.00000)
+  6 by 8 by 16 MPI processor grid
+  restoring pair style lj/cut/opt from restart
+  1715280 atoms
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0       
+  special bond factors coul:  0        0        0       
+     0 = max # of 1-2 neighbors
+     0 = max # of 1-3 neighbors
+     0 = max # of 1-4 neighbors
+     1 = max # of special neighbors
+  special bonds CPU = 7.518 seconds
+  read_restart CPU = 9.310 seconds
+
+group		solvent type 1
+1155210 atoms in group solvent
+group 		hull  type 2
+218540 atoms in group hull
+group 		dummy type 3
+341530 atoms in group dummy
+
+neighbor      0.4 bin
+neigh_modify  exclude molecule/intra cubes
+
+pair_modify   shift yes
+
+pair_coeff    1 1 1.0 1.0 #solvent
+pair_coeff    2 2 1.0 1.0 1.12 #np
+pair_coeff    3 3 0.0 0.0 0.0 #dummy
+pair_coeff    2 3 0.0 0.0 0.0 #np dummy
+pair_coeff    1 2 ${sol} 1.0  #np solvent
+pair_coeff    1 2 0.55 1.0  
+pair_coeff    1 3 0.0 0.0 0.0 #dummy solvent
+
+
+comm_modify   mode multi cutoff/multi 1 2.5 cutoff/multi 2 2.5 cutoff/multi 3 6.95
+
+reset_timestep 	0
+
+balance 	1.05 shift z 10 1.05
+Balancing ...
+Unused restart file global fix info:
+  fix style: STORE, fix ID: msd_COMPUTE_STORE
+Unused restart file peratom fix info:
+  fix style: STORE, fix ID: bin1_COMPUTE_STORE
+  fix style: STORE, fix ID: bin3_COMPUTE_STORE
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.9
+  ghost atom cutoff = 6.957
+  binsize = 1.45, bins = 83 83 166
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/opt, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+ rebalancing time: 0.059 seconds
+  iteration count = 5
+  initial/final maximal load/proc = 3495.0000 2898.0000
+  initial/final imbalance factor  = 1.5648524 1.2975514
+  x cuts: 0.0000000 0.16666667 0.33333333 0.50000000 0.66666667 0.83333333 1.0000000
+  y cuts: 0.0000000 0.12500000 0.25000000 0.37500000 0.50000000 0.62500000 0.75000000 0.87500000 1.0000000
+  z cuts: 0.0000000 0.056640625 0.10742188 0.15429688 0.19726562 0.24609375 0.29296875 0.34765625 0.39453125 0.44921875 0.50195312 0.55273438 0.60351562 0.65429688 0.70507812 0.76757812 1.0000000
+
+####################### WALLS ###########################
+
+variable       epsilonWall equal 2*${epsilon}
+variable       epsilonWall equal 2*1
+variable       repulsive   equal   0.7147*${sigma}
+variable       repulsive   equal   0.7147*1
+variable       full	   equal   3*${sigma}
+variable       full	   equal   3*1
+region         lowWall block EDGE EDGE EDGE EDGE EDGE 2
+
+fix            topWall all wall/lj93 zhi EDGE 	       ${epsilonWall} ${sigma} ${repulsive} units box
+fix            topWall all wall/lj93 zhi EDGE 	       2 ${sigma} ${repulsive} units box
+fix            topWall all wall/lj93 zhi EDGE 	       2 1 ${repulsive} units box
+fix            topWall all wall/lj93 zhi EDGE 	       2 1 0.7147 units box
+fix            lowSol solvent wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${full} units box
+fix            lowSol solvent wall/lj93 zlo EDGE                2 ${sigma} ${full} units box
+fix            lowSol solvent wall/lj93 zlo EDGE                2 1 ${full} units box
+fix            lowSol solvent wall/lj93 zlo EDGE                2 1 3 units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                ${epsilonWall} ${sigma} ${repulsive} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                2 ${sigma} ${repulsive} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                2 1 ${repulsive} units box
+fix 	       lowCub cubes wall/lj93 zlo EDGE                2 1 0.7147 units box
+
+
+###################### COMPUTES ##########################
+
+compute        bin1 solvent chunk/atom bin/1d z lower 1.0 units box
+compute        bin3 solvent chunk/atom bin/3d x lower 5.0 y lower 5.0 z lower 5.0 units box
+
+compute 	pe solvent 	   pe/atom
+compute 	pe2 all 	   pe/atom
+
+######################  FIXES ############################
+
+
+fix             peclet solvent ave/chunk 10 10 10000 bin1 density/number norm                  none ave one file density.profile
+
+fix              temp solvent ave/chunk 10 10 10000 bin1 temp norm                  none ave one file temp.profile
+
+fix 		 dens solvent ave/chunk 10 10 500000 bin3 density/number norm 		 none ave one file dens3.profile
+
+fix		 temp2 solvent ave/chunk 10 10 500000 bin3 temp norm none ave one file temp3.profile
+
+fix 		pe solvent ave/chunk 1 1 500000 bin3 c_pe norm none ave one file pe3.profile
+
+
+
+################### INTEGRATION
+
+fix             1 cubes rigid/nve/small molecule
+  create bodies CPU = 0.034 seconds
+  490 rigid bodies with 560070 atoms
+  6.9560784 = max distance from body owner to body atom
+
+fix             2 solvent nve
+
+
+
+## Thermostat
+region          regthermo block EDGE EDGE EDGE EDGE 0 15
+group           thermo dynamic solvent region regthermo every 1000
+dynamic group thermo defined
+fix             3 thermo langevin ${temp} ${temp} 10 156453
+fix             3 thermo langevin 1.0 ${temp} 10 156453
+fix             3 thermo langevin 1.0 1.0 10 156453
+
+## Evaporation
+region		regevap block EDGE EDGE EDGE EDGE 140 EDGE
+fix 		4 solvent evaporate ${evap} 1 regevap 156415
+fix 		4 solvent evaporate 37 1 regevap 156415
+
+
+#### Load balancing
+
+fix             bal all balance 1000 1.05 shift z 10 1.05
+
+############### Diagnostics and computes ###################
+
+compute        	com cubes          rigid/local   1 mol x y z
+compute        	quat cubes         rigid/local   1 mol quatw quati quatj quatk
+
+compute 	cc2 cubes 	   chunk/atom 	 molecule
+compute 	msd cubes 	   msd/chunk 	 cc2
+
+fix 		msd all ave/time  1 1 10000 c_msd[*] file dump.msd ave one mode vector
+
+dump            1 all custom 500000 dump.lammpstrj id mol type x y z vx vy vz c_pe2
+dump		sol  solvent custom 500000 dump.soltrj id x y z vx vy vz c_pe
+dump		cubetrj cubes custom 500000 cubes.lammpstrj id mol type x y z vx vy vz
+dump            com cubes local 500000 dump.*.xyz c_com[*]
+dump	        xyz hull xyz 500000 cubes.xyz
+#dump            quat cubes      local 100000 dump.*.quat c_quat[*]
+dump		order cubes 	local 100000 dump.*.order c_com[*] c_quat[*]
+#dump		mol cubes molfile 10000 mol.xyz xyz
+
+
+dump            2 all image 100000 image.*.png type type zoom 1.5 size 1280 720
+dump_modify     2 pad 8
+dump		image cubes image 100000 image_cubes.*.png type type zoom 1.5 size 1280 720
+dump_modify	image pad 8
+dump            3 all movie 5000 movie.avi type type zoom 1.5 size 1280 720
+dump		4 cubes movie 5000 movie_cubes.avi type type size 1280 720
+
+
+thermo          1000
+thermo_style    custom step temp epair evdwl etotal press pe ke atoms
+
+restart         1000000 restart.dat
+timestep        0.005
+timer           full
+New timer settings: style=full  mode=nosync  timeout=off
+
+run 		${steps}
+run 		30000000
+Per MPI rank memory allocation (min/avg/max) = 17.01 | 22.99 | 26.37 Mbytes
+Step Temp E_pair E_vdwl TotEng Press PotEng KinEng Atoms 
+       0    1.0118506   -2.0714655   -2.0714655   -1.0484047   0.06069364   -2.0714655    1.0230608  1715280 
+    1000     1.012286   -2.0718654   -2.0718654   -1.0483482  0.073831359   -2.0718654    1.0235172  1715253 
+    2000    1.0121931    -2.071817    -2.071817   -1.0483776  0.071418839    -2.071817    1.0234394  1715226 
+    3000    1.0125955   -2.0724227   -2.0724227   -1.0485604  0.069051507   -2.0724227    1.0238624  1715199 
+    4000    1.0115355   -2.0712903   -2.0712903   -1.0484837  0.072273369   -2.0712903    1.0228066  1715172 
+    5000    1.0115949   -2.0720285   -2.0720285   -1.0491457  0.073070805   -2.0720285    1.0228828  1715145 
+    6000    1.0115681    -2.072081    -2.072081   -1.0492092  0.070784426    -2.072081    1.0228718  1715118 
+    7000    1.0121247   -2.0722068   -2.0722068    -1.048756  0.073786435   -2.0722068    1.0234508  1715091 
+    8000    1.0122088    -2.071707    -2.071707   -1.0481551  0.072229085    -2.071707    1.0235519  1715064 
+    9000    1.0117632    -2.071485    -2.071485   -1.0483676  0.073680955    -2.071485    1.0231174  1715037 
+   10000    1.0119268      -2.0718      -2.0718    -1.048501    0.0731472      -2.0718     1.023299  1715010 
+   11000    1.0123483   -2.0718647   -2.0718647   -1.0481233  0.071915881   -2.0718647    1.0237413  1714983 
+   12000    1.0117523   -2.0712394   -2.0712394   -1.0480846  0.075087295   -2.0712394    1.0231547  1714956 
+   13000    1.0116914   -2.0715041   -2.0715041   -1.0483949  0.071310363   -2.0715041    1.0231093  1714929 
+   14000    1.0117889    -2.071274    -2.071274     -1.04805  0.073418859    -2.071274    1.0232239  1714902 
+   15000    1.0116516   -2.0709552   -2.0709552   -1.0478541  0.070150661   -2.0709552    1.0231012  1714875 
+   16000    1.0107887   -2.0701697   -2.0701697   -1.0479251  0.072736386   -2.0701697    1.0222446  1714848 
+   17000    1.0123537   -2.0711709   -2.0711709   -1.0473273  0.073545843   -2.0711709    1.0238435  1714821 
+   18000    1.0113167   -2.0700063   -2.0700063   -1.0471955  0.074000007   -2.0700063    1.0228108  1714794 
+   19000    1.0115932   -2.0702706   -2.0702706    -1.047164  0.075120063   -2.0702706    1.0231066  1714767 
+   20000    1.0117536   -2.0704876   -2.0704876   -1.0472027  0.070224296   -2.0704876    1.0232849  1714740 
+   21000    1.0107463   -2.0697562   -2.0697562   -1.0474739  0.073942484   -2.0697562    1.0222822  1714713 
+   22000    1.0112028    -2.070402    -2.070402   -1.0476419  0.070224903    -2.070402    1.0227601  1714686 
+   23000    1.0117805    -2.070747    -2.070747   -1.0473865  0.073178609    -2.070747    1.0233605  1714659 
+   24000    1.0127686   -2.0713374   -2.0713374   -1.0469615   0.07461069   -2.0713374     1.024376  1714632 
+   25000    1.0128692   -2.0712428   -2.0712428    -1.046749  0.073277008   -2.0712428    1.0244939  1714605 
+   26000    1.0128315   -2.0715114   -2.0715114   -1.0470395  0.073270197   -2.0715114    1.0244719  1714578 
+   27000    1.0122716   -2.0707958   -2.0707958   -1.0468742  0.072741955   -2.0707958    1.0239216  1714551 
+   28000    1.0107772   -2.0691549   -2.0691549   -1.0467287   0.07791224   -2.0691549    1.0224262  1714524 
+   29000    1.0115151   -2.0705955   -2.0705955   -1.0474068  0.072001612   -2.0705955    1.0231887  1714497 
+   30000    1.0108046   -2.0698145   -2.0698145   -1.0473284  0.072635506   -2.0698145    1.0224861  1714470 
+   31000    1.0099085   -2.0690563   -2.0690563   -1.0474606  0.075898842   -2.0690563    1.0215957  1714443 
+   32000    1.0101092   -2.0696422   -2.0696422   -1.0478274  0.068675665   -2.0696422    1.0218148  1714416 
+   33000    1.0098652   -2.0692332   -2.0692332    -1.047649    0.0722091   -2.0692332    1.0215841  1714389 
+   34000    1.0095232   -2.0692362   -2.0692362   -1.0479819  0.069519193   -2.0692362    1.0212542  1714362 
+   35000    1.0103046   -2.0698152   -2.0698152   -1.0477544  0.068524778   -2.0698152    1.0220608  1714335 
+   36000    1.0105439   -2.0691782   -2.0691782   -1.0468592  0.073510293   -2.0691782     1.022319  1714308 
+   37000    1.0106795   -2.0694119   -2.0694119    -1.046939  0.070980574   -2.0694119    1.0224729  1714280 
+   38000    1.0105652   -2.0692366   -2.0692366   -1.0468632  0.070724892   -2.0692366    1.0223734  1714253 
+   39000    1.0107128   -2.0693095   -2.0693095   -1.0467708  0.070618263   -2.0693095    1.0225387  1714226 
+   40000    1.0107938   -2.0692325   -2.0692325   -1.0465957  0.072985796   -2.0692325    1.0226368  1714199 
+   41000    1.0116098   -2.0699908   -2.0699908   -1.0465124  0.070388587   -2.0699908    1.0234785  1714172 
+   42000    1.0122196   -2.0704641   -2.0704641   -1.0463525  0.070757908   -2.0704641    1.0241116  1714145 
+   43000    1.0107181   -2.0689219   -2.0689219   -1.0463134  0.071336553   -2.0689219    1.0226085  1714118 
+   44000    1.0115252   -2.0694421   -2.0694421   -1.0460009  0.072131336   -2.0694421    1.0234413  1714091 
+   45000    1.0108878   -2.0692022   -2.0692022   -1.0463898   0.07108553   -2.0692022    1.0228125  1714064 
+   46000    1.0119597   -2.0699134   -2.0699134   -1.0460003  0.070545945   -2.0699134    1.0239131  1714037 
+   47000    1.0108623   -2.0687487   -2.0687487   -1.0459298  0.071309672   -2.0687487    1.0228189  1714010 
+   48000    1.0113464   -2.0690677   -2.0690677   -1.0457429  0.069244266   -2.0690677    1.0233248  1713983 
+   49000    1.0120188    -2.069747    -2.069747   -1.0457257  0.071177639    -2.069747    1.0240213  1713956 
+   50000    1.0110444   -2.0691206   -2.0691206    -1.046069  0.070757597   -2.0691206    1.0230515  1713929 
+   51000    1.0114961   -2.0693268   -2.0693268   -1.0458021  0.072635347   -2.0693268    1.0235247  1713902 
+   52000    1.0096194   -2.0678723   -2.0678723   -1.0462305  0.066735632   -2.0678723    1.0216418  1713875 
+   53000    1.0098124   -2.0679672   -2.0679672    -1.046114  0.074918789   -2.0679672    1.0218532  1713848 
+   54000    1.0103941   -2.0683802   -2.0683802   -1.0459223   0.07083111   -2.0683802    1.0224579  1713821 
+   55000    1.0106859   -2.0685576   -2.0685576   -1.0457883  0.070109905   -2.0685576    1.0227693  1713794 
+   56000    1.0113842   -2.0692471   -2.0692471    -1.045755  0.072891548   -2.0692471    1.0234921  1713767 
+   57000     1.011388   -2.0686021   -2.0686021   -1.0450901  0.070941606   -2.0686021    1.0235121  1713740 
+   58000    1.0125292   -2.0696047   -2.0696047   -1.0449217  0.069669378   -2.0696047     1.024683  1713713 
+   59000    1.0122378   -2.0691122   -2.0691122   -1.0447079  0.067161462   -2.0691122    1.0244043  1713686 
+   60000    1.0118019   -2.0686831   -2.0686831   -1.0447038  0.072047498   -2.0686831    1.0239793  1713659 
+   61000    1.0118293   -2.0687118   -2.0687118   -1.0446887  0.072068291   -2.0687118    1.0240231  1713632 
+   62000    1.0116504   -2.0685571   -2.0685571   -1.0446989  0.073318517   -2.0685571    1.0238582  1713605 
+   63000    1.0114577    -2.067984    -2.067984   -1.0443046  0.074250117    -2.067984    1.0236794  1713578 
+   64000    1.0111798   -2.0670954   -2.0670954   -1.0436812  0.071569574   -2.0670954    1.0234142  1713551 
+   65000      1.01143   -2.0680972   -2.0680972   -1.0444137  0.073971851   -2.0680972    1.0236835  1713524 
+   66000    1.0114806   -2.0679458   -2.0679458   -1.0441949  0.072807461   -2.0679458    1.0237509  1713497 
+   67000    1.0115306   -2.0683493   -2.0683493   -1.0445316  0.070314438   -2.0683493    1.0238177  1713470 
+   68000    1.0103915   -2.0673834   -2.0673834   -1.0447025  0.072411128   -2.0673834    1.0226809  1713443 
+   69000     1.011763    -2.068295    -2.068295   -1.0442099  0.071164416    -2.068295    1.0240851  1713416 
+   70000    1.0104951   -2.0670154   -2.0670154   -1.0441974  0.075222449   -2.0670154     1.022818  1713389 
+   71000    1.0106439   -2.0669568   -2.0669568   -1.0439721  0.075224005   -2.0669568    1.0229847  1713362 
+   72000    1.0117448   -2.0679312   -2.0679312   -1.0438161  0.071663911   -2.0679312    1.0241151  1713335 
+   73000    1.0118871   -2.0680602   -2.0680602    -1.043785  0.073949828   -2.0680602    1.0242753  1713308 
+   74000    1.0113905   -2.0677038   -2.0677038   -1.0439144  0.073841407   -2.0677038    1.0237894  1713280 
+   75000    1.0111507    -2.067493    -2.067493   -1.0439302  0.071830433    -2.067493    1.0235628  1713253 
+   76000    1.0112921   -2.0681481   -2.0681481   -1.0444261  0.073750326   -2.0681481     1.023722  1713226 
+   77000     1.010152   -2.0666307   -2.0666307   -1.0440466   0.07119891   -2.0666307  
