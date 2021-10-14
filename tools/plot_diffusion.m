@@ -5,7 +5,7 @@
 clearvars; close all;
 plot_msd;
 
-secsize=50;
+secsize=10;
 nsections=floor(steps./secsize);
 
 b=zeros(nsections,2);

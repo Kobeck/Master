@@ -13,19 +13,20 @@ function [o] = order(index,Neighbors, N, quatfile, dist)
 euler=@Euler_calc;
 Delta_avg=0;    %average deviation
 Delta=zeros(3,N);    %deviation
-A= dlmread(quatfile,' ',9,0);
+A=quatfile;% dlmread(quatfile,' ',9,0);
 
 %Angles of the particle 'index'
-[alpha, beta, gamma]=euler(A(index,1), A(index,2), A(index,3), A(index,4));
+[alpha, beta, gamma]=euler(A(index,2:5));
 alpha=mod(alpha,pi/2);
 beta=mod(beta,pi/2);
 gamma=mod(gamma,pi/2);
-
 %Angles of the neighboring particles
+nOrder= 0;
+%sum over all Neighbors, cos(<theta>)/r
 for i=1:N
     index2=Neighbors(i);
-    [phi, theta, psi]=euler(A(index2,1), A(index2,2), A(index2,3), A(index2,4));
-    
+    [phi, theta, psi]=euler(A(index2,2:5));
+
     
     phi=mod(phi,pi/2);
     theta=mod(theta,pi/2);
@@ -35,10 +36,10 @@ for i=1:N
     Delta(1,i)= alpha-phi;
     Delta(2,i)= beta - theta;
     Delta(3,i)= gamma - psi;
-    dist(i)=dist(index2);
+    Delta_avg(i) = mean(Delta(:,i));
+    disp(Delta_avg(i));
+    nOrder=nOrder + cos(abs(Delta_avg(i)))*1./(dist(index2)-9);
 end
-Delta=mean(Delta);
-neighborOrder=Delta(i)*1./dist(i);
-Delta_avg=mean(neighborOrder);
-o=abs(Delta_avg);
+o = nOrder./N;
+
 end 

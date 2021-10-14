@@ -11,10 +11,10 @@ radius = 0.5; % half diameter of lj balls
 % for 128 cubes a 5x5x5 (80):   x & y = 16, z=21.2
 % for 96 cubes a 4x4x6 (80):    x & y = 20, z = 17.6666    phi=0.13
 % for 63 cubes a 3x3x7 (60):    x & y = 20; z = 17.14      phi=0.145 
-
-boxx=20;
-boxy=20;
-boxz=17.666;
+% for 450 cubes a 7x7x10 (120): x & y = 17.14; z = 16
+boxx= 17.14;
+boxy= 17.14;
+boxz= 16;
 shiftx= boxx./2;
 shifty= boxy./2;
 shiftz= boxz./2;
@@ -47,9 +47,9 @@ for i=1:len^3
 end
 coords( ~any(coords,2), : ) = []; % removes all rows with all zero
 
-% coords(:,5) = coords(:,5) +shiftx;
-% coords(:,6) = coords(:,6) +shifty;
-% coords(:,7) = coords(:,7) +shiftz;
+coords(:,5) = coords(:,5) +shiftx;
+coords(:,6) = coords(:,6) +shifty;
+coords(:,7) = coords(:,7) +shiftz;
 
 %sqrt(x.^2+y.^2+z.^2);
 plot3(coords(:,5),coords(:,6),coords(:,7),'.', 'MarkerSize', 10)

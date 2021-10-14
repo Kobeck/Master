@@ -63,7 +63,7 @@ for iter=1:3
         axvec=[0 160 0.5 1.5];
     elseif iter==3
         col=3;
-        axvec=[0 160 0 6000];
+        axvec=[0 160 0 12000];
     end
     
         
