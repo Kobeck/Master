@@ -1,0 +1,28 @@
+#!/bin/bash
+# Name of the job
+#$ -N c150s70
+#$ -pe mpi 128
+#$ -q scc
+#$ -m eba
+##$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=4G
+#$ -l ib
+##$ -t 1-2
+module load lammps
+
+date=$(date +%d_%m-%H%M)
+startTemp=1.0
+temp=1.0
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" $tempstr
+evap=85 #$(bc <<< ${SGE_TASK_ID}*25+10)  
+
+dir=scc_${NSLOTS}_evap${evap}-${date}
+
+steps=30000000
+
+mkdir $dir
+cp restart.dat* data* in.mix job* $dir/.
+cd $dir
+
+mpirun -n ${NSLOTS} lmp -v steps $steps -v evap ${evap} -v sol 0.70 -v startTemp ${startTemp} -v temp ${temp} -in in.mix

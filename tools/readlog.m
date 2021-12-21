@@ -15,7 +15,7 @@ function [varargout] = readlog(varargin)
 %            School of Aeronautics and Astronautics
 %            Purdue University, West Lafayette, IN - 47907, USA.
 
-logfile = varargin{1};
+logfile ='log.lammps';%varargin{1};
 try
     fid = fopen(logfile,'r');
 catch
@@ -92,9 +92,31 @@ out.data = data;
 varargout{1} = out;
 
 thermo=str2num(out.data{1});
-
+%hold on;
+subplot(4,2,1)
+plot(thermo(:,2))
+title('Temp')
+subplot(4,2,2)
+plot(thermo(:,3))
+title('E_pair')
+subplot(4,2,3)
+plot(thermo(:,4))
+title('E_vdw')
+subplot(4,2,4)
 plot(thermo(:,5))
-title('total Energy')
+title('TotEng')
+subplot(4,2,5)
+plot(thermo(:,6))
+title('Press')
+subplot(4,2,6)
+plot(thermo(:,7))
+title('PotEng')
+subplot(4,2,7)
+plot(thermo(:,8))
+title('KinEng')
+subplot(4,2,8)
+plot(thermo(:,9))
+title('Atoms')
 
 end
 

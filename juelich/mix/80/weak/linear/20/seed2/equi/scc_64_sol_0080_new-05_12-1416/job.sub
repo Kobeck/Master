@@ -1,0 +1,29 @@
+#!/bin/bash
+# Name of the job
+#$ -N linearEq
+#$ -pe mpi 64
+#$ -t 1-8
+#$ -q scc
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G
+#$ -l ib
+
+
+module load lammps
+date=$(date +%d_%m-%H%M)
+startTemp=0.6
+temp=0.6
+tempstr=$(bc <<< ${temp}*10/1)
+printf -v j "%02d" $tempstr
+sol=$(bc <<< "0.55+(${SGE_TASK_ID}-1)*0.05")
+solstr=$(bc <<< $sol*100/1)
+printf -v s "%04d" $solstr
+
+dir=scc_${NSLOTS}_sol_${s}_new-${date}
+
+mkdir $dir
+cp restart.dat* data* in.mix job* $dir/.
+cd $dir
+
+mpirun -n ${NSLOTS} lmp -v sol $sol -v startTemp ${startTemp} -v temp ${temp} -in in.mix

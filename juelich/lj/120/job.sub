@@ -1,12 +1,12 @@
 #!/bin/bash
 # Name of the job
-#$ -N cubes252
-#$ -pe mpi 388
+#$ -N equi120
+#$ -pe mpi 128
 ##$ -t 1-2
 #$ -q scc 
 #$ -m eba
 #$ -M konstantin.beck@uni.kn
-#$ -l h_vmem=2G
+#$ -l h_vmem=3G
 #$ -l ib
 
 
@@ -17,7 +17,7 @@ temp=1.0
 echo temp = ${temp}
 tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" ${tempstr}
-dir=juelich_${NSLOTS}_temp10_$j-${date}
+dir=scc_${NSLOTS}_temp10_$j-${date}
 
 mkdir $dir
 cp in.lj data* job_juwels.sub $dir/.

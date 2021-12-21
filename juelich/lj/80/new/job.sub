@@ -1,0 +1,29 @@
+#!/bin/bash
+#$ -N linearEq
+#$ -pe mpi 64
+#$ -t 1-10
+#$ -q scc
+#$ -m eba
+#$ -M konstantin.beck@uni.kn
+#$ -l h_vmem=2G                                                                                                                                                                                                                                
+#$ -l ib  
+
+
+module load lammps
+
+date=$(date +%d_%m-%H%M)
+temp=$(bc <<< 1.0-0.05*${SGE_TASK_ID})
+tempstr=$(bc <<< ${temp}*100/1)
+printf -v t "%s" $tempstr
+
+evap=$(bc <<< 15+25*${SGE_TASK_ID})
+evapstr=$(bc <<< ${mu}*10/1)
+printf -v m "%s" $evapstr
+
+dir=scc_temp_$t-${date}
+
+mkdir $dir
+cp in.lj data* job_juwels.sub $dir/.
+cd $dir
+
+mpirun -n ${NSLOTS} lmp -v startTemp $temp -v temp $temp -v evap 0 -in in.lj >> out
