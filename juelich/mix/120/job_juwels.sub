@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=48
 #SBATCH --time=24:00:00
 #SBATCH --partition=batch
-#SBATCH --array=1-4
+#SBATCH --array=1-10
 # *** start of job script ***
 # Note: The current working directory at this point is
 # the directory where sbatch was executed.
@@ -18,7 +18,7 @@ tempstr=$(bc <<< ${temp}*10/1)
 printf -v j "%02d" $tempstr
 
 
-sol=$(bc <<< "0.525+(${SLURM_ARRAY_TASK_ID}-1)*0.05")
+sol=$(bc <<< "0.5+(${SLURM_ARRAY_TASK_ID}-1)*0.05")
 solstr=$(bc <<< $sol*1000/1)
 printf -v s "%03d" $solstr
 
