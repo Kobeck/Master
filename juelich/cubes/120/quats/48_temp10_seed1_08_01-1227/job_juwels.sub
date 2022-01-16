@@ -1,0 +1,25 @@
+#!/bin/bash -x
+#SBATCH --account="tncscg"
+#SBATCH --job-name=cubes
+#SBATCH --nodes=1
+#SBATCH --ntasks=48
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=24:00:00
+#SBATCH --partition=batch
+##SBATCH --array=1-10
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+date=$(date +%d_%m-%H%M)
+seed=$RANDOM
+temp=10
+printf -v j "%02d" ${temp}
+
+dir=${SLURM_NTASKS}_temp${j}_seed1_${date}
+
+mkdir $dir
+cp in.cubes data.rigid job_juwels.sub $dir/.
+cd $dir
+
+
+srun -n ${SLURM_NTASKS} lmp -v temp $temp -v seed $seed -in in.cubes >> out
