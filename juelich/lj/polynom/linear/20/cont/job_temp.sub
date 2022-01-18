@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH --account="tncscg"
+#SBATCH --job-name=linear80_25
+#SBATCH --nodes=4
+#SBATCH --ntasks=192
+#SBATCH --ntasks-per-node=48
+#SBATCH --time=24:00:00
+#SBATCH --partition=batch
+##SBATCH --array=1-8
+# *** start of job script ***
+# Note: The current working directory at this point is
+# the directory where sbatch was executed.
+
+date=$(date +%d_%m-%H%M)
+temp=0.6
+tempstr=$(bc <<< ${temp}*100/1)
+printf -v t "%s" $tempstr
+
+dir=juelich_temp_$t-${date}
+
+mkdir $dir
+cp restart.dat.* in.lj data* job_juwels.sub $dir/.
+cd $dir
+
+srun -n ${SLURM_NTASKS} lmp -v startTemp $temp -v temp $temp -v evap 0 -in in.lj >> out

@@ -1,0 +1,21 @@
+LAMMPS (24 Dec 2020)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:94)
+  using 1 OpenMP thread(s) per MPI task
+# Simple rigid body system
+# needed variables:
+
+#variable	startTemp equal 0.5
+#variable 	temp 	  equal 0.8
+
+units		lj
+atom_style	full
+dimension 	3
+boundary	p p f
+pair_style	lj/smooth/linear 2.0
+
+variable 	sigma		equal 1.0
+variable 	epsilon 	equal 1.0
+
+read_restart 	restart.dat.5000000
+Reading restart file ...
+ERROR on proc 0: Cannot open restart file restart.dat.5000000: No such file or directory (src/read_restart.cpp:112)
